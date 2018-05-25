@@ -16,9 +16,11 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from homepage import views as homepage_views
+from manage_members import views as member_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', homepage_views.home_page, name="home_page"),
-    
+    url(r'^member/add', member_views.new_member, name="new_member"),
+    url(r'^member/thanks', member_views.member_thanks, name="member_thanks"),
 ]

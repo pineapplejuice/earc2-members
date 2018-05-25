@@ -15,4 +15,7 @@ class TestHomePage(FunctionalTest):
 		header_text = self.browser.find_element_by_tag_name('h1').text
 		self.assertIn('Welcome', header_text)
 		
+		# As the membership chair he needs to work on the member list.
+		# He sees a link to manage the member list
+		self.assertEquals('Manage member list', self.browser.find_element_by_tag_name('a').text)
 		
