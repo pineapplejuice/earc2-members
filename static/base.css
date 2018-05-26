@@ -1,0 +1,15 @@
+.appform-header {
+	border-bottom: 1px solid black; 
+	height: 130px; 
+	line-height: 130px;
+}
+
+#logo {
+	float: left;
+}
+
+#title-block {
+	display: inline-block; 
+	vertical-align: middle; 
+	line-height: normal;
+}
