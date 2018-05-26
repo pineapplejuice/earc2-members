@@ -20,10 +20,14 @@ LICENSE_TYPES = [
 
 
 class Member(models.Model):
-	app_type = models.CharField(max_length=1, choices=APP_TYPES)
+	app_type = models.CharField(max_length=1, choices=APP_TYPES,
+		verbose_name = "Application type"
+	)
 	callsign = models.CharField(max_length=6)
 	license_type = models.CharField(max_length=1, choices=LICENSE_TYPES)
-	expiration_date = models.DateField()
+	expiration_date = models.DateField(
+		verbose_name = "My license expires"
+	)
 	first_name = models.CharField(max_length=50)
 	last_name = models.CharField(max_length=50)
 	address = models.CharField(max_length=95)
@@ -32,10 +36,18 @@ class Member(models.Model):
 	zip_code = models.CharField(max_length=10)
 	phone = models.CharField(max_length=10)
 	email_address = models.EmailField()
-	mailing_list = models.BooleanField()
-	wd_online = models.BooleanField()
-	arrl_member = models.BooleanField()
-	need_new_badge = models.BooleanField()
+	mailing_list = models.BooleanField(
+		verbose_name = "Add me to the club mailing list"
+	)
+	wd_online = models.BooleanField(
+		verbose_name = "I would like to read the Wireless Dispatch online"
+	)
+	arrl_member = models.BooleanField(
+		verbose_name = "I am an ARRL member"
+	)
+	need_new_badge = models.BooleanField(
+		verbose_name = "I need a new membership badge"
+	)
 	
 	def __str__(self):
 		return self.first_name + ' ' + self.last_name + ', ' + self.callsign
