@@ -5,7 +5,17 @@
 
 {% block content %}
 
-<h1>Thanks for your application</h1>
+{% if type == 'N' %}
+<h2>Thanks for your interest in the EARC, {{name}}!</h2>
 <p>You will receive an email shortly with further instructions on how to pay your dues.</p>
+{% elif type == 'R' %}
+<h2>Thanks for your continued support of the EARC, {{name}}!</h2>
+<p>You will receive an email shortly with further instructions on how to pay your dues.</p>
+{% elif type == 'U' %}
+<h2>Thanks for updating your information, {{name}}!</h2>
+<p>An email has been sent to the membership chair. We will update your information shortly.</p>
+{% endif %}
+
 
 {% endblock %}
+

@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.timezone import now
 
 # Create your models here.
 
@@ -26,7 +27,7 @@ class Member(models.Model):
 	callsign = models.CharField(max_length=6)
 	license_type = models.CharField(max_length=1, choices=LICENSE_TYPES)
 	expiration_date = models.DateField(
-		verbose_name = "My license expires"
+		verbose_name = "My license expires",
 	)
 	first_name = models.CharField(max_length=50)
 	last_name = models.CharField(max_length=50)
