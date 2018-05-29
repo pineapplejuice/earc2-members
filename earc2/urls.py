@@ -22,5 +22,6 @@ from manage_members import views as member_views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', homepage_views.home_page, name="home_page"),
+    url(r'^about$', homepage_views.about, name="about"),
     url(r'^member/', include('manage_members.urls')),
 ]

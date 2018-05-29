@@ -4,6 +4,6 @@ from . import views
 
 
 urlpatterns = [
-    url(r'^add', views.new_member, name="new_member"),
+    url(r'^add', views.new_member, name="member_form"),
     url(r'^thanks', views.member_thanks, name="member_thanks"),
 ]
