@@ -1,0 +1,37 @@
+
+body {
+	margin: 0;
+	font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+nav {
+	background-color: #040;
+}
+
+blockquote.earc {
+	border-left: 3px solid green;
+	padding: 1em;
+	font-style: italic;
+}
+
+.card .card-header {
+	background-color: #9F9;
+	font-size: 1.2rem;
+	font-weight: 400;
+}
+
+#header {
+
+	border-bottom: 1px solid black; 
+	margin-top: 5rem;
+	margin-bottom:2rem;
+}
+
+#title-block p.subtitle {
+	font-style: italic;
+}
+
+#member_form th {
+	width:40%;
+}
+
