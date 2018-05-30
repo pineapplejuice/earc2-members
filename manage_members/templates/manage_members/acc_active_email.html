@@ -1,0 +1,15 @@
+{% autoescape off %}
+Hi {{member.first_name}}, {{member.callsign}},
+
+Thanks for your interest in the Emergency Amateur Radio Club. We have created a member account for you on the website with your callsign (lower case) as the username, and the password that you set during the registration process.
+
+In order to log in, you will need to activate your account by clicking the following link. Once your account is activated, you can login to update your member profile, pay dues, etc.
+
+http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+
+If you have any questions please let us know.
+
+Mahalo and 73,
+Emergency Amateur Radio Club
+
+{% endautoescape %}

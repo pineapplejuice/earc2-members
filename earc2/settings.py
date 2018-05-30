@@ -122,3 +122,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, 'static'))
+
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'earc-membership@pineapplejuice.net'
+EMAIL_HOST_PASSWORD = '9j4V@e6c^ryv'
+EMAIL_PORT = 587
