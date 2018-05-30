@@ -50,7 +50,7 @@ class Member(models.Model):
 	need_new_badge = models.BooleanField(
 		verbose_name = "I need a new membership badge"
 	)
-	user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+	user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
 	
 	
 	def __str__(self):

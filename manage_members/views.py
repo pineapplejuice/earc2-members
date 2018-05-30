@@ -1,8 +1,8 @@
 from datetime import date
 from urllib.parse import urlencode
 from django.shortcuts import render, redirect
-
-from .forms import MemberForm
+from .models import User
+from .forms import MemberForm, UserForm
 
 # Helper function
 def redirect_params(url, params=None):
@@ -21,21 +21,38 @@ def redirect_params(url, params=None):
 # Views
 def new_member(request):
 	if request.method == 'POST':
-		form = MemberForm(request.POST)
-		if form.is_valid():
+		member_form = MemberForm(request.POST)
+		user_form = UserForm(request.POST)
+		if member_form.is_valid() and user_form.is_valid():
+
+			member = member_form.save(commit=False)
+			user = user_form.save(commit=False)
+			
+			user.username = member.callsign.lower()
+			user.email = member.email_address
+			user.first_name = member.first_name
+			user.last_name = member.last_name
+			user.set_password(user.password)
+			user.is_active = False
+			user.save()
+
+			member.user = User.objects.get(username = user.username)
+			member.save()
+			
+			
+			
+			
 			params = {
-				'name': form.cleaned_data['first_name'],
-				'type': form.cleaned_data['app_type'],
+				'name': member_form.cleaned_data['first_name'],
+				'type': member_form.cleaned_data['app_type'],
 			}
 			
-			
-			
-			form.save()
 			return redirect_params('member_thanks', params)
 	else:
-		form = MemberForm(initial = {'expiration_date': date.today(), 'state': 'HI'})
+		member_form = MemberForm(initial = {'expiration_date': date.today(), 'state': 'HI'})
+		user_form = UserForm()
 	
-	return render(request, "manage_members/member_form.html", {'form': form})
+	return render(request, "manage_members/member_form.html", {'member_form': member_form, 'user_form': user_form})
 
 
 def member_thanks(request):
