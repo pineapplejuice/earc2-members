@@ -3,7 +3,9 @@ from django.contrib import admin
 from . import views
 
 
+
 urlpatterns = [
+	url(r'^(?P<callsign>[0-9A-Za-z]+)/', views.member_profile, name="member_profile"),
     url(r'^add', views.new_member, name="member_form"),
     url(r'^thanks', views.member_thanks, name="member_thanks"),
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',

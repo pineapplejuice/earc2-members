@@ -2,9 +2,10 @@ from datetime import date
 from urllib.parse import urlencode
 
 from django.contrib.auth import login, authenticate
+from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -31,6 +32,15 @@ def redirect_params(url, params=None):
 
 
 # Views
+def member_profile(request, callsign):
+	member = get_object_or_404(Member, callsign=callsign)
+	
+	return render(request, "manage_members/member_profile.html", {'member': member})
+	
+
+
+
+
 def new_member(request):
 	if request.method == 'POST':
 		member_form = MemberForm(request.POST)
@@ -69,7 +79,6 @@ def new_member(request):
 			
 			params = {
 				'name': member_form.cleaned_data['first_name'],
-				'type': member_form.cleaned_data['app_type'],
 			}
 			
 			return redirect_params('member_thanks', params)
@@ -83,7 +92,6 @@ def new_member(request):
 def member_thanks(request):
 	context = {
 		'name': request.GET.get('name'),
-		'type': request.GET.get('type'),
 	}
 	return render(request, "manage_members/member_thanks.html", context)
 

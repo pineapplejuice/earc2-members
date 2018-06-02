@@ -57,3 +57,4 @@ class Member(models.Model):
 		return self.first_name + ' ' + self.last_name + ', ' + self.callsign
 	
 
+
