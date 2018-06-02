@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block browsertitle %}EARC - Profile for {{member.callsign}}{% endblock %}
+
+{% block content %}
+
+<h2>{{member.first_name}} {{member.last_name}}, {{member.callsign}}</h2>
+<p><a href="#">Update member info</a></p>
+
+<div class="card">
+	<div class="card-header">
+		License
+	</div>
+	<div class="card-body">
+		<p class="card-text">Class: {{member.get_license_type_display}}</p>
+		<p class="card-text">Expires: {{member.expiration_date}}</p>
+	</div>
+</div>
+
+<div class="card">
+	<div class="card-header">
+		Contact Info
+	</div>
+	<div class="card-body">
+		<p class="card-text">{{member.address}}<br />
+			{{member.city}}, {{member.state}} {{member.zip_code}}</p>
+		<p class="card-text">{{member.phone}}</p>
+		<p class="card-text"><a href="mailto:{{member.email_address}}">{{member.email_address}}</a></p>
+	</div>
+</div>
+
+<div class="card">
+	<div class="card-header">
+		Options
+	</div>
+	<div class="card-body">
+		<p class="card-text">Add me to the club mailing list: <b>{% if member.mailing_list %}Yes{% else %}No{% endif %}</b></p>
+		<p class="card-text">Wireless Dispatch online: <b>{% if member.wd_online %}Yes{% else %}No{% endif %}</b></p>
+		<p class="card-text">ARRL Member: <b>{% if member.arrl_member %}Yes{% else %}No{% endif %}</b></p>		
+	</div>
+</div>
+
+{% endblock %}

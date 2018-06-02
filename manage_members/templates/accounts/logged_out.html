@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block browsertitle %}EARC - Logged out{% endblock %}
+
+{% block content %}
+
+<h2>Logged out</h2>
+<p>You are now logged out of the website.</p>
+
+<p><a href="{% url 'home_page' %}">Return to home page</a></p>
+
+{% endblock %}

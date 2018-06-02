@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block browsertitle %}EARC - Permission Denied{% endblock %}
+
+{% block content %}
+
+<h2>Permission denied</h2>
+<p>You do not have permission to view this page.</p>
+
+<p><a href="{% url 'home_page' %}">Return to home page</a></p>
+
+{% endblock %}
