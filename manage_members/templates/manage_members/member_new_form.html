@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block browsertitle %}EARC Membership Application{% endblock %}
+
+
+{% block content %}
+
+	<h2>EARC Membership Application</h2>
+
+	<form action="{% url 'member_new_form' %}" method="post" id="member_form">
+		{% csrf_token %}
+		<table class="table">
+			{{ member_form.as_table }}
+			{{ user_form.as_table }}
+			<th>
+			</th>
+			<td>
+				<input class="btn-lg btn-primary" type="submit" value="Submit" />
+				<input class="btn-lg btn-secondary" type="reset" value="Reset" />				
+				
+			</td>
+	
+		</table>
+
+	</form>
+
+
+{% endblock %}

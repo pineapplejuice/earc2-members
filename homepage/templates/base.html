@@ -44,10 +44,10 @@
 							Membership
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-							<a class="dropdown-item {% if request.resolver_match.url_name == 'member_form' %}active{% endif %}"
-								href="{% url "member_form" %}">
+							<a class="dropdown-item {% if request.resolver_match.url_name == 'member_new_form' %}active{% endif %}"
+								href="{% url 'member_new_form' %}">
 								Application form
-								{% if request.resolver_match.url_name == 'member_form' %}<span class="sr-only">(current)</span>{% endif %}</a>
+								{% if request.resolver_match.url_name == 'member_new_form' %}<span class="sr-only">(current)</span>{% endif %}</a>
 							<a class="dropdown-item" href="#">Member list</a>
 							<a class="dropdown-item" href-"#">Newsletter</a>
 						</div>
@@ -110,7 +110,7 @@
 								{{ user.member.callsign }}
 							</a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<a class="dropdown-item" href="{% url 'member_profile' user.member.callsign %}">Member profile</a>
+								<a class="dropdown-item" href="{% url 'member_profile' user.member.id %}">Member profile</a>
 								<a class="dropdown-item" href="{% url 'site_logout' %}">Logout</a>
 							</div>
 						</li>
@@ -138,6 +138,9 @@
 
 
 			<div class="row" id="content">
+				{% for message in messages %}
+					<p>{{message}}</p>
+				{% endfor %}
 				<div class="container">
 					{% block content %}{% endblock %}
 				</div>

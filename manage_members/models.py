@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import signals
 from django.utils.timezone import now
 from django.contrib.auth.models import User
 
@@ -19,7 +20,15 @@ LICENSE_TYPES = [
 	('E', 'Extra'),
 ]
 
-
+# Helper functions
+def update_user(sender, instance, created, **kwargs):
+	if not created:
+		user = instance.user
+		user.username = instance.callsign.lower()
+		user.email = instance.email_address
+		user.first_name = instance.first_name
+		user.last_name = instance.last_name
+		user.save()
 
 class Member(models.Model):
 	app_type = models.CharField(max_length=1, choices=APP_TYPES,
@@ -56,5 +65,8 @@ class Member(models.Model):
 	def __str__(self):
 		return self.first_name + ' ' + self.last_name + ', ' + self.callsign
 	
+	def get_absolute_url(self):
+		from django.urls import reverse
+		return reverse('member_profile', args=[str(self.id)])
 
-
+signals.post_save.connect(update_user, sender=Member)

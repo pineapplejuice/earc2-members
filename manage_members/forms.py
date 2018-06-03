@@ -52,3 +52,4 @@ class UserForm(ModelForm):
 		
 		if password != confirm_password:
 			raise ValidationError("Password and confirm password do not match")
+

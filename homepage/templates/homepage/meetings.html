@@ -3,10 +3,29 @@
 {% block browsertitle %}EARC - Meetings{% endblock %}
 
 {% block content %}
-<h2>General Membership Meetings</h2>
-<p>EARC General Membership Meetings are held every month except during June (to encourage members to attend Field Day) and December (for the holiday season).</p>
+<h2>Meetings</h2>
+<h3>General Membership Meetings</h3>
+<p>EARC General Membership Meetings are held every month except during June (to encourage members to attend Field Day) and December (for the holiday season). We elect our officers for the upcoming year at the October meeting and have a holiday party in November.</p>
 
-<p>Our next General Membership Meeting will be {{next_meeting.date_time | date:"l, F d, Y"}} at {{next_meeting.date_time | time:"f a"}} at {{next_meeting.meeting_place.venue_name }}.</p>
+<p>Our next General Membership Meeting will be <b>{{next_meeting.date_time | date:"l, F d, Y"}}</b> at <b>{{next_meeting.date_time | time:"f a"}}</b> at <b>{{next_meeting.meeting_place.venue_name }}</b>.</p>
+
+<address>
+	<strong>{{next_meeting.meeting_place.venue_name }}</strong><br />
+	{{next_meeting.meeting_place.address}}<br />
+	{{next_meeting.meeting_place.city}}, {{next_meeting.meeting_place.state}} {{next_meeting.meeting_place.zip_code}}
+</address>
+
+<iframe width="600" height="450" frameborder="0" style="border:0" 
+	src="{{next_meeting_map_url}}" allowfullscreen></iframe>
+
+<p>Upcoming meetings:</p>
+<ul>
+	{% for meeting in upcoming_meetings %}
+	<li>{{meeting.date_time|date:"l, F d, Y"}}, {{meeting.date_time|date:"f a"}} at {{next_meeting.meeting_place.venue_name}}</li>
+	{% empty %}
+	<li>To be determined</li>
+	{% endfor %}
+</ul>
 
 
 

@@ -1,6 +1,7 @@
 from datetime import date
 from urllib.parse import urlencode
 
+from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
@@ -32,13 +33,20 @@ def redirect_params(url, params=None):
 
 
 # Views
-def member_profile(request, callsign):
-	member = get_object_or_404(Member, callsign=callsign)
+def member_profile(request, id):
+	member = get_object_or_404(Member, pk=id)
 	
 	return render(request, "manage_members/member_profile.html", {'member': member})
 	
 
-
+def member_update(request, id):
+	member = get_object_or_404(Member, pk=id)
+	member_form = MemberForm(request.POST or None, instance = member)
+	if member_form.is_valid():
+		member_form.save()
+		messages.success(request, 'Profile details updated.')
+		return redirect('member_profile', id=id)
+	return render(request, "manage_members/member_update_form.html", {'member': member, 'member_form': member_form})
 
 
 def new_member(request):
@@ -86,7 +94,7 @@ def new_member(request):
 		member_form = MemberForm(initial = {'expiration_date': date.today(), 'state': 'HI'})
 		user_form = UserForm()
 	
-	return render(request, "manage_members/member_form.html", {'member_form': member_form, 'user_form': user_form})
+	return render(request, "manage_members/member_new_form.html", {'member_form': member_form, 'user_form': user_form})
 
 
 def member_thanks(request):
