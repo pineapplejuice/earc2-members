@@ -7,12 +7,6 @@ from django.contrib.auth.models import User
 
 # Dropdown lists
 
-APP_TYPES = [
-	('N', 'New Member'),
-	('R', 'Renewal'),
-	('U', 'Update Info'),
-]
-
 LICENSE_TYPES = [
 	('T', 'Technician'),
 	('G', 'General'),
@@ -22,6 +16,7 @@ LICENSE_TYPES = [
 
 # Helper functions
 def update_user(sender, instance, created, **kwargs):
+	"""Updates username and user demographics when member model changes"""
 	if not created:
 		user = instance.user
 		user.username = instance.callsign.lower()
@@ -31,9 +26,6 @@ def update_user(sender, instance, created, **kwargs):
 		user.save()
 
 class Member(models.Model):
-	app_type = models.CharField(max_length=1, choices=APP_TYPES,
-		verbose_name = "Application type"
-	)
 	callsign = models.CharField(max_length=6)
 	license_type = models.CharField(max_length=1, choices=LICENSE_TYPES)
 	expiration_date = models.DateField(

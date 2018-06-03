@@ -36,4 +36,6 @@ def meetings(request):
 	
 	return render(request, 'homepage/meetings.html', context)
 
-
+def nets(request):
+	return render(request, 'homepage/nets.html')
+	

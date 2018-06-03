@@ -5,8 +5,7 @@
 {% block content %}
 
 <h2>{{member.first_name}} {{member.last_name}}, {{member.callsign}}</h2>
-<p><a href="{% url 'member_update' member.id %}">Update member info</a></p>
-<p><a href="{% url 'password_change' %}">Change password</a></a></p>
+<p><a class="btn btn-primary" href="{% url 'member_update' member.id %}">Update member info</a> <a class="btn btn-primary" href="{% url 'password_change' %}">Change password</a></a></p>
 
 
 <div class="card">

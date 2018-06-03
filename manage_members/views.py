@@ -6,6 +6,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_text
@@ -33,14 +34,29 @@ def redirect_params(url, params=None):
 
 
 # Views
+def member_list(request):
+	members = Member.objects.all()
+	paginator = Paginator(members, 20)	# 20 members per page
+	
+	page = request.GET.get('page')
+	members=paginator.get_page(page)
+	return render(request, "manage_members/member_list.html", {'members': members})	
+
+@login_required
 def member_profile(request, id):
 	member = get_object_or_404(Member, pk=id)
+	if request.user.pk != member.user.pk:
+		return render(request, "manage_members/member_permission_denied.html")
 	
 	return render(request, "manage_members/member_profile.html", {'member': member})
-	
 
+	
+@login_required
 def member_update(request, id):
 	member = get_object_or_404(Member, pk=id)
+	if request.user.pk != member.user.pk:
+		return render(request, "manage_members/member_permission_denied.html")
+	
 	member_form = MemberForm(request.POST or None, instance = member)
 	if member_form.is_valid():
 		member_form.save()

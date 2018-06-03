@@ -40,7 +40,7 @@ urlpatterns = [
 	url(r'^accounts/reset_password/done/$', auth_views.PasswordResetDoneView.as_view(
 		template_name='accounts/password_reset_done.html'), name='password_reset_done'),
 	url(r'^accounts/reset_password/confirm/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})',
-		auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+		auth_views.PasswordResetConfirmView.as_view(template_name='accounts/password_reset_confirm.html'), name='password_reset_confirm'),
 	url(r'^accounts/reset_password/complete/$', auth_views.PasswordResetCompleteView.as_view(
 		template_name='accounts/password_reset_complete.html'), name='password_reset_complete'),
 ]

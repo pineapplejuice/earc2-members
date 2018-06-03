@@ -27,6 +27,13 @@ blockquote.earc {
 	margin-bottom:2rem;
 }
 
+#footer {
+	margin-top: 4em;
+	background-color: #040;
+	color: #fff;
+}
+
+
 #title-block p.subtitle {
 	font-style: italic;
 }
