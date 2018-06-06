@@ -42,6 +42,7 @@ def member_list(request):
 	members=paginator.get_page(page)
 	return render(request, "manage_members/member_list.html", {'members': members})	
 
+
 @login_required
 def member_profile(request, id):
 	member = get_object_or_404(Member, pk=id)

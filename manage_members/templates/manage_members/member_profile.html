@@ -32,6 +32,26 @@
 
 <div class="card">
 	<div class="card-header">
+		Membership
+	</div>
+	<div class="card-body">
+		<p class="card-text">Membership status:
+			{% if member.membership_status == 'P' %}
+			Prospective member <a href="btn btn-sm btn-primary" href="#">Pay dues now</a>
+			{% elif member.membership_status == 'C' %}
+			Current member
+			{% elif member.membership_status == 'LR' %}
+			Lapsed member - need to renew <a href="btn btn-sm btn-primary" href="#">Pay dues now</a>
+			{% elif member.membership_status == 'LN' %}
+			Lapsed more than 2 years - re-enroll as new <a href="btn btn-sm btn-primary" href="#">Pay dues now</a>
+			{% endif %}
+		</p>
+		<p class="card-text">Membership expires: {{member.membership_expires}}</p>
+	</div>
+</div>
+
+<div class="card">
+	<div class="card-header">
 		Options
 	</div>
 	<div class="card-body">

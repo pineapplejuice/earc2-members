@@ -1,11 +1,23 @@
 from django.db import models
-from django.db.models import signals
+from django.db.models import signals, Max
 from django.utils.timezone import now
 from django.contrib.auth.models import User
+import datetime
 
 # Create your models here.
 
 # Dropdown lists
+
+DUES_TYPE = [
+	('N', 'New member'),
+	('R', 'Renewal'),
+]
+
+PAYMENT_METHOD = [
+	('CASH', 'Cash'),
+	('CHK', 'Check'),
+	('PP', 'PayPal'),
+]
 
 LICENSE_TYPES = [
 	('T', 'Technician'),
@@ -24,6 +36,7 @@ def update_user(sender, instance, created, **kwargs):
 		user.first_name = instance.first_name
 		user.last_name = instance.last_name
 		user.save()
+
 
 class Member(models.Model):
 	callsign = models.CharField(max_length=6)
@@ -60,5 +73,38 @@ class Member(models.Model):
 	def get_absolute_url(self):
 		from django.urls import reverse
 		return reverse('member_profile', args=[str(self.id)])
+		
+	def last_dues_payment(self):
+		d = self.duespayment_set.aggregate(latest_payment=Max('payment_date'))
+		return d['latest_payment']
+	
+	def membership_expires(self):
+		d = self.duespayment_set.aggregate(latest_year=Max('membership_year'))
+		return datetime.date(d['latest_year'], 12, 31)
+	
+	def membership_status(self):
+		_today = datetime.date.today()
+		
+		if self.duespayment_set.count() == 0:
+			return "P"
+		elif self.membership_expires() > _today:
+			return "C"
+		elif membership_expires().year > _today.year - 3:
+			return "LR"
+		else:
+			return "LN"
+
+	
 
 signals.post_save.connect(update_user, sender=Member)
+
+
+class DuesPayment(models.Model):
+	payment_date = models.DateField()
+	membership_year = models.IntegerField()
+	member = models.ForeignKey(Member, on_delete=models.CASCADE)
+	dues_type = models.CharField(max_length=1, choices=DUES_TYPE)
+	payment_method = models.CharField(max_length=4, choices=PAYMENT_METHOD)
+	ref_number = models.CharField(max_length=50, blank=True)
+	amount = models.DecimalField(max_digits=5, decimal_places=2)
+	

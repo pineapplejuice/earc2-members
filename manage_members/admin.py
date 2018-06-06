@@ -2,11 +2,15 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
 
-from .models import Member
+from .models import Member, DuesPayment
 
 # Register your models here.
+
+class DuesPaymentInline(admin.StackedInline):
+	model = DuesPayment
+
 class MemberAdmin(admin.ModelAdmin):
-	pass
+	inlines = (DuesPaymentInline, )
 	
 class MemberInline(admin.StackedInline):
     model = Member
@@ -15,6 +19,10 @@ class MemberInline(admin.StackedInline):
 
 class UserAdmin(BaseUserAdmin):
     inlines = (MemberInline, )
+    
+
+
+
 	
 admin.site.register(Member, MemberAdmin)
 admin.site.unregister(User)
