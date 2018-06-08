@@ -21,3 +21,12 @@ class Meeting(models.Model):
 		return str(self.date_time) + ', ' + self.meeting_place.venue_name
 
 
+class Event(models.Model):
+	start_date_time = models.DateTimeField()
+	end_date_time = models.DateTimeField()
+	event_name = models.CharField(max_length=100)
+	event_venue = models.ForeignKey(MeetingPlace, on_delete=models.CASCADE)
+	description = models.CharField(max_length=500)
+	
+	def __str__(self):
+		return str(self.start_date_time) + ', ' + self.event_name
