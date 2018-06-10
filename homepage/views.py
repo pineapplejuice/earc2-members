@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from urllib.parse import urlencode
+from django.utils import timezone
 
-
-from .models import Meeting, MeetingPlace
+from .models import Meeting, MeetingPlace, Event
 
 # Create your views here.
 
@@ -16,8 +16,8 @@ def about(request):
 	return render(request, 'homepage/about.html')
 
 def meetings(request):
-	next_meeting = Meeting.objects.order_by('date_time')[0]
-	upcoming_meetings = Meeting.objects.order_by('date_time')[1:3]
+	next_meeting = Meeting.objects.filter(date_time__gt=timezone.now()).order_by('date_time')[0]
+	upcoming_meetings = Meeting.objects.filter(date_time__gt=timezone.now()).order_by('date_time')[1:3]
 		
 	meeting_place = next_meeting.meeting_place
 	query = {
@@ -35,6 +35,16 @@ def meetings(request):
 	}
 	
 	return render(request, 'homepage/meetings.html', context)
+
+def events(request):
+	future_events = Event.objects.filter(start_date_time__gt=timezone.now())
+	
+	context = {
+		'future_events': future_events,
+	}
+	
+	return render(request, 'homepage/events.html', context)
+
 
 def nets(request):
 	return render(request, 'homepage/nets.html')

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Meeting, MeetingPlace
+from .models import Meeting, MeetingPlace, Event
 # Register your models here.
 
 class MeetingPlaceAdmin(admin.ModelAdmin):
@@ -8,5 +8,10 @@ class MeetingPlaceAdmin(admin.ModelAdmin):
 class MeetingAdmin(admin.ModelAdmin):
 	pass
 
+class EventAdmin(admin.ModelAdmin):
+	pass
+
 admin.site.register(MeetingPlace, MeetingPlaceAdmin)
 admin.site.register(Meeting, MeetingAdmin)
+admin.site.register(Event, EventAdmin)
+

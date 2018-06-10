@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block browsertitle %}EARC - Upcoming Events{% endblock %}
+
+{% block content %}
+{% for event in future_events %}
+		<div class="card">
+			<div class="card-header">
+				<b>{{event.event_name}}</b>
+			</div>
+			<div class="card-body">
+				<p class="card-text">{{event.start_date_time | date:"l, F d, Y"}}, {{event.start_date_time | time:"f a"}} to {{event.end_date_time | time:"f a"}}</p>
+				<address class="card-text">
+					<strong>{{event.event_venue.venue_name }}</strong><br />
+					{{event.event_venue.address}}<br />
+					{{event.event_venue.city}}, {{event.event_venue.state}} {{event.event_venue.zip_code}}
+				</address>
+				<p class="card-text">{{event.description}}</p>
+			</div>
+		</div>
+{% empty %}
+	<p>No upcoming events found.</p>
+{% endfor %}
+{% endblock %}
