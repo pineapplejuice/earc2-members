@@ -21,7 +21,7 @@ from .tokens import account_activation_token
 
 # Helper function
 def redirect_params(url, params=None):
-	"""Redirects to a given url or alias with query string parameters."""
+	"""Redirect to a given url or alias with query string parameters."""
 	response = redirect(url)
 	if params:
 		query_string = urlencode(params)
@@ -35,25 +35,30 @@ def redirect_params(url, params=None):
 
 # Views
 def member_list(request):
-	members = Member.objects.all()
+	"""Render member list in pages."""
+	members = Member.objects.order_by('callsign')
 	paginator = Paginator(members, 20)	# 20 members per page
 	
 	page = request.GET.get('page')
 	members=paginator.get_page(page)
-	return render(request, "manage_members/member_list.html", {'members': members})	
+	return render(request, "manage_members/member_list.html", 
+		{'members': members})	
 
 
 @login_required
 def member_profile(request, id):
+	"""Render member profile for logged in member."""
 	member = get_object_or_404(Member, pk=id)
 	if request.user.pk != member.user.pk:
 		return render(request, "manage_members/member_permission_denied.html")
 	
-	return render(request, "manage_members/member_profile.html", {'member': member})
+	return render(request, "manage_members/member_profile.html", 
+		{'member': member})
 
 	
 @login_required
 def member_update(request, id):
+	"""Allow member to update information in database."""
 	member = get_object_or_404(Member, pk=id)
 	if request.user.pk != member.user.pk:
 		return render(request, "manage_members/member_permission_denied.html")
@@ -63,10 +68,12 @@ def member_update(request, id):
 		member_form.save()
 		messages.success(request, 'Profile details updated.')
 		return redirect('member_profile', id=id)
-	return render(request, "manage_members/member_update_form.html", {'member': member, 'member_form': member_form})
+	return render(request, "manage_members/member_update_form.html", 
+		{'member': member, 'member_form': member_form})
 
 
 def new_member(request):
+	"""Allow new member to setup user information and account password."""
 	if request.method == 'POST':
 		member_form = MemberForm(request.POST)
 		user_form = UserForm(request.POST)
@@ -108,13 +115,18 @@ def new_member(request):
 			
 			return redirect_params('member_thanks', params)
 	else:
-		member_form = MemberForm(initial = {'expiration_date': date.today(), 'state': 'HI'})
+		member_form = MemberForm(initial = {
+			'expiration_date': date.today(), 
+			'state': 'HI',
+		})
 		user_form = UserForm()
 	
-	return render(request, "manage_members/member_new_form.html", {'member_form': member_form, 'user_form': user_form})
+	return render(request, "manage_members/member_new_form.html", 
+		{'member_form': member_form, 'user_form': user_form})
 
 
 def member_thanks(request):
+	"""Render message after submitting new member info."""
 	context = {
 		'name': request.GET.get('name'),
 	}
@@ -122,17 +134,18 @@ def member_thanks(request):
 
 
 def activate(request, uidb64, token):
-    try:
-        uid = force_text(urlsafe_base64_decode(uidb64))
-        user = User.objects.get(pk=uid)
-        print("User found")
-    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
-        user = None
-        print("User not found")
-    if user is not None and account_activation_token.check_token(user, token):
-        user.is_active = True
-        user.save()
-        # return redirect('home')
-        return render(request, "manage_members/member_activation_success.html")
-    else:
-        return render(request, "manage_members/member_activation_failed.html")
+	"""Activate member based on URL given on activation email."""
+	try:
+		uid = force_text(urlsafe_base64_decode(uidb64))
+		user = User.objects.get(pk=uid)
+		print("User found")
+	except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+		user = None
+		print("User not found")
+	if user is not None and account_activation_token.check_token(user, token):
+		user.is_active = True
+		user.save()
+		# return redirect('home')
+		return render(request, "manage_members/member_activation_success.html")
+	else:
+		return render(request, "manage_members/member_activation_failed.html")

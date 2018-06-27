@@ -26,6 +26,7 @@ LICENSE_TYPES = [
 	('E', 'Extra'),
 ]
 
+
 # Helper functions
 def update_user(sender, instance, created, **kwargs):
 	"""Updates username and user demographics when member model changes"""
@@ -94,7 +95,6 @@ class Member(models.Model):
 		else:
 			return "LN"
 
-	
 
 signals.post_save.connect(update_user, sender=Member)
 
