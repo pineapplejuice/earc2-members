@@ -23,20 +23,25 @@ def meetings(request):
 	"""Render meeting page with dates of upcoming meetings and 
 	map of meeting place.
 	"""	
-	next_meeting = Meeting.objects.filter(
-		date_time__gt=timezone.now()).order_by('date_time')[0]
-	upcoming_meetings = Meeting.objects.filter(
-		date_time__gt=timezone.now()).order_by('date_time')[1:3]
-		
-	meeting_place = next_meeting.meeting_place
-	query = {
-		'key': GOOGLE_MAPS_API_KEY,
-		'q': '{}, {}, {} {}'.format(meeting_place.address, meeting_place.city, 
-			meeting_place.state, meeting_place.zip_code),
-	}
+	
+	future_meetings = Meeting.objects.filter(
+		date_time__gt=timezone.now()).order_by('date_time')
+	next_meeting = future_meetings[0] if future_meetings.count() > 0 else None
+	upcoming_meetings = future_meetings[1:] if future_meetings.count() < 4 else future_meetings[1:4]
+	
+	if next_meeting:
+		meeting_place = next_meeting.meeting_place
+		print(meeting_place)
+		query = {
+			'key': GOOGLE_MAPS_API_KEY,
+			'q': '{}, {}, {} {}'.format(meeting_place.address, meeting_place.city, 
+				meeting_place.state, meeting_place.zip_code),
+		}
 
-	map_url = "https://www.google.com/maps/embed/v1/place?" + urlencode(query)
-	print(map_url)
+		map_url = "https://www.google.com/maps/embed/v1/place?" + urlencode(query)
+		print(map_url)
+	else:
+		map_url = None
 
 	context = {
 		'next_meeting': next_meeting,

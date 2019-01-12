@@ -23,7 +23,7 @@ LICENSE_TYPES = [
 	('T', 'Technician'),
 	('G', 'General'),
 	('A', 'Advanced'),
-	('E', 'Extra'),
+	('E', 'Amateur Extra'),
 ]
 
 
@@ -80,8 +80,11 @@ class Member(models.Model):
 		return d['latest_payment']
 	
 	def membership_expires(self):
-		d = self.duespayment_set.aggregate(latest_year=Max('membership_year'))
-		return datetime.date(d['latest_year'], 12, 31)
+		if self.duespayment_set.count() == 0:
+			return None
+		else:
+			d = self.duespayment_set.aggregate(latest_year=Max('membership_year'))
+			return datetime.date(d['latest_year'], 12, 31)
 	
 	def membership_status(self):
 		_today = datetime.date.today()

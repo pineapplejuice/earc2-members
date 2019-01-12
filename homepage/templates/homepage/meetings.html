@@ -7,6 +7,7 @@
 <h3>General Membership Meetings</h3>
 <p>EARC General Membership Meetings are held every month except during June (to encourage members to attend Field Day) and December (for the holiday season). We elect our officers for the upcoming year at the October meeting and have a holiday party in November.</p>
 
+{% if next_meeting %}
 <p>Our next General Membership Meeting will be <b>{{next_meeting.date_time | date:"l, F d, Y"}}</b> at <b>{{next_meeting.date_time | time:"f a"}}</b> at <b>{{next_meeting.meeting_place.venue_name }}</b>.</p>
 
 <address>
@@ -14,9 +15,14 @@
 	{{next_meeting.meeting_place.address}}<br />
 	{{next_meeting.meeting_place.city}}, {{next_meeting.meeting_place.state}} {{next_meeting.meeting_place.zip_code}}
 </address>
+{% else %}
+<p>Our next General Membership Meeting has yet to be determined. Please check back later.</p>
+{% endif %}
 
+{% if next_meeting_map_url %}
 <iframe width="600" height="450" frameborder="0" style="border:0" 
 	src="{{next_meeting_map_url}}" allowfullscreen></iframe>
+{% endif %}
 
 <p>Upcoming meetings:</p>
 <ul>

@@ -3,7 +3,9 @@ from fabric.api import env, local, run
 import random
 
 # URL to repo on github.com
-REPO_URL = 'https://github.com/pineapplejuice/superlists.git'
+
+# change earc2 to name of actual repository
+REPO_URL = 'https://github.com/pineapplejuice/earc2.git'
 
 def _create_directory_structure_if_necessary(site_folder):
 	for subfolder in ('database', 'public/static', 'virtualenv', 'source'):
@@ -19,7 +21,7 @@ def _get_latest_source(source_folder):
 
 def _update_settings(source_folder, site_name):
 	# Update path to settings.py if re-using for other projects
-	settings_path = source_folder + '/superlists/settings.py'
+	settings_path = source_folder + '/earc2/settings.py'
 	
 	# Sets debug and allowed hosts
 	sed(settings_path, "DEBUG = True", "DEBUG = False")
@@ -41,12 +43,18 @@ def _update_settings(source_folder, site_name):
 		
 	
 	# Generates new secret key
-	secret_key_file = source_folder + '/superlists/secret_key.py'
+	secret_key_file = source_folder + '/earc2/secret_key.py'
 	if not exists(secret_key_file):
 		chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
 		key = ''.join(random.SystemRandom().choice(chars) for _ in range(50))
 		append(secret_key_file, f'SECRET_KEY = "{key}"')
 	append(settings_path, '\nfrom .secret_key import SECRET_KEY')
+	
+	# Copy email config file
+	email_config_file = source_folder + '/earc2/gmail_config.py'
+	put(local_path = '../earc2/gmail_config.py',
+		remote_path = email_config_file)
+	
 
 def _update_virtualenv(source_folder):
 	virtualenv_folder = source_folder + '/../virtualenv'

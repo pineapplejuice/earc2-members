@@ -27,6 +27,7 @@ Checklist
 * In app settings.py file
 	* change DEBUG and TEMPLATE_DEBUG to False
 	* Add domain names to ALLOWED_HOSTS (with and without www)
+	* Upload email password files
 
 
 ##  Folder structure
@@ -40,3 +41,5 @@ Assume we have account at /home/username
 	|-- public
 	|-- virtualenv
 
+## Running fabric
+$ fab deploy:host=(username)@(hostname)
