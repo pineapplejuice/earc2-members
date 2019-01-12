@@ -35,6 +35,7 @@ urlpatterns = [
 		template_name='accounts/password_change_form.html'), name='password_change'),
 	url(r'^accounts/password_change/done/$', auth_views.PasswordChangeDoneView.as_view(
 		template_name='accounts/password_change_done.html'), name='password_change_done'),
+	url(r'^accounts/profile/$', member_views.redirect_to_profile),
 	url(r'^accounts/reset_password/$', auth_views.PasswordResetView.as_view(
 		template_name='accounts/password_reset_form.html'), name='password_reset'),
 	url(r'^accounts/reset_password/done/$', auth_views.PasswordResetDoneView.as_view(

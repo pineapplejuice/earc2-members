@@ -7,10 +7,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.urls import reverse
 
 
 from .forms import MemberForm, UserForm
@@ -44,6 +46,10 @@ def member_list(request):
 	return render(request, "manage_members/member_list.html", 
 		{'members': members})	
 
+@login_required
+def redirect_to_profile(request):
+	"""Redirect to user's profile"""
+	return redirect("member_profile", request.user.member.id)
 
 @login_required
 def member_profile(request, id):
@@ -79,19 +85,22 @@ def new_member(request):
 		user_form = UserForm(request.POST)
 		if member_form.is_valid() and user_form.is_valid():
 
+			# Save both forms without commiting yet
 			member = member_form.save(commit=False)
 			user = user_form.save(commit=False)
 			
+			# Create the name, email, and username fields from the member information
 			user.username = member.callsign.lower()
 			user.email = member.email_address
 			user.first_name = member.first_name
 			user.last_name = member.last_name
-			user.set_password(user.password)
-			user.is_active = False
-			user.save()
+			user.set_password(user.password)	# sets the password in hash
+			user.is_active = False		# user needs to activate first
+			user.save()					# save the user
 
+			# Link user to member record and save member record
 			member.user = User.objects.get(username = user.username)
-			member.save()
+			member.save()				
 			
 			# send confirmation email
 			current_site = get_current_site(request)

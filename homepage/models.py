@@ -1,6 +1,18 @@
 from django.db import models
+from datetime import timedelta
 
 # Create your models here.
+
+class Announcement(models.Model):
+	date_created = models.DateTimeField(auto_now_add=True)
+	title = models.CharField(max_length=50, blank=False)
+	text = models.TextField(blank=False)
+	
+	def expiration_date(self):
+		return self.date_created + timedelta(days=30)
+	
+
+
 class MeetingPlace(models.Model):
 	venue_name = models.CharField(max_length = 50)
 	address = models.CharField(max_length = 95)
