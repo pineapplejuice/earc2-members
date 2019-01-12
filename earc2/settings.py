@@ -128,8 +128,8 @@ STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, 'static'))
 # Known email issue: SMTPAuthenticationError with Gmail
 # Workaround: set "Allow less secure apps" in Gmail settings on account
 
+from .gmail_config import EMAIL_HOST_PASSWORD
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'earc-membership@pineapplejuice.net'
-EMAIL_HOST_PASSWORD = '9j4V@e6c^ryv'
 EMAIL_PORT = 587

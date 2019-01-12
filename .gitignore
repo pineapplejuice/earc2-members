@@ -3,3 +3,4 @@ geckodriver.log
 *.bak
 __pycache__
 *.pyc
+earc2/gmail_config.py
