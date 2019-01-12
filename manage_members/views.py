@@ -49,6 +49,7 @@ def member_list(request):
 @login_required
 def redirect_to_profile(request):
 	"""Redirect to user's profile"""
+	messages.success(request, 'You have successfully logged in.')
 	return redirect("member_profile", request.user.member.id)
 
 @login_required
