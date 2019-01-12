@@ -46,7 +46,9 @@
 			Lapsed more than 2 years - re-enroll as new <a href="btn btn-sm btn-primary" href="#">Pay dues now</a>
 			{% endif %}
 		</p>
+		{% if member.membership_expires %}
 		<p class="card-text">Membership expires: {{member.membership_expires}}</p>
+		{% endif %}
 	</div>
 </div>
 

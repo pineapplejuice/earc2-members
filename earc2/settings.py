@@ -125,6 +125,9 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, 'static'))
 
 
+# Known email issue: SMTPAuthenticationError with Gmail
+# Workaround: set "Allow less secure apps" in Gmail settings on account
+
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'earc-membership@pineapplejuice.net'
