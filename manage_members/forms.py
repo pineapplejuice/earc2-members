@@ -10,7 +10,7 @@ from .models import Member
 class MemberForm(ModelForm):
 	class Meta:
 		model = Member
-		fields = '__all__'
+		exclude = ['position',]
 		widgets = {
 			'expiration_date': SelectDateWidget(
 					years=list(range(date.today().year - 10, date.today().year + 11)),

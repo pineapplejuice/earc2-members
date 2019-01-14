@@ -26,6 +26,13 @@ LICENSE_TYPES = [
 	('E', 'Amateur Extra'),
 ]
 
+TITLES = [
+	('PR', 'President'),
+	('VP', 'Vice-President'),
+	('SE', 'Secretary'),
+	('TR', 'Treasurer'),
+	('DI', 'Director'),
+]
 
 # Helper functions
 def update_user(sender, instance, created, **kwargs):
@@ -65,6 +72,7 @@ class Member(models.Model):
 	need_new_badge = models.BooleanField(
 		verbose_name = "I need a new membership badge"
 	)
+	position = models.CharField(max_length=2, choices=TITLES, blank=True)
 	user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
 	
 	
@@ -74,6 +82,9 @@ class Member(models.Model):
 	def get_absolute_url(self):
 		from django.urls import reverse
 		return reverse('member_profile', args=[str(self.id)])
+		
+	def full_name(self):
+		return f"{self.first_name} {self.last_name}"
 		
 	def last_dues_payment(self):
 		d = self.duespayment_set.aggregate(latest_payment=Max('payment_date'))

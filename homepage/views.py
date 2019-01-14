@@ -5,6 +5,8 @@ from django.http import HttpResponse
 from django.utils import timezone
 
 from .models import Meeting, MeetingPlace, Event
+from manage_members.models import Member
+
 
 # Create your views here.
 
@@ -18,6 +20,26 @@ def home_page(request):
 def about(request):
 	"""Render about static page."""
 	return render(request, 'homepage/about.html')
+
+def officers(request):
+	"""Render officers page (pulls members with specific titles)."""
+	
+	president = Member.objects.get(position='PR')
+	vice_pres = Member.objects.get(position='VP')
+	secretary = Member.objects.get(position='SE')
+	treasurer = Member.objects.get(position='TR')
+	directors = Member.objects.filter(position='DI')
+	
+	context = {
+		'president': president,
+		'vice_pres': vice_pres,
+		'secretary': secretary,
+		'treasurer': treasurer,
+		'directors': directors,
+	}
+	
+	return render(request, 'homepage/officers.html', context)
+	
 
 def meetings(request):
 	"""Render meeting page with dates of upcoming meetings and 
