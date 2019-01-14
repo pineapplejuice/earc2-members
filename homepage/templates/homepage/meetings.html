@@ -3,12 +3,13 @@
 {% block browsertitle %}EARC - Meetings{% endblock %}
 
 {% block content %}
-<h2>Meetings</h2>
-<h3>General Membership Meetings</h3>
+<h2 class="mb-3">Meetings</h2>
+<h4>General Membership Meetings</h4>
 <p>EARC General Membership Meetings are held every month except during June (to encourage members to attend Field Day) and December (for the holiday season). We elect our officers for the upcoming year at the October meeting and have a holiday party in November.</p>
 
 {% if next_meeting %}
 <p>Our next General Membership Meeting will be <b>{{next_meeting.date_time | date:"l, F d, Y"}}</b> at <b>{{next_meeting.date_time | time:"f a"}}</b> at <b>{{next_meeting.meeting_place.venue_name }}</b>.</p>
+<p>Talk-in frequencies are <b>146.880(-)</b> primary, and <b>146.520</b> backup.</p>
 
 <address>
 	<strong>{{next_meeting.meeting_place.venue_name }}</strong><br />

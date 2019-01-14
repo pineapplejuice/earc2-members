@@ -90,4 +90,10 @@ def deploy():
 	_update_database(source_folder)
 	_touch_restart_txt(site_folder)
 
+def devdb_to_test():
+	site_folder = f'/home/{env.user}/{env.host}'
+	source_folder = site_folder + '/source'
+	put(local_path = '../../database/db.sqlite3',
+		remote_path = site_folder + '/database/db.sqlite3')
+	_touch_restart_txt(site_folder)
 

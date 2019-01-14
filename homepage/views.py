@@ -46,10 +46,16 @@ def meetings(request):
 	map of meeting place.
 	"""	
 	
+	# future_meetings: pulls all meetings today or after
 	future_meetings = Meeting.objects.filter(
-		date_time__gt=timezone.now()).order_by('date_time')
+		date_time__gte=timezone.now()).order_by('date_time')
+	
+	# next meeting is the first future meeting
 	next_meeting = future_meetings[0] if future_meetings.count() > 0 else None
+	
+	# pull up to 3 more upcoming meetings
 	upcoming_meetings = future_meetings[1:] if future_meetings.count() < 4 else future_meetings[1:4]
+	
 	
 	if next_meeting:
 		meeting_place = next_meeting.meeting_place
