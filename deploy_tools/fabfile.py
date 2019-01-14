@@ -74,7 +74,7 @@ def _update_database(source_folder):
 		' && ../virtualenv/bin/python manage.py migrate --noinput'
 	)
 
-def touch_restart_txt(site_folder):
+def _touch_restart_txt(site_folder):
 	run(
 		f'touch {site_folder}/tmp/restart.txt'
 	)
@@ -88,4 +88,6 @@ def deploy():
 	_update_virtualenv(source_folder)
 	_update_static_files(source_folder)
 	_update_database(source_folder)
+	_touch_restart_txt(site_folder)
+
 
