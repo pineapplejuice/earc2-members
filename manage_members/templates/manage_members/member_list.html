@@ -5,21 +5,25 @@
 {% block content %}
 <h2>Member List</h2>
 
-<table class="table-sm">
-	<tr>
-		<th>Callsign</th>
-		<th>First Name</th>
-		<th>Last Name</th>
-		<th>Community</th>
-	</tr>
-	{% for member in members %}
-	<tr>
-		<td>{{member.callsign}}</td>
-		<td>{{member.first_name}}</td>
-		<td>{{member.last_name}}</td>
-		<td>{{member.city}}, {{member.state}}</td>
-	</tr>
-	{% endfor %}
+<table class="table table-sm table-striped">
+	<thead class="thead-light">
+		<tr>
+			<th scope="col">Callsign</th>
+			<th scope="col">First Name</th>
+			<th scope="col">Last Name</th>
+			<th scope="col">Community</th>
+		</tr>		
+	</thead>
+	<tbody>
+		{% for member in members %}
+		<tr>
+			<td>{{member.callsign}}</td>
+			<td>{{member.first_name}}</td>
+			<td>{{member.last_name}}</td>
+			<td>{{member.city}}, {{member.state}}</td>
+		</tr>
+		{% endfor %}		
+	</tbody>
 </table>
 
 <div class="pagination">
