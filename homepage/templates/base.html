@@ -33,6 +33,7 @@
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 							<a class="dropdown-item {% if request.resolver_match.url_name == 'about' %}active{%endif%}" href="{% url 'about' %}">About us {% if request.resolver_match.url_name == 'about' %}<span class="sr-only">(current)</span>{% endif %}</a>
+							<a class="dropdown-item {% if request.resolver_match.url_name == 'officers' %}active{%endif%}" href="{% url 'officers' %}">Officers {% if request.resolver_match.url_name == 'officers' %}<span class="sr-only">(current)</span>{% endif %}</a>
 							<a class="dropdown-item {% if request.resolver_match.url_name == 'meetings' %}active{%endif%}" href="{% url 'meetings' %}">Meetings {% if request.resolver_match.url_name == 'meetings' %}<span class="sr-only">(current)</span>{% endif %}</a>
 							<a class="dropdown-item" href="#">FAQ</a>
 							<a class="dropdown-item" href="#">Contact us</a>
