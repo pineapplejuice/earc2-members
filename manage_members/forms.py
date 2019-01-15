@@ -7,6 +7,16 @@ from django.forms import (
 from django.contrib.auth.models import User
 from .models import Member
 
+## Constants ##
+
+# Looks for (1 or 2 alphanumeric)(one digit)(up to three letters)
+CALLSIGN_VALIDATOR = r'^([A-Z0-9]{1,2})(\d)([A-Z]{1,3})$'
+
+# Default list of choices for Yes or No
+YES_NO_DROPDOWN = [(True, 'Yes'), (False, 'No')]
+
+## Models ##
+
 class MemberForm(ModelForm):
 	class Meta:
 		model = Member
@@ -15,17 +25,17 @@ class MemberForm(ModelForm):
 			'expiration_date': SelectDateWidget(
 					years=list(range(date.today().year - 10, date.today().year + 11)),
 				),
-			'mailing_list': Select(choices=[(True, 'Yes'), (False, 'No')]),
-			'wd_online': Select(choices=[(True, 'Yes'), (False, 'No')]),
-			'arrl_member': Select(choices=[(True, 'Yes'), (False, 'No')]),
-			'need_new_badge': Select(choices=[(True, 'Yes'), (False, 'No')]),
+			'mailing_list': Select(choices=YES_NO_DROPDOWN),
+			'wd_online': Select(choices=YES_NO_DROPDOWN),
+			'arrl_member': Select(choices=YES_NO_DROPDOWN),
+			'need_new_badge': Select(choices=YES_NO_DROPDOWN),
 			'user': HiddenInput(),
 		}
 	
 	
 	def clean_callsign(self):
 		data = self.cleaned_data['callsign'].upper()
-		valid_call_regex = re.compile(r'^([A-Z0-9]{1,2})(\d)([A-Z]{1,3})$')
+		valid_call_regex = re.compile(CALLSIGN_VALIDATOR)
 		if not valid_call_regex.match(data):
 			raise ValidationError('Not a valid callsign')
 		return data
