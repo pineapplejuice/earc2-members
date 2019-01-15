@@ -25,7 +25,7 @@ urlpatterns = [
     url(r'^$', homepage_views.home_page, name="home_page"),
     url(r'^robots\.txt$', TemplateView.as_view(
     	template_name='robots.txt', content_type='text/plain')),
-    url(r'^admin/', admin.site.urls),
+    url(r'^administr8/', admin.site.urls),
     url(r'^homepage/', include('homepage.urls')),
     url(r'^member/', include('manage_members.urls')),
     
