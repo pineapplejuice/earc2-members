@@ -4,20 +4,20 @@ from urllib.parse import urlencode
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
-from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.urls import reverse
 
+from helpers.utils import send_email_from_template
 
 from .forms import MemberForm, UserForm
 from .models import Member
-from django.contrib.auth.models import User
 from .tokens import account_activation_token
 
 
@@ -29,10 +29,6 @@ def redirect_params(url, params=None):
 		query_string = urlencode(params)
 		response['Location'] += '?' + query_string
 	return response
-
-# Email
-
-
 
 
 # Views
@@ -104,20 +100,19 @@ def new_member(request):
 			member.save()				
 			
 			# send confirmation email
-			current_site = get_current_site(request)
-			mail_subject = "Activate your EARC member website account"
-			
-			message = render_to_string('manage_members/acc_active_email.html', {
-				'user': user,
-				'member': member,
-				'domain': current_site.domain,
-				'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
-				'token': account_activation_token.make_token(user),
-			})
-			to_email = member.email_address
-			email = EmailMessage(mail_subject, message, to=[to_email])
-			email.send()
-			
+			current_site = get_current_site(request) 
+			send_email_from_template(
+				subject="Activate your EARC member website account",
+				message_template = 'manage_members/acc_active_email.html',
+				context = {
+					'user': user,
+					'member': member,
+					'domain': current_site.domain,
+					'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
+					'token': account_activation_token.make_token(user),
+				},
+				recipients = [member.email_address],
+			)			
 			
 			params = {
 				'name': member_form.cleaned_data['first_name'],

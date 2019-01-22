@@ -8,16 +8,7 @@ import datetime
 
 # Dropdown lists
 
-DUES_TYPE = [
-	('N', 'New member'),
-	('R', 'Renewal'),
-]
 
-PAYMENT_METHOD = [
-	('CASH', 'Cash'),
-	('CHK', 'Check'),
-	('PP', 'PayPal'),
-]
 
 LICENSE_TYPES = [
 	('T', 'Technician'),
@@ -113,12 +104,5 @@ class Member(models.Model):
 signals.post_save.connect(update_user, sender=Member)
 
 
-class DuesPayment(models.Model):
-	payment_date = models.DateField()
-	membership_year = models.IntegerField()
-	member = models.ForeignKey(Member, on_delete=models.CASCADE)
-	dues_type = models.CharField(max_length=1, choices=DUES_TYPE)
-	payment_method = models.CharField(max_length=4, choices=PAYMENT_METHOD)
-	ref_number = models.CharField(max_length=50, blank=True)
-	amount = models.DecimalField(max_digits=5, decimal_places=2)
+
 	
