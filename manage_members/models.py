@@ -4,11 +4,12 @@ from django.utils.timezone import now
 from django.contrib.auth.models import User
 import datetime
 
+
 # Create your models here.
 
 # Dropdown lists
 
-
+from helpers.models import DUES_TYPE
 
 LICENSE_TYPES = [
 	('T', 'Technician'),
@@ -29,12 +30,13 @@ TITLES = [
 def update_user(sender, instance, created, **kwargs):
 	"""Updates username and user demographics when member model changes"""
 	if not created:
-		user = instance.user
-		user.username = instance.callsign.lower()
-		user.email = instance.email_address
-		user.first_name = instance.first_name
-		user.last_name = instance.last_name
-		user.save()
+		if instance.user:			
+			user = instance.user
+			user.username = instance.callsign.lower()
+			user.email = instance.email_address
+			user.first_name = instance.first_name
+			user.last_name = instance.last_name
+			user.save()
 
 
 class Member(models.Model):
@@ -92,13 +94,28 @@ class Member(models.Model):
 		_today = datetime.date.today()
 		
 		if self.duespayment_set.count() == 0:
-			return "P"
-		elif self.membership_expires() > _today:
-			return "C"
-		elif membership_expires().year > _today.year - 3:
-			return "LR"
+			return "P"	# Prospective member - no dues yet
+		elif self.membership_expires() >= _today:
+			return "C"  # Current member
+		elif membership_expires().year > _today.year - 1:
+			return "LR" # Lapsed member, can renew
 		else:
-			return "LN"
+			return "LN" # Lapsed member over a year, must join new
+
+	def member_dues_type(self):
+		if self.membership_status() in ['P', 'LN']:
+			return 'NEWQ' + str((datetime.date.today().month - 1) // 3 + 1)
+		else:
+			return 'RENEW'
+	
+	def member_dues_description(self):
+		return dict(DUES_TYPE)[self.member_dues_type()]
+	
+	def member_dues_amount(self):
+		if self.membership_status() in ['C', 'LR']:
+			return 20
+		else:
+			return 5 * (4 - (datetime.date.today().month - 1) // 3)
 
 
 signals.post_save.connect(update_user, sender=Member)

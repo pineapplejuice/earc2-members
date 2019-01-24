@@ -8,10 +8,7 @@ from manage_members.models import Member
 # Create your models here.
 
 # Dropdown lists
-DUES_TYPE = [
-	('N', 'New member'),
-	('R', 'Renewal'),
-]
+from helpers.models import DUES_TYPE
 
 PAYMENT_METHOD = [
 	('CASH', 'Cash'),
@@ -25,7 +22,8 @@ class DuesPayment(models.Model):
 	payment_date = models.DateField()
 	membership_year = models.IntegerField()
 	member = models.ForeignKey(Member, on_delete=models.CASCADE)
-	dues_type = models.CharField(max_length=1, choices=DUES_TYPE)
+	dues_type = models.CharField(max_length=5, choices=DUES_TYPE)
 	payment_method = models.CharField(max_length=4, choices=PAYMENT_METHOD)
 	ref_number = models.CharField(max_length=50, blank=True)
 	amount = models.DecimalField(max_digits=5, decimal_places=2)
+

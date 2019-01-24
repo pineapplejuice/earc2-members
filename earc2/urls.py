@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^administr8/', admin.site.urls),
     url(r'^homepage/', include('homepage.urls')),
     url(r'^member/', include('manage_members.urls')),
+    url(r'^payment/', include('payments.urls')),
     
     url(r'^accounts/login/$', auth_views.LoginView.as_view(
 		template_name='accounts/login.html'), name='site_login'),
