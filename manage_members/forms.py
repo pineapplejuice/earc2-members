@@ -22,9 +22,7 @@ class MemberForm(ModelForm):
 		model = Member
 		exclude = ['position',]
 		widgets = {
-			'expiration_date': SelectDateWidget(
-					years=list(range(date.today().year - 10, date.today().year + 11)),
-				),
+			'expiration_date': HiddenInput(),
 			'mailing_list': Select(choices=YES_NO_DROPDOWN),
 			'wd_online': Select(choices=YES_NO_DROPDOWN),
 			'arrl_member': Select(choices=YES_NO_DROPDOWN),

@@ -41,9 +41,10 @@ def update_user(sender, instance, created, **kwargs):
 
 class Member(models.Model):
 	callsign = models.CharField(max_length=6)
-	license_type = models.CharField(max_length=1, choices=LICENSE_TYPES)
+	license_type = models.CharField(max_length=1, choices=LICENSE_TYPES, blank=True)
 	expiration_date = models.DateField(
 		verbose_name = "My license expires",
+		blank=True,
 	)
 	first_name = models.CharField(max_length=50)
 	last_name = models.CharField(max_length=50)

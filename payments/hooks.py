@@ -52,6 +52,8 @@ def show_me_the_money(sender, **kwargs):
 			)
 			new_payment.save()
 			
+			
+			
 	else:
 		return
 

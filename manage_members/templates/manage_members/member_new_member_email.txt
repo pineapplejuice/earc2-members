@@ -1,0 +1,8 @@
+{% autoescape off %}
+Hi {{member.first_name}}, {{member.callsign}},
+
+Welcome to the Emergency Amateur Radio Club!  We acknowledge your membership dues of XXXX and welcome you to the
+
+Mahalo and 73,
+Emergency Amateur Radio Club
+{% endautoescape %}

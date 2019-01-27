@@ -1,4 +1,7 @@
-from datetime import date
+import json
+import requests
+
+from datetime import date, datetime
 from urllib.parse import urlencode
 
 from django.contrib import messages
@@ -86,6 +89,16 @@ def new_member(request):
 			member = member_form.save(commit=False)
 			user = user_form.save(commit=False)
 			
+			uls_url = "http://data.fcc.gov/api/license-view/basicSearch/getLicenses?format=json&searchValue="
+			try:
+				res = requests.get(uls_url + member.callsign)
+				res_unicode = res.content.decode('utf-8')
+				res_json = json.loads(res_unicode)
+				member.expiration_date = datetime.strptime(res_json['Licenses']['License'][0]['expiredDate'], '%m/%d/%Y').date()
+			except ConnectionError:
+				pass
+
+			
 			# Create the name, email, and username fields from the member information
 			user.username = member.callsign.lower()
 			user.email = member.email_address
@@ -103,7 +116,7 @@ def new_member(request):
 			current_site = get_current_site(request) 
 			send_email_from_template(
 				subject="Activate your EARC member website account",
-				message_template = 'manage_members/acc_active_email.html',
+				message_template = 'manage_members/acc_active_email.txt',
 				context = {
 					'user': user,
 					'member': member,
