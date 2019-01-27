@@ -91,13 +91,15 @@ class Member(models.Model):
 			return datetime.date(d['latest_year'], 12, 31)
 	
 	def membership_status(self):
+		
+		# Today's date
 		_today = datetime.date.today()
 		
 		if self.duespayment_set.count() == 0:
 			return "P"	# Prospective member - no dues yet
 		elif self.membership_expires() >= _today:
 			return "C"  # Current member
-		elif membership_expires().year > _today.year - 1:
+		elif self.membership_expires().year > _today.year - 1:
 			return "LR" # Lapsed member, can renew
 		else:
 			return "LN" # Lapsed member over a year, must join new
@@ -117,6 +119,13 @@ class Member(models.Model):
 		else:
 			return 5 * (4 - (datetime.date.today().month - 1) // 3)
 
+	def member_dues_year(self):
+		# If current, renew for the year after expiration. If new or lapsed, renew for this year.
+		if self.membership_status() == 'C':
+			return self.membership_expires().year + 1
+		else:
+			return datetime.date.today().year
+			
 
 signals.post_save.connect(update_user, sender=Member)
 

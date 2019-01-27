@@ -18,11 +18,11 @@
 	{% if member.membership_status == 'P' %}
 	<p>You have not yet paid dues. You can join the EARC as a new member for 
 	{% elif member.membership_status == 'C' %}
-	<p>Your current membership expires DATE. You can renew for the following year for 
+	<p>Your current membership expires {{ member.membership_expires }}. You can renew for the following year for 
 	{% elif member.membership_status == 'LR' %}
-	<p>Your membership expired DATE. You can renew for this year for 
+	<p>Your membership expired {{ member.membership_expires }}. You can renew for this year for 
 	{% elif member.membership_status == 'LN' %}
-	<p>Your membership expired DATE. You can rejoin the EARC for 
+	<p>Your membership expired {{ member.membership_expires }}. You can rejoin the EARC for 
 	{% endif %}
 	${{ member.member_dues_amount|floatformat:2 }}.</p>
 	

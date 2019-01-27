@@ -18,17 +18,22 @@ def pay_dues_paypal(request, id):
 	if request.user.pk != member.user.pk:
 		return render(request, "manage_members/member_permission_denied.html")
 	
+	# Pass member year and id to Paypal to track payment
+	custom_string = str(member.pk) + "-" + str(member.member_dues_year())
+	
 	# What you want the button to do
 	paypal_dict = {
 		'business': paypal_email_test_or_prod(),
 		'amount': f"{member.member_dues_amount():.2f}",
 		'item_name': member.member_dues_description(),
 		'item_number': member.member_dues_type(),
-		'custom': member.callsign,
+		'custom': custom_string,
 #		"notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
+		"notify_url": "https://2c7171ab.ngrok.io/paypal/",
 		"return": request.build_absolute_uri(reverse('paypal_completed')), 
 		"cancel_return": request.build_absolute_uri(reverse('paypal_cancelled')),
 	}
+	
 	
 	form = PayPalPaymentsForm(initial = paypal_dict)
 	context = {
