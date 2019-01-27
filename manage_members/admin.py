@@ -6,16 +6,12 @@ from .models import Member
 
 # Register your models here.
 
-#class DuesPaymentInline(admin.StackedInline):
-#	model = DuesPayment
-
 class MemberAdmin(admin.ModelAdmin):
 	def full_name(self, obj):
 		return f"{obj.first_name} {obj.last_name}"
 	full_name.short_description = "Full name"
 	
 	list_display = ('callsign', 'full_name', 'position')
-#	inlines = (DuesPaymentInline, )
 	
 class MemberInline(admin.StackedInline):
     model = Member
