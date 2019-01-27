@@ -5,8 +5,10 @@ from django.urls import reverse
 
 from paypal.standard.forms import PayPalPaymentsForm
 
-from .paypal_helpers import paypal_email_test_or_prod
+from earc2.settings import DEBUG
+from .paypal_helpers import paypal_email_test_or_prod, get_ngrok_url
 from manage_members.models import Member
+
 
 # Create your views here.
 
@@ -28,8 +30,10 @@ def pay_dues_paypal(request, id):
 		'item_name': member.member_dues_description(),
 		'item_number': member.member_dues_type(),
 		'custom': custom_string,
-#		"notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
-		"notify_url": "https://2c7171ab.ngrok.io/paypal/",
+		"notify_url": (
+			request.build_absolute_uri(reverse('paypal-ipn')) if not DEBUG
+			else get_ngrok_url() + reverse('paypal-ipn')
+		),
 		"return": request.build_absolute_uri(reverse('paypal_completed')), 
 		"cancel_return": request.build_absolute_uri(reverse('paypal_cancelled')),
 	}
