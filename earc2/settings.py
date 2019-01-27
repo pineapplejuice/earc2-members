@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'paypal.standard.ipn',
     'manage_members',
     'payments',
     'homepage',
@@ -132,3 +133,7 @@ STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, '../public/static'))
 # Workaround: set "Allow less secure apps" in Gmail settings on account
 
 from .gmail_config import *
+
+
+# django-paypal settings
+PAYPAL_TEST = True

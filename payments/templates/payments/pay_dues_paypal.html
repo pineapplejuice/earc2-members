@@ -26,64 +26,8 @@
 	{% endif %}
 	${{ member.member_dues_amount|floatformat:2 }}.</p>
 	
-	<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+	{{form.render}}
 
-	<div id="paypal-button-container"></div>
-
-	<div id="thanks" style="display:none;">
-	    <p>Thanks for your dues payment! Your member status will be updated shortly.</p>
-	    <p><a href="{% url 'member_profile' user.member.id %}">Return to member profile</a></p>
-	</div>
-
-	<script>
-	    paypal.Button.render({
-
-	        env: 'sandbox', // sandbox | production
-
-	        client: {
-	            sandbox:    'ARUURUAwV5Cgbzty9Y2giK_TgFOcmgFg9lelJsUSAh1r3s8pdacNTU54sW0WqxWLqqjW6eFgWeqW5zxw',
-	            production: 'AdnbGQXaAlCAhpBvvkV4F9u8lylrTZFAXzwJrKTtSQqhSQiZRoDlbVIJ3JGEczdwz6FUuL31c9h1n1uJ'
-	        },
-
-	        payment: function(data, actions) {
-	            return actions.payment.create({
-	                payment: {
-	                    transactions: [
-	                        {
-	                            amount: { total: '{{ member.member_dues_amount|floatformat:2 }}', currency: 'USD' },
-	                            item_list: {
-	                                items: [
-	                                    {
-	                                        sku: '{{ member.member_dues_type }}',
-	                                        name: '{{ member.member_dues_description }}',
-	                                        price: '{{ member.member_dues_amount|floatformat:2 }}',
-	                                        currency: 'USD',
-	                                        quantity: '1'
-	                                    }
-	                                ]
-	                            }
-	                        }
-	                    ]
-	                }
-	            });
-	        },
-
-	        // Wait for the payment to be authorized by the customer
-
-	        onAuthorize: function(data, actions) {
-
-	            // Execute the payment
-
-	                return actions.payment.execute().then(function() {
-
-	                    // Show a thank-you note
-
-	                    document.querySelector('#paypal-button-container').style.display = 'none';
-	                    document.querySelector('#thanks').style.display = 'block';
-	                });
-	        }
-	    }, '#paypal-button-container');
-
-	</script>
-
+	<p>(This button will take you to the PayPal site. You will return to this site after the transaction is completed.)</p>
+	
 {% endblock %}
