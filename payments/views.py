@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
@@ -5,7 +6,6 @@ from django.urls import reverse
 
 from paypal.standard.forms import PayPalPaymentsForm
 
-from earc2.settings import DEBUG
 from .paypal_helpers import paypal_email_test_or_prod, get_ngrok_url
 from manage_members.models import Member
 
@@ -31,7 +31,7 @@ def pay_dues_paypal(request, id):
 		'item_number': member.member_dues_type(),
 		'custom': custom_string,
 		"notify_url": (
-			request.build_absolute_uri(reverse('paypal-ipn')) if not DEBUG
+			request.build_absolute_uri(reverse('paypal-ipn')) if not settings.DEBUG
 			else get_ngrok_url() + reverse('paypal-ipn')
 		),
 		"return": request.build_absolute_uri(reverse('paypal_completed')), 
@@ -57,5 +57,5 @@ def paypal_cancelled(request):
 @login_required
 def paypal_completed(request):
 		
-	messages.success(request, "Your PayPal payment was successful. It may take a short while for your membership status to be updated.")
+	messages.success(request, "Your PayPal payment was successful. It may take a few minutes for your membership status to be updated.")
 	return redirect("member_profile", request.user.member.id)

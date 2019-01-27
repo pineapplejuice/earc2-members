@@ -45,7 +45,8 @@
 			{% elif member.membership_status == 'LN' %}
 			Lapsed more than one year - re-enroll as new
 			{% endif %}
-			<a class="btn btn-sm btn-primary" href="{% url 'pay_dues_paypal' member.id %}">Pay dues now</a>
+			<a class="btn btn-sm btn-primary" href="{% url 'pay_dues_paypal' member.id %}">
+				Pay {% if member.membership_status == 'C' %}{{member.membership_expires.year|add:"1"}}{% endif %} dues now</a>
 		</p>
 		{% if member.membership_expires %}
 		<p class="card-text">Membership expires: {{member.membership_expires}}</p>
