@@ -25,12 +25,19 @@ urlpatterns = [
     url(r'^$', homepage_views.home_page, name="home_page"),
     url(r'^robots\.txt$', TemplateView.as_view(
     	template_name='robots.txt', content_type='text/plain')),
+    	
+    # Admin site
     url(r'^administr8/', admin.site.urls),
+    
+    # Sub-directories redirect to child urls.py files
     url(r'^homepage/', include('homepage.urls')),
     url(r'^member/', include('manage_members.urls')),
     url(r'^payment/', include('payments.urls')),
+    
+    # Paypal listener (in django-paypal package)
     url(r'^paypal/', include('paypal.standard.ipn.urls')),
     
+    # Auth view urls
     url(r'^accounts/login/$', auth_views.LoginView.as_view(
 		template_name='accounts/login.html'), name='site_login'),
 	url(r'^accounts/logout/$', auth_views.LogoutView.as_view(

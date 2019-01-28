@@ -42,7 +42,8 @@ def officers(request):
 	
 
 def meetings(request):
-	"""Render meeting page with dates of upcoming meetings and 
+	"""
+	Render meeting page with dates of next four upcoming meetings and 
 	map of meeting place.
 	"""	
 	
@@ -80,7 +81,10 @@ def meetings(request):
 	return render(request, 'homepage/meetings.html', context)
 
 def events(request):
-	"""Render upcoming event list."""
+	"""
+	Render upcoming event list.
+	"""
+	
 	future_events = Event.objects.filter(start_date_time__gt=timezone.now())
 	
 	context = {
@@ -91,6 +95,9 @@ def events(request):
 
 
 def nets(request):
-	"""Render net list."""
+	"""
+	Render net list.
+	"""
+	
 	return render(request, 'homepage/nets.html')
 	

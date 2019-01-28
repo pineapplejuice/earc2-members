@@ -14,6 +14,10 @@ def paypal_email_test_or_prod():
 		return 'treasurer@earchi.org'
 		
 def get_ngrok_url():
+	"""
+	Returns the public URL for ngrok tunnel to localhost:8000 on dev machine for testing 
+	purposes. Requires that ngrok be active to work properly.
+	"""
 	url = "http://localhost:4040/api/tunnels"
 	try:
 		res = requests.get(url)

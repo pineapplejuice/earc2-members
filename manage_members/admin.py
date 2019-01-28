@@ -12,14 +12,9 @@ class MemberAdmin(admin.ModelAdmin):
 	full_name.short_description = "Full name"
 	
 	list_display = ('callsign', 'full_name', 'position')
-	
-class MemberInline(admin.StackedInline):
-    model = Member
-    can_delete = False
-    verbose_name_plural = 'member'
 
 class UserAdmin(BaseUserAdmin):
-    inlines = (MemberInline, )
+    pass
     
 
 	
