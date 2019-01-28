@@ -48,7 +48,9 @@ urlpatterns = [
 		template_name='accounts/password_change_done.html'), name='password_change_done'),
 	url(r'^accounts/profile/$', member_views.redirect_to_profile),
 	url(r'^accounts/reset_password/$', auth_views.PasswordResetView.as_view(
-		template_name='accounts/password_reset_form.html'), name='password_reset'),
+		template_name='accounts/password_reset_form.html',
+		email_template_name = 'accounts/password_reset_email.html',
+		subject_template_name = 'accounts/password_reset_subject.txt'), name='password_reset'),
 	url(r'^accounts/reset_password/done/$', auth_views.PasswordResetDoneView.as_view(
 		template_name='accounts/password_reset_done.html'), name='password_reset_done'),
 	url(r'^accounts/reset_password/confirm/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})',
