@@ -1,0 +1,1 @@
+Thanks for renewing your membership, {{member.first_name}} {{member.callsign}}!

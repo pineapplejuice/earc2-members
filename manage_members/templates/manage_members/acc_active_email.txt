@@ -1,5 +1,5 @@
 {% autoescape off %}
-Hi {{member.first_name}}, {{member.callsign}},
+Hi {{member.first_name}} {{member.callsign}},
 
 Thanks for your interest in the Emergency Amateur Radio Club. We have created a member account for you on the website with your callsign (lower case) as the username, and the password that you set during the registration process.
 
@@ -10,5 +10,6 @@ http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
 If you have any questions please let us know.
 
 Mahalo and 73,
+Webmaster Team
 Emergency Amateur Radio Club
 {% endautoescape %}

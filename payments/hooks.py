@@ -5,6 +5,7 @@ from paypal.standard.ipn.signals import valid_ipn_received
 
 from .paypal_helpers import paypal_email_test_or_prod
 
+from helpers.utils import send_email_from_template
 from payments.models import DuesPayment
 from manage_members.models import Member
 
@@ -38,20 +39,38 @@ def show_me_the_money(sender, **kwargs):
 			parse_custom = ipn_obj.custom.split('-')
 			print(parse_custom)
 			
-			member_id = int(parse_custom[0])
+			member = Member.objects.get(pk=int(parse_custom[0]))
 			membership_year = int(parse_custom[1])
+			amount = ipn_obj.mc_gross
+			payment_date = ipn_obj.payment_date
 			
 			new_payment = DuesPayment(
-				payment_date = ipn_obj.payment_date,
+				payment_date = payment_date,
 				membership_year = membership_year,
-				member = Member.objects.get(pk=member_id),
+				member = member,
 				dues_type = ipn_obj.item_number,
 				payment_method = 'PP',
 				ref_number = ipn_obj.txn_id,
-				amount = ipn_obj.mc_gross,
+				amount = amount,
 			)
 			new_payment.save()
 			
+			send_email_from_template(
+				subject_template = (
+					'payments/subject_new_member.txt' if ipn_obj.item_number[:3] == 'NEW'
+						else 'payments/subject_renewal.txt'),
+				message_template = (
+					'payments/email_new_member.txt' if ipn_obj.item_number[:3] == 'NEW'
+						else 'payments/email_renewal.txt'),
+				context = {
+					'member': member,
+					'amount': amount,
+					'payment_date': payment_date,
+				},
+				recipients = [member.email_address],
+				cc = ['treasurer@earchi.org']
+			)
+				
 			
 			
 	else:

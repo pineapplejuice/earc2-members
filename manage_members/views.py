@@ -115,7 +115,7 @@ def new_member(request):
 			# send confirmation email
 			current_site = get_current_site(request) 
 			send_email_from_template(
-				subject="Activate your EARC member website account",
+				subject_template='manage_members/acc_active_subject.txt',
 				message_template = 'manage_members/acc_active_email.txt',
 				context = {
 					'user': user,

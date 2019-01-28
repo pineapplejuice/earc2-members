@@ -1,0 +1,18 @@
+Dear {{member.first_name}} {{member.callsign}},
+
+Thank you for renewing your membership in the Emergency Amateur Radio Club!  On behalf of the EARC board of directors, I thank you for your continued support of the EARC. This email will serve as your receipt for renewal dues of ${{amount}}, received {{payment_date}} via PayPal.  Your membership is valid until {{member.membership_expires}}.
+
+Your dues support our club activities as well as our extensive linked repeater network, so we are grateful for your support.
+
+As a reminder, our club meets on the third Tuesday of each month at 7:00 p.m., at Fleet Reserve Association Branch 49, 891 Valkenburgh Street, Honolulu, Hawaii (at the Ewa end of the H-1 airport viaduct). We hold nets on most nights on the linked EARC/DEM Repeater System, and we welcome new hams and old-timers alike. We also hold social events throughout the year, including ARRL Field Day and Mini Field Days through the year. You can find more information on our upcoming club activities at our club website, www.earchi.org. 
+
+If you have any questions about your membership, please feel free to contact me. 
+
+Mahalo and 73,
+
+Keith K. Higa, WH7GG
+Treasurer
+Emergency Amateur Radio Club
+keith.higa@gmail.com
+
+
