@@ -51,6 +51,28 @@
 		{% if member.membership_expires %}
 		<p class="card-text">Membership expires: {{member.membership_expires}}</p>
 		{% endif %}
+		
+		<table class="table table-sm table-striped">
+			<thead class="thead-light">
+				<tr>
+					<th>Date received</th>
+					<th>Membership year</th>
+					<th>Payment method</th>
+					<th>Amount</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for payment in member.duespayment_set.all %}
+				<tr>
+					<td>{{ payment.payment_date }}</td>
+					<td>{{ payment.membership_year }}</td>
+					<td>{{ payment.payment_method }}</td>
+					<td>{{ payment.amount }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		
 	</div>
 </div>
 
