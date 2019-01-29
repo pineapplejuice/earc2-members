@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Announcement, Meeting, MeetingPlace, Event
+from .models import Announcement, Meeting, MeetingPlace, Event, LinkGroup, Link
 
 # Register your models here.
 
@@ -24,8 +24,18 @@ class MeetingAdmin(admin.ModelAdmin):
 class EventAdmin(admin.ModelAdmin):
 	pass
 
+class LinkGroupAdmin(admin.ModelAdmin):
+	list_display = ('name',)
+
+class LinkAdmin(admin.ModelAdmin):
+	list_display = ('name', 'url', 'description', 'group')
+	
+
 admin.site.register(Announcement, AnnouncementAdmin)
 admin.site.register(MeetingPlace, MeetingPlaceAdmin)
 admin.site.register(Meeting, MeetingAdmin)
 admin.site.register(Event, EventAdmin)
+admin.site.register(LinkGroup, LinkGroupAdmin)
+admin.site.register(Link, LinkAdmin)
+
 

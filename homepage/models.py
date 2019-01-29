@@ -42,3 +42,18 @@ class Event(models.Model):
 	
 	def __str__(self):
 		return str(self.start_date_time) + ', ' + self.event_name
+
+class LinkGroup(models.Model):
+	name = models.CharField(max_length=100)
+	
+	def __str__(self):
+		return str(self.name)
+
+class Link(models.Model):
+	name = models.CharField(max_length=100)
+	url = models.URLField()
+	description = models.TextField(blank=True)
+	group = models.ForeignKey(LinkGroup, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return str(self.name)

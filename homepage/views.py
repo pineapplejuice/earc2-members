@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.utils import timezone
 
-from .models import Meeting, MeetingPlace, Event
+from .models import Meeting, MeetingPlace, Event, LinkGroup
 from manage_members.models import Member
 
 
@@ -100,4 +100,17 @@ def nets(request):
 	"""
 	
 	return render(request, 'homepage/nets.html')
+	
+
+def links(request):
+	"""
+	Render links list.
+	"""
+	
+	groups = LinkGroup.objects.all()
+	context = {
+		'groups': groups
+	}
+	
+	return render(request, 'homepage/links.html', context)
 	

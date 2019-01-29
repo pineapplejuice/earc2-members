@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block browsertitle %}EARC - Links{% endblock %}
+
+{% block content %}
+<h2 class="title">Useful Links</h2>
+
+{% for group in groups %}
+	<h4>{{group.name}}</h4>
+	<dl class="row">
+		{% for link in group.link_set.all %}
+		<dt class="col-sm-3"><a href="{{link.url}}"><b>{{link.name}}</b></a></dt>
+		<dd class="col-sm-9">
+			{{link.description}} 
+			<span class="text-muted"><i>{{link.url}}</i></span>
+		</dd>
+		{% endfor %}
+	</dl>
+
+{% endfor %}
+
+{% endblock %}
