@@ -7,6 +7,12 @@ In order to log in, you will need to activate your account by clicking the follo
 
 http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
 
+Once logged into the site, you can pay your dues online by going to the Membership section of your member profile and clicking the "Pay dues now" button. If you prefer, you can send a check for your dues to the treasurer at the following address:
+
+Emergency Amateur Radio Club
+PO Box 30315
+Honolulu, HI  96820-0315
+
 If you have any questions please let us know.
 
 Mahalo and 73,

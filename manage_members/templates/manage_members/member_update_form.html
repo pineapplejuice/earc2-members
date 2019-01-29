@@ -5,7 +5,7 @@
 
 {% block content %}
 
-	<h2>Update Member Information</h2>
+	<h2 class="title">Update Member Information</h2>
 
 	<form action="{% url 'member_update' member.id %}" method="post" id="member_form">
 		{% csrf_token %}
