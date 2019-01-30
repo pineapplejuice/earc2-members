@@ -19,7 +19,7 @@ class MeetingPlaceAdmin(admin.ModelAdmin):
 	list_display = ('venue_name', 'address', 'city', 'state', 'zip_code')
 	
 class MeetingAdmin(admin.ModelAdmin):
-	list_display = ('date_time', 'meeting_place')
+	list_display = ('date_time', 'meeting_place', 'topic')
 
 class EventAdmin(admin.ModelAdmin):
 	pass

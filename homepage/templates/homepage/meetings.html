@@ -9,6 +9,13 @@
 
 {% if next_meeting %}
 <p>Our next General Membership Meeting will be <b>{{next_meeting.date_time | date:"l, F d, Y"}}</b> at <b>{{next_meeting.date_time | time:"f a"}}</b> at <b>{{next_meeting.meeting_place.venue_name }}</b>.</p>
+<p>The topic for the meeting will be:
+	{% if not next_meeting.topic %}
+		To be determined.
+	{% else %}
+		{{next_meeting.topic}}
+	{% endif %}	
+</p>
 <p>Talk-in frequencies are <b>146.880(-)</b> primary, and <b>146.520</b> backup.</p>
 
 <address>
@@ -28,7 +35,11 @@
 <p>Upcoming meetings:</p>
 <ul>
 	{% for meeting in upcoming_meetings %}
-	<li>{{meeting.date_time|date:"l, F d, Y"}}, {{meeting.date_time|date:"f a"}} at {{next_meeting.meeting_place.venue_name}}</li>
+	<li>{{meeting.date_time|date:"l, F d, Y"}}, {{meeting.date_time|date:"f a"}} at {{next_meeting.meeting_place.venue_name}}
+		{% if meeting.topic %}
+			(Topic: {{meeting.topic}})
+		{% endif %}
+		</li>
 	{% empty %}
 	<li>To be determined</li>
 	{% endfor %}
