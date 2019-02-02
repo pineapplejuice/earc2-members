@@ -119,4 +119,6 @@ def field_day(request):
 	
 def repeaters(request):
 	return render(request, 'homepage/repeaters.html')
-	
+
+def antennas(request):
+	return render(request, 'homepage/antennas.html')
