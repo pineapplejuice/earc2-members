@@ -2,6 +2,7 @@
 body {
 	margin: 0;
 	font-family: 'Segoe UI', Verdana, Roboto, 'Helvetica Neue', Arial, sans-serif;
+	background-color: #EFE;
 }
 
 nav {
@@ -49,3 +50,14 @@ blockquote.earc {
 	font-family: Impact, Charcoal, sans-serif;
 	font-size: 1.5em;
 }
+
+.alert-error {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+}
+.alert-error hr {
+  border-top-color: #e4b9c0;
+}
+.alert-error .alert-link {
+  color: #843534;

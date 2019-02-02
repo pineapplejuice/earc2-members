@@ -5,8 +5,17 @@
 {% block content %}
 <h2 class="title">Meetings</h2>
 <h4>General Membership Meetings</h4>
-<p>EARC General Membership Meetings are held every month except during June (to encourage members to attend Field Day) and December (for the holiday season). We elect our officers for the upcoming year at the October meeting and have a holiday party in November.</p>
+<p>EARC General Membership Meetings are held at 7:00 p.m. on the third Tuesday of each month except during June (to encourage members to attend <a href="{% url 'field_day' %}">Field Day</a>) and December (for the holiday season). We elect our officers for the upcoming year at the October meeting and have a holiday party in November.</p>
 
+<p>The program starts with club business, with club officers and committee chairs giving reports, followed by discussion of any new business. After a break, there will usually be a presentation on amateur radio given by a club member. Topics can vary widely.</p>
+
+<p>Our meetings are open to the public; you need not be a member nor a ham radio operator.</p>
+
+<p>There is often a testing session before the meeting at about 6:00 p.m., for details, see the EARC education committee page.</p>
+
+<p>Our meetings are potluck; if anyone wishes to bring something, please contact XXXX at XXXX.</p>
+
+<h4>Next meeting</h4>
 {% if next_meeting %}
 <p>Our next General Membership Meeting will be <b>{{next_meeting.date_time | date:"l, F d, Y"}}</b> at <b>{{next_meeting.date_time | time:"f a"}}</b> at <b>{{next_meeting.meeting_place.venue_name }}</b>.</p>
 <p>The topic for the meeting will be:

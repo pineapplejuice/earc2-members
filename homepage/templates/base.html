@@ -63,7 +63,10 @@
 							Repeaters
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-							<a class="dropdown-item" href="#">Repeaters</a>
+							<a class="dropdown-item" {% if request.resolver_match.url_name == 'repeaters' %}active{% endif %}"
+								href="{% url 'repeaters' %}">
+								Repeaters
+								{% if request.resolver_match.url_name == 'repeaters' %}<span class="sr-only">(current)</span>{% endif %}</a>							
 							<a class="dropdown-item" {% if request.resolver_match.url_name == 'nets' %}active{% endif %}"
 								href="{% url 'nets' %}">
 								Nets
@@ -81,7 +84,10 @@
 								href={% url 'events' %}>
 								Event list/calendar
 								{% if request.resolver_match.url_name == 'events' %}<span class="sr-only">(current)</span>{% endif %}</a>
-							<a class="dropdown-item" href="#">Field Day</a>
+							<a class="dropdown-item {% if request.resolver_match.url_name == 'field_day' %}active{% endif %}" 
+								href={% url 'field_day' %}>
+								Field Day
+								{% if request.resolver_match.url_name == 'field_day' %}<span class="sr-only">(current)</span>{% endif %}</a>
 						</div>
 					</li>
 
@@ -101,9 +107,11 @@
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 							<h6 class="dropdown-header">Shopping</h6>
-							<a class="dropdown-item" href="#">End-Fed HF Antenna Matchbox</a>
+							<a class="dropdown-item {% if request.resolver_match.url_name == 'antennas' %}active{% endif %}" 
+								href={% url 'antennas' %}>
+								End-Fed HF Antenna Matchbox
+								{% if request.resolver_match.url_name == 'antennas' %}<span class="sr-only">(current)</span>{% endif %}</a>
 							<a class="dropdown-item" href="#">Swap and Shop Net</a>
-							<a class="dropdown-item" href-"#">NH7QH Radio Supplies</a>
 							<div class="dropdown-divider"></div>
 							<h6 class="dropdown-header">Special pages</h6>							
 							<a class="dropdown-item" href="#">NH6WI (SK) Weather Page</a>
@@ -145,10 +153,10 @@
 
 		<div class="container">
 			<div class="row media" id="header">
-				<img class="img-fluid float-lg-left" src="{% static 'images/EARC_160x125.gif' %}" width="160" height="125" id="logo" />
+				<img class="img-fluid float-lg-left" src="{% static 'images/EARC_160x125_transparent.gif' %}" width="160" height="125" id="logo" />
 				<div class="mt-3 ml-1" id="title-block">
 					<h1 class="mb-auto title">Emergency Amateur Radio Club</h1>
-					<p class="mb-auto text-muted subtitle">Preparing Hawaii's radio amateurs since 1964</p>
+					<p class="mb-auto text-muted subtitle">Preparing Hawaii's radio amateurs since 1963</p>
 					<p class="mb-auto text-muted subtitle">WH6CZB / KH6CE / WH6DLO / Honolulu, HI, USA / BL11</p>
 				</div>
 			</div>

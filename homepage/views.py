@@ -113,4 +113,10 @@ def links(request):
 	}
 	
 	return render(request, 'homepage/links.html', context)
+
+def field_day(request):
+	return render(request, 'homepage/field_day.html')
+	
+def repeaters(request):
+	return render(request, 'homepage/repeaters.html')
 	

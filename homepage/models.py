@@ -39,7 +39,7 @@ class Event(models.Model):
 	end_date_time = models.DateTimeField()
 	event_name = models.CharField(max_length=100)
 	event_venue = models.ForeignKey(MeetingPlace, on_delete=models.CASCADE)
-	description = models.CharField(max_length=500)
+	description = models.TextField(blank=True)
 	
 	def __str__(self):
 		return str(self.start_date_time) + ', ' + self.event_name
