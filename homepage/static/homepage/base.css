@@ -1,7 +1,7 @@
 
 body {
 	margin: 0;
-	font-family: 'Segoe UI', Verdana, Roboto, 'Helvetica Neue', Arial, sans-serif;
+	font-family: 'Segoe UI', 'Verdana', 'Roboto', 'Helvetica Neue', 'Arial', sans-serif;
 	background-color: #EFE;
 }
 
@@ -43,11 +43,11 @@ blockquote.earc {
 }
 
 .title {
-	font-family: Impact, Charcoal, sans-serif;
+	font-family: 'Impact', 'Anton', sans-serif;
 }
 
 .navbar-brand {
-	font-family: Impact, Charcoal, sans-serif;
+	font-family: 'Impact', 'Anton', sans-serif;
 	font-size: 1.5em;
 }
 
