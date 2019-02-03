@@ -3,45 +3,54 @@
 {% block browsertitle %}EARC - Member List{% endblock %}
 
 {% block content %}
-<h2 class="title">Member List</h2>
 
-<table class="table table-sm table-striped">
-	<thead class="thead-light">
-		<tr>
-			<th scope="col">Callsign</th>
-			<th scope="col">First Name</th>
-			<th scope="col">Last Name</th>
-			<th scope="col">Community</th>
-		</tr>		
-	</thead>
-	<tbody>
-		{% for member in members %}
-		<tr>
-			<td>{{member.callsign}}</td>
-			<td>{{member.first_name}}</td>
-			<td>{{member.last_name}}</td>
-			<td>{{member.city}}, {{member.state}}</td>
-		</tr>
-		{% endfor %}		
-	</tbody>
-</table>
+<div class="card">
+	<div class="card-header">
+		<span class="h2 title">Member List</span>
+	</div>
+	<div class="card-body">
+		<table class="table table-sm table-striped">
+			<thead class="thead-light">
+				<tr>
+					<th scope="col">Callsign</th>
+					<th scope="col">First Name</th>
+					<th scope="col">Last Name</th>
+					<th scope="col">Community</th>
+				</tr>		
+			</thead>
+			<tbody>
+				{% for member in members %}
+				<tr>
+					<td>{{member.callsign}}</td>
+					<td>{{member.first_name}}</td>
+					<td>{{member.last_name}}</td>
+					<td>{{member.city}}, {{member.state}}</td>
+				</tr>
+				{% endfor %}		
+			</tbody>
+		</table>
 
-<div class="pagination">
-    <span class="step-links">
-        {% if members.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ members.previous_page_number }}">previous</a>
-        {% endif %}
+		<div class="pagination">
+		    <span class="step-links">
+		        {% if members.has_previous %}
+		            <a href="?page=1">&laquo; first</a>
+		            <a href="?page={{ members.previous_page_number }}">previous</a>
+		        {% endif %}
 
-        <span class="current">
-            Page {{ members.number }} of {{ members.paginator.num_pages }}.
-        </span>
+		        <span class="current">
+		            Page {{ members.number }} of {{ members.paginator.num_pages }}.
+		        </span>
 
-        {% if members.has_next %}
-            <a href="?page={{ members.next_page_number }}">next</a>
-            <a href="?page={{ members.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
-    </span>
+		        {% if members.has_next %}
+		            <a href="?page={{ members.next_page_number }}">next</a>
+		            <a href="?page={{ members.paginator.num_pages }}">last &raquo;</a>
+		        {% endif %}
+		    </span>
+		</div>
+		
+	</div>
 </div>
+
+
 
 {% endblock %}

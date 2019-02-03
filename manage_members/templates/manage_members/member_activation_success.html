@@ -3,8 +3,15 @@
 {% block browsertitle %}EARC - Account Activation Successful{% endblock %}
 
 {% block content %}
+<div class="card">
+	<div class="card-header">
+		<span class="h2 title">Account activation successful</span>
+	</div>
+	<div class="card-body">
+		<p>You have successfully activated your account. You may now login to your account.</p>
+		<p><a class="btn btn-sm btn-primary" href="{% url 'site_login' %}">Login now</a></p>
+	</div>
+</div>
 
-<h2 class="title">Account activation successful</h2>
-<p>You have successfully activated your account. You may now login to your account.</p>
-<p><a class="btn btn-sm btn-primary" href="{% url 'site_login' %}">Login now</a></p>
+\
 {% endblock %}

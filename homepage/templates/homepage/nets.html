@@ -3,20 +3,33 @@
 {% block browsertitle %}EARC - Nets{% endblock %}
 
 {% block content %}
-<h2 class="title">Amateur Radio Nets</h2>
 
-		<div class="card">
-			<div class="card-header">
-				EARC Nightly Net
-			</div>
-			<div class="card-body">
-				<p class="card-text">Aloha! Please join us Monday to Saturday nights (except major holidays or <a href="{% url 'meetings' %}">EARC meeting days</a>) for the EARC nightly net. All amateur radio operators of all abilities and experience levels are welcome, and we especially welcome newcomers to ham radio or to the islands.</p>
-				<p class="card-text">To help new hams get accustomed to operating in a directed net environment in an emergency situation, we run our EARC nets as directed nets. We try at all times to keep our nets accessible and friendly.</p>
-				<p class="card-text">Time: 7:30 p.m. HST</p>
-				<p class="card-text">Frequencies: 146.880 (-), DEM/EARC linked repeater system</p>
-				<h5 class="card-text">Net Control Stations (NCS)</h5>
-				<p class="card-text">Our Net Control Team is always looking for Net Control Stations (NCSes) to help run the net. Training is provided! Email our Net Manager, Joe Tabrah KH6FHI, for more details.</p>
-			</div>
-		</div>
+<div class="card mb-2">
+	<div class="card-header">
+		<span class="h2 title">Amateur Radio Nets</span>
+	</div>
+</div>
+
+<div class="card">
+	<div class="card-header">
+		<span class="h4 title">EARC Nightly Net</span>
+	</div>
+	<div class="card-body">
+		<p class="card-text">Aloha! Please join us Monday to Saturday nights (except major holidays or <a href="{% url 'meetings' %}">EARC meeting days</a>) for the EARC nightly net. All amateur radio operators of all abilities and experience levels are welcome, and we especially welcome newcomers to ham radio or to the islands.</p>
+		<p class="card-text">To help new hams get accustomed to operating in a directed net environment in an emergency situation, we run our EARC nets as directed nets. We try at all times to keep our nets accessible and friendly.</p>
+		<p class="card-text">Time: 7:30 p.m. HST</p>
+		<p class="card-text">Frequencies: 146.880 (-), DEM/EARC linked repeater system</p>
+	</div>
+	<div class="card-header">
+		<span class="h4 title">Net Control Stations</span>
+	</div>
+	<div class="card-body">
+		<p class="card-text">Our Net Control Team is always looking for Net Control Stations (NCSes) to help run the net. Training is provided! Email our Net Manager, Joe Tabrah KH6FHI, for more details.</p>
+	</div>
+</div>
+
+
+
+
 
 {% endblock %}

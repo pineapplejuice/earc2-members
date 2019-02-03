@@ -5,23 +5,31 @@
 
 {% block content %}
 
-	<h2 class="title">Update Member Information</h2>
+<div class="card">
+	<div class="card-header">
+		<span class="h2 title">Update Member Information</span>
+	</div>
+	<div class="card-body">
+		<form action="{% url 'member_update' member.id %}" method="post" id="member_form">
+			{% csrf_token %}
+			<table class="table">
+				{{ member_form.as_table }}
+				<th>
+				</th>
+				<td>
+					<input class="btn-lg btn-primary" type="submit" value="Submit" />
+					<input class="btn-lg btn-secondary" type="reset" value="Reset" />
 
-	<form action="{% url 'member_update' member.id %}" method="post" id="member_form">
-		{% csrf_token %}
-		<table class="table">
-			{{ member_form.as_table }}
-			<th>
-			</th>
-			<td>
-				<input class="btn-lg btn-primary" type="submit" value="Submit" />
-				<input class="btn-lg btn-secondary" type="reset" value="Reset" />				
-				
-			</td>
-	
-		</table>
+				</td>
 
-	</form>
+			</table>
+
+		</form>
+	</div>
+</div>
+
+
+
 
 
 {% endblock %}

@@ -3,58 +3,69 @@
 {% block browsertitle %}EARC - Meetings{% endblock %}
 
 {% block content %}
-<h2 class="title">Meetings</h2>
-<h4>General Membership Meetings</h4>
-<p>EARC General Membership Meetings are held at 7:00 p.m. on the third Tuesday of each month except during June (to encourage members to attend <a href="{% url 'field_day' %}">Field Day</a>) and December (for the holiday season). We elect our officers for the upcoming year at the October meeting and have a holiday party in November.</p>
 
-<p>The program starts with club business, with club officers and committee chairs giving reports, followed by discussion of any new business. After a break, there will usually be a presentation on amateur radio given by a club member. Topics can vary widely.</p>
+<div class="card">
+	<div class="card-header">
+		<span class="h2 title">Meetings</span>
+	</div>
+	<div class="card-body">
+		<p>EARC General Membership Meetings are held at 7:00 p.m. on the third Tuesday of each month except during June (to encourage members to attend <a href="{% url 'field_day' %}">Field Day</a>) and December (for the holiday season). We elect our officers for the upcoming year at the October meeting and have a holiday party in November.</p>
 
-<p>Our meetings are open to the public; you need not be a member nor a ham radio operator.</p>
+		<p>The program starts with club business, with club officers and committee chairs giving reports, followed by discussion of any new business. After a break, there will usually be a presentation on amateur radio given by a club member. Topics can vary widely.</p>
 
-<p>There is often a testing session before the meeting at about 6:00 p.m., for details, see the EARC education committee page.</p>
+		<p>Our meetings are open to the public; you need not be a member nor a ham radio operator.</p>
 
-<p>Our meetings are potluck; if anyone wishes to bring something, please contact XXXX at XXXX.</p>
+		<p>There is often a testing session before the meeting at about 6:00 p.m., for details, see the EARC education committee page.</p>
 
-<h4>Next meeting</h4>
-{% if next_meeting %}
-<p>Our next General Membership Meeting will be <b>{{next_meeting.date_time | date:"l, F d, Y"}}</b> at <b>{{next_meeting.date_time | time:"f a"}}</b> at <b>{{next_meeting.meeting_place.venue_name }}</b>.</p>
-<p>The topic for the meeting will be:
-	{% if not next_meeting.topic %}
-		To be determined.
-	{% else %}
-		{{next_meeting.topic}}
-	{% endif %}	
-</p>
-<p>Talk-in frequencies are <b>146.880(-)</b> primary, and <b>146.520</b> backup.</p>
+		<p>Our meetings are potluck; if anyone wishes to bring something, please contact XXXX at XXXX.</p>
+	</div>
+	<div class="card-header">
+		<span class="h4 title">Next meeting</span>
+	</div>
+	<div class="card-body">
+		{% if next_meeting %}
+		<p>Our next General Membership Meeting will be <b>{{next_meeting.date_time | date:"l, F d, Y"}}</b> at <b>{{next_meeting.date_time | time:"f a"}}</b> at <b>{{next_meeting.meeting_place.venue_name }}</b>.</p>
+		<p>The topic for the meeting will be:
+			{% if not next_meeting.topic %}
+				To be determined.
+			{% else %}
+				{{next_meeting.topic}}
+			{% endif %}	
+		</p>
+		<p>Talk-in frequencies are <b>146.880(-)</b> primary, and <b>146.520</b> backup.</p>
 
-<address>
-	<strong>{{next_meeting.meeting_place.venue_name }}</strong><br />
-	{{next_meeting.meeting_place.address}}<br />
-	{{next_meeting.meeting_place.city}}, {{next_meeting.meeting_place.state}} {{next_meeting.meeting_place.zip_code}}
-</address>
-{% else %}
-<p>Our next General Membership Meeting has yet to be determined. Please check back later.</p>
-{% endif %}
-
-{% if next_meeting_map_url %}
-<iframe width="600" height="450" frameborder="0" style="border:0" 
-	src="{{next_meeting_map_url}}" allowfullscreen></iframe>
-{% endif %}
-
-<p>Upcoming meetings:</p>
-<ul>
-	{% for meeting in upcoming_meetings %}
-	<li>{{meeting.date_time|date:"l, F d, Y"}}, {{meeting.date_time|date:"f a"}} at {{next_meeting.meeting_place.venue_name}}
-		{% if meeting.topic %}
-			(Topic: {{meeting.topic}})
+		<address>
+			<strong>{{next_meeting.meeting_place.venue_name }}</strong><br />
+			{{next_meeting.meeting_place.address}}<br />
+			{{next_meeting.meeting_place.city}}, {{next_meeting.meeting_place.state}} {{next_meeting.meeting_place.zip_code}}
+		</address>
+		{% else %}
+		<p>Our next General Membership Meeting has yet to be determined. Please check back later.</p>
 		{% endif %}
-		</li>
-	{% empty %}
-	<li>To be determined</li>
-	{% endfor %}
-</ul>
+		
+		{% if next_meeting_map_url %}
+		<iframe width="600" height="450" frameborder="0" style="border:0" 
+			src="{{next_meeting_map_url}}" allowfullscreen></iframe>
+		{% endif %}
 
-
+	</div>
+	<div class="card-header">
+		<span class="h4 title">Upcoming Meetings</span>
+	</div>
+	<div class="card-body">
+		<ul>
+			{% for meeting in upcoming_meetings %}
+			<li>{{meeting.date_time|date:"l, F d, Y"}}, {{meeting.date_time|date:"f a"}} at {{next_meeting.meeting_place.venue_name}}
+				{% if meeting.topic %}
+					(Topic: {{meeting.topic}})
+				{% endif %}
+				</li>
+			{% empty %}
+			<li>To be determined</li>
+			{% endfor %}
+		</ul>
+	</div>
+</div>
 
 
 {% endblock %}

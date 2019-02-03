@@ -6,26 +6,31 @@
 
 {% block content %}
 
-	<h2 class="title">EARC Membership Application</h2>
-	<p>Our NEW membership application allows you to enter your member information directly. Please enter your membership information. Once entered, you will receive an email to confirm your account before logging in; make sure that your email address is correct.</p>
-	<p>If you prefer, you can also <a href="{% static 'pdf/application.pdf' %}" target="_blank">print and complete the hardcopy form</a> and send it to the EARC at the address shown at the bottom.</p>
+<div class="card">
+	<div class="card-header">
+		<span class="h2 title">EARC Membership Application</span>
+	</div>
+	<div class="card-body">
+		<p>Our NEW membership application allows you to enter your member information directly. Please enter your membership information. Once entered, you will receive an email to confirm your account before logging in; make sure that your email address is correct.</p>
+		<p>If you prefer, you can also <a href="{% static 'pdf/application.pdf' %}" target="_blank">print and complete the hardcopy form</a> and send it to the EARC at the address shown at the bottom.</p>
 
-	<form action="{% url 'member_new_form' %}" method="post" id="member_form">
-		{% csrf_token %}
-		<table class="table">
-			{{ member_form.as_table }}
-			{{ user_form.as_table }}
-			<th>
-			</th>
-			<td>
-				<input class="btn-lg btn-primary" type="submit" value="Submit" />
-				<input class="btn-lg btn-secondary" type="reset" value="Reset" />				
-				
-			</td>
-	
-		</table>
+		<form action="{% url 'member_new_form' %}" method="post" id="member_form">
+			{% csrf_token %}
+			<table class="table">
+				{{ member_form.as_table }}
+				{{ user_form.as_table }}
+				<th>
+				</th>
+				<td>
+					<input class="btn-lg btn-primary" type="submit" value="Submit" />
+					<input class="btn-lg btn-secondary" type="reset" value="Reset" />				
+					
+				</td>
 
-	</form>
+			</table>
+		</form>
+	</div>
+</div>
 
 
 {% endblock %}

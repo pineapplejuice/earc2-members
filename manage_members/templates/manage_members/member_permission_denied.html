@@ -4,9 +4,16 @@
 
 {% block content %}
 
-<h2 class="title">Permission denied</h2>
-<p>You do not have permission to view this page.</p>
+<div class="card">
+	<div class="card-header">
+		<span class="h2 title">Permission denied</span>
+	</div>
+	<div class="card-body">
+		<p>You do not have permission to view this page.</p>
 
-<p><a href="{% url 'home_page' %}">Return to home page</a></p>
+		<p><a href="{% url 'home_page' %}">Return to home page</a></p>
+	</div>
+</div>
+
 
 {% endblock %}

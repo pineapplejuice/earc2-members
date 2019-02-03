@@ -6,28 +6,36 @@
 
 {% block content %}
 
-	<h2 class="title">Pay Your EARC Dues</h2>
-	<p>You can pay your EARC dues via PayPal by clicking the button below and following the instructions. If you do not have a PayPal account, you can click the "Pay by debit or credit card" button.</p>
-	<p>Alternatively, you can send a check or money order for your dues (payable to EARC) to the following address:</p>
-	<address>
-		Emergency Amateur Radio Club<br />
-		PO Box 30315<br />
-		Honolulu, HI  96820-0315		
-	</address>
-	
-	{% if member.membership_status == 'P' %}
-	<p>You have not yet paid dues. You can join the EARC as a new member for 
-	{% elif member.membership_status == 'C' %}
-	<p>Your current membership expires {{ member.membership_expires }}. You can renew for the following year for 
-	{% elif member.membership_status == 'LR' %}
-	<p>Your membership expired {{ member.membership_expires }}. You can renew for this year for 
-	{% elif member.membership_status == 'LN' %}
-	<p>Your membership expired {{ member.membership_expires }}. You can rejoin the EARC for 
-	{% endif %}
-	${{ member.member_dues_amount|floatformat:2 }}.</p>
-	
-	{{form.render}}
+<div class="card">
+	<div class="card-header">
+		<span class="h2 title">Pay Your EARC Dues</span>
+	</div>
+	<div class="card-body">
+		<p>You can pay your EARC dues via PayPal by clicking the button below and following the instructions. If you do not have a PayPal account, you can click the "Pay by debit or credit card" button.</p>
+		<p>Alternatively, you can send a check or money order for your dues (payable to EARC) to the following address:</p>
+		<address>
+			Emergency Amateur Radio Club<br />
+			PO Box 30315<br />
+			Honolulu, HI  96820-0315
+		</address>
 
-	<p>(This button will take you to the PayPal site. You will return to this site after the transaction is completed.)</p>
-	
+		{% if member.membership_status == 'P' %}
+		<p>You have not yet paid dues. You can join the EARC as a new member for
+			{% elif member.membership_status == 'C' %}
+		<p>Your current membership expires {{ member.membership_expires }}. You can renew for the following year for
+			{% elif member.membership_status == 'LR' %}
+		<p>Your membership expired {{ member.membership_expires }}. You can renew for this year for
+			{% elif member.membership_status == 'LN' %}
+		<p>Your membership expired {{ member.membership_expires }}. You can rejoin the EARC for
+		{% endif %}
+		${{ member.member_dues_amount|floatformat:2 }}.</p>
+
+		{{form.render}}
+
+		<p>(This button will take you to the PayPal site. You will return to this site after the transaction is completed.)</p>
+
+	</div>
+</div>
+
+
 {% endblock %}

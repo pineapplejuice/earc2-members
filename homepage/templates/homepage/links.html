@@ -3,20 +3,29 @@
 {% block browsertitle %}EARC - Links{% endblock %}
 
 {% block content %}
-<h2 class="title">Useful Links</h2>
+<div class="card mb-2">
+	<div class="card-header">
+		<span class="h2 title">Useful Links</span>
+	</div>
+</div>
 
 {% for group in groups %}
-	<h4>{{group.name}}</h4>
-	<dl class="row">
-		{% for link in group.link_set.all %}
-		<dt class="col-sm-4"><a href="{{link.url}}"><b>{{link.name}}</b></a></dt>
-		<dd class="col-sm-8">
-			{{link.description}} 
-			<span class="text-muted"><i>{{link.url}}</i></span>
-		</dd>
-		{% endfor %}
-	</dl>
-
+<div class="card mb-2">
+	<div class="card-header">
+		<span class="h4 title">{{group.name}}</span>
+	</div>
+	<div class="card-body">
+		<dl>
+			{% for link in group.link_set.all %}
+			<dt><a href="{{link.url}}"><b>{{link.name}}</b></a></dt>
+			<dd>
+				{{link.description}} 
+				<span class="text-muted"><i>{{link.url}}</i></span>
+			</dd>
+			{% endfor %}
+		</dl>
+	</div>
+</div>
 {% endfor %}
 
 {% endblock %}

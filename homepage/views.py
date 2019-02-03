@@ -1,12 +1,16 @@
 from urllib.parse import urlencode
 
-from django.shortcuts import render
+from django.contrib import messages
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.urls import reverse
 from django.utils import timezone
 
 from .models import Meeting, MeetingPlace, Event, LinkGroup
 from manage_members.models import Member
 
+from paypal.standard.forms import PayPalPaymentsForm
+from payments.paypal_helpers import paypal_email_test_or_prod
 
 # Create your views here.
 
@@ -121,4 +125,28 @@ def repeaters(request):
 	return render(request, 'homepage/repeaters.html')
 
 def antennas(request):
-	return render(request, 'homepage/antennas.html')
+	
+	paypal_dict = {
+		'business': paypal_email_test_or_prod(),
+		'amount': "56.00",
+		'item_name': "6 to 40 Meter End Fed",
+		'item_number': "ENDFED",
+		"return": request.build_absolute_uri(reverse('antenna_purchase_completed')), 
+		"cancel_return": request.build_absolute_uri(reverse('antenna_purchase_cancelled')),
+	}
+	
+	form = PayPalPaymentsForm(initial = paypal_dict)
+	context = {
+		"form": form,
+	}
+	
+	return render(request, 'homepage/antennas.html', context)
+
+def antenna_purchase_completed(request):
+	messages.success(request, 'Thanks for your purchase. Our treasurer and antenna committee have received your order and will ship your antenna as soon as possible.')
+	return redirect("antennas")
+
+def antenna_purchase_cancelled(request):
+	messages.error(request, 'Your purchase was cancelled.')
+	return redirect("antennas")
+	

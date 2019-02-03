@@ -6,7 +6,7 @@ from django.urls import reverse
 
 from paypal.standard.forms import PayPalPaymentsForm
 
-from .paypal_helpers import paypal_email_test_or_prod, get_ngrok_url
+from payments.paypal_helpers import paypal_email_test_or_prod, get_ngrok_url
 from manage_members.models import Member
 
 

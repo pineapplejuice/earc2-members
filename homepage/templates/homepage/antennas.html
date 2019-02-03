@@ -4,11 +4,45 @@
 {% block browsertitle %}EARC - End Fed 6-40 Meter Matchbox Antennas{% endblock %}
 
 {% block content %}
-<h2 class="title">EARC End-Fed Matchbox Antennas</h2>
 
-<p>In XXXX, a couple of hams in our fundraising committee and antenna group, Richard Hardy KH6HNL (sk) and Chuck Hanebuth KH7HNL devised an easily-built 9:1 UNUN toroid matching transformer that takes the convenience of an end-fed dipole and brings the SWR down to the range where an antenna tuner can properly tune the antenna.</p>
+<div class="card mb-2">
+	<div class="card-header">
+		<span class="h2 title">EARC End-Fed Matchbox Antennas</span>
+	</div>
+	<div class="card-body">
+		<p>In 2011, a couple of hams in our fundraising committee and antenna group, Richard Hardy KH6HNL (sk) and Chuck Hanebuth KH7HNL, devised an easily-built 9:1 UNUN toroid matching transformer that takes the convenience of an end-fed dipole and brings the SWR down to the range where an antenna tuner can properly tune the antenna.</p>
 
-<p>This project can be done by any radio amateur who can get the necessary parts to assemble it, and we freely publish the <a href="{% static 'pdf/endfed6_40.pdf' %}">assembly instructions</a> on our site.</p>
+		<p>This project can be done by any radio amateur who can get the necessary parts to assemble it, and we freely publish the <a href="{% static 'pdf/endfed6_40.pdf' %}">assembly instructions</a> on our site.</p>
+
+		<p>For those who don't want to assemble it, volunteers from our club will assemble the antenna for you and ship to you via U.S. Priority Mail with 30 feet on antenna wire for <b>$56.00</b>.</p>
+		
+		<p><b>Sorry, we do not ship antennas outside of the United States.</b></p>
+	</div>
+</div>
+
+<div class="card">
+	<div class="card-header">
+		<span class="h4 title">Ordering antennas</span>
+	</div>
+	<div class="card-body">
+		<div class="row">
+			<div class="col-6">
+				<p><b>Via PayPal:</b></p>
+				<p>Click this button to be taken to PayPal. You will return to this page upon completion.</p>
+				{{form.render}}
+			</div>
+			<div class="col-6">
+				<p><b>Via postal mail:</b></p>
+				<p>Send a check for $56.00 to the following address:</p>
+				<address>
+					Emergency Amateur Radio Club<br />
+					PO Box 30315<br />
+					Honolulu, HI  96820-0315
+				</address>
+			</div>
+		</div>
+	</div>
+</div>
 
 
 {% endblock %}
