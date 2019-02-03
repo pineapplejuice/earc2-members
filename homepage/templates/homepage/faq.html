@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block browsertitle %}EARC - Frequency Asked Questions{% endblock %}
+
+{% block content %}
+
+<div class="card mb-2">
+	<div class="card-header">
+		<span class="h2 title">Frequency Asked Questions</span>
+	</div>
+</div>
+
+{% for group in groups %}
+<div class="card mb-2">
+	<div class="card-header">
+		<span class="h4 title">{{group.name}}</span>
+	</div>
+	<div class="card-body">
+		{% for question in group.question_set.all %}
+		<div class="panel-group">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a data-toggle="collapse" href="#ans-{{question.pk}}">{{question.question_text}}</a>
+					</h4>
+				</div>
+				<div id="ans-{{question.pk}}" class="panel-collapse collapse">
+					<div class="panel-body">
+						{{question.answer_text | safe}}	
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{% endfor %}
+	</div>
+</div>
+{% endfor %}
+
+{% endblock %}

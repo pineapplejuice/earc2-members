@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.urls import reverse
 from django.utils import timezone
 
-from .models import Meeting, MeetingPlace, Event, LinkGroup
+from .models import Meeting, MeetingPlace, Event, LinkGroup, QuestionGroup
 from manage_members.models import Member
 
 from paypal.standard.forms import PayPalPaymentsForm
@@ -113,7 +113,7 @@ def links(request):
 	
 	groups = LinkGroup.objects.all()
 	context = {
-		'groups': groups
+		'groups': groups,
 	}
 	
 	return render(request, 'homepage/links.html', context)
@@ -152,4 +152,12 @@ def antenna_purchase_cancelled(request):
 	
 def swap_and_shop(request):
 	return render(request, 'homepage/swap_shop.html')
+	
+def faq_list(request):
+	groups = QuestionGroup.objects.all()
+	context = {
+		'groups': groups,
+	}
+	
+	return render(request, 'homepage/faq.html', context)
 	

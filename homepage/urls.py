@@ -10,6 +10,7 @@ urlpatterns = [
 	url(r'^antennas/cancelled/$', views.antenna_purchase_cancelled,
 		name="antenna_purchase_cancelled"),
 	url(r'^events/$', views.events, name="events"),
+	url(r'^faq-list/$', views.faq_list, name="faq_list"),
 	url(r'^field_day/$', views.field_day, name="field_day"),
 	url(r'^links/$', views.links, name="links"),
 	url(r'^meetings/$', views.meetings, name="meetings"),

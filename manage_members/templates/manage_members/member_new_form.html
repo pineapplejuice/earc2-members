@@ -13,6 +13,7 @@
 	<div class="card-body">
 		<p>Our NEW membership application allows you to enter your member information directly. Please enter your membership information. Once entered, you will receive an email to confirm your account before logging in; make sure that your email address is correct.</p>
 		<p>If you prefer, you can also <a href="{% static 'pdf/application.pdf' %}" target="_blank">print and complete the hardcopy form</a> and send it to the EARC at the address shown at the bottom.</p>
+		<p>Note: this form is for NEW members. Existing members who do not have an account on the system should contact the webmaster.</p>
 
 		<form action="{% url 'member_new_form' %}" method="post" id="member_form">
 			{% csrf_token %}

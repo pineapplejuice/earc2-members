@@ -58,3 +58,22 @@ class Link(models.Model):
 
 	def __str__(self):
 		return str(self.name)
+
+
+class QuestionGroup(models.Model):
+	name = models.CharField(max_length=100)
+	
+	def __str__(self):
+		return str(self.name)
+
+
+class Question(models.Model):
+	question_text = models.CharField(max_length=200)
+	answer_text = models.TextField()
+	group = models.ForeignKey(QuestionGroup, on_delete=models.CASCADE)
+	
+	def __str__(self):
+		return str(self.question_text)
+
+
+

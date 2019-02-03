@@ -1,5 +1,8 @@
 from django.contrib import admin
-from .models import Announcement, Meeting, MeetingPlace, Event, LinkGroup, Link
+from .models import (
+	Announcement, Meeting, MeetingPlace, Event, LinkGroup, Link,
+	QuestionGroup, Question,
+)
 
 # Register your models here.
 
@@ -29,7 +32,12 @@ class LinkGroupAdmin(admin.ModelAdmin):
 
 class LinkAdmin(admin.ModelAdmin):
 	list_display = ('name', 'url', 'description', 'group')
-	
+
+class QuestionGroupAdmin(admin.ModelAdmin):
+	list_display = ('name',)
+
+class QuestionAdmin(admin.ModelAdmin):
+	list_display = ('question_text', 'group')
 
 admin.site.register(Announcement, AnnouncementAdmin)
 admin.site.register(MeetingPlace, MeetingPlaceAdmin)
@@ -37,5 +45,6 @@ admin.site.register(Meeting, MeetingAdmin)
 admin.site.register(Event, EventAdmin)
 admin.site.register(LinkGroup, LinkGroupAdmin)
 admin.site.register(Link, LinkAdmin)
-
+admin.site.register(QuestionGroup, QuestionGroupAdmin)
+admin.site.register(Question, QuestionAdmin)
 
