@@ -160,4 +160,6 @@ def faq_list(request):
 	}
 	
 	return render(request, 'homepage/faq.html', context)
-	
+
+def nh6wi(request):
+	return render(request, 'homepage/nh6wi.html')

@@ -15,6 +15,7 @@ urlpatterns = [
 	url(r'^links/$', views.links, name="links"),
 	url(r'^meetings/$', views.meetings, name="meetings"),
 	url(r'^nets/$', views.nets, name="nets"),
+	url(r'^nh6wi/$', views.nh6wi, name="nh6wi"),
 	url(r'^officers/$', views.officers, name="officers"),
 	url(r'^repeaters/$', views.repeaters, name="repeaters"),
 	url(r'^swap-shop/$', views.swap_and_shop, name="swap_and_shop"),
