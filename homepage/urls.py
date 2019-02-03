@@ -16,4 +16,5 @@ urlpatterns = [
 	url(r'^nets/$', views.nets, name="nets"),
 	url(r'^officers/$', views.officers, name="officers"),
 	url(r'^repeaters/$', views.repeaters, name="repeaters"),
+	url(r'^swap-shop/$', views.swap_and_shop, name="swap_and_shop"),
 ]

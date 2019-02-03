@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block browsertitle %}EARC - Swap and Shop Net{% endblock %}
+
+{% block content %}
+
+<div class="card mb-2">
+	<div class="card-header">
+		<span class="h2 title">Hawaii Swap and Shop Net</span>
+	</div>
+	<div class="card-body">
+		<p>The Hawaii Swap and Shop Net is hosted by Dr. Frank Young KH6CDO, and is held on the air twice a week:</p>
+		<ul>
+			<li>Tuesdays at 8:00 p.m. (2000W) on the DEM Diamond Head repeater 146.880(-).</li>
+			<li>Wednesdays at 5:00 p.m. (1700W) on 7.088 MHz LSB (40 meters).</li>
+		</ul> 
+		<p>We host the Swap and Shop listing as a service to Dr. Frank.</p>
+		<p>To list an item on the Swap and Shop, contact Dr. Frank via email at <a href="mailto: drfyoung@hawaiiantel.net">drfyoung@hawaiiantel.net</a> or by phone at (808) 988-7474. All items listed will run for four weeks per quarter per calendar year, with the exception of ads for silent key (SK) estates and hams who are moving, which will run continuously until all items are sold.</p>
+		<p>We ask that only licensed amateur radio operators list items on the Hawaii Swap and Shop Net.</p>
+	</div>
+</div>
+
+<div class="card mb-2">
+	<div class="card-header">
+		<span class="h4 title">Current listing</span>
+	</div>
+	<div class="card-body">
+		<iframe src="{% static 'swapshop/swaptext.txt' %}" width="99%" height="700"></iframe>
+	</div>
+</div>
+
+{% endblock %}

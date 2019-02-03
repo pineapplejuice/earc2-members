@@ -150,3 +150,6 @@ def antenna_purchase_cancelled(request):
 	messages.error(request, 'Your purchase was cancelled.')
 	return redirect("antennas")
 	
+def swap_and_shop(request):
+	return render(request, 'homepage/swap_shop.html')
+	
