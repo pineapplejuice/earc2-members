@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block browsertitle %}EARC - Contact Form Sent{% endblock %}
+
+{% block content %}
+
+<div class="card">
+	<div class="card-header">
+		<span class="h2 title">Contact Form Emailed Successfully</span>
+	</div>
+	<div class="card-body">
+		<p>Your message was sent successfully.</p>
+		
+		<p><a class="btn btn-primary" href="{% url 'home_page' %}">Return to home page</a></p>
+		
+	</div>
+</div>
+
+{% endblock %}
