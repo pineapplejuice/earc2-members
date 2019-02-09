@@ -1,0 +1,6 @@
+The following message was sent via the EARC contact form.
+
+From: {{contact_name}} <{{contact_email}}>
+
+Message:
+{{contact_message}}

@@ -11,6 +11,8 @@ from .forms import ContactForm
 from .models import Meeting, MeetingPlace, Event, LinkGroup, QuestionGroup
 from manage_members.models import Member
 
+from helpers.utils import send_email_from_template
+
 from paypal.standard.forms import PayPalPaymentsForm
 from payments.paypal_helpers import paypal_email_test_or_prod
 
@@ -179,7 +181,18 @@ def contact(request):
 			contact_message = form.cleaned_data['contact_message']
 			
 			try:
-				send_mail(contact_name, contact_message, contact_email, [webmaster_email])
+				context = {
+					'contact_name': contact_name,
+					'contact_email': contact_email,
+					'contact_message': contact_message,
+				}
+				send_email_from_template(
+					subject_template = 'homepage/email/contact_form_subject.txt',
+					message_template = 'homepage/email/contact_form_body.txt',
+					context = context,
+					recipients = [webmaster_email],
+					reply_to = [contact_email],
+				)
 			except BadHeaderError:
 				return HttpResponse('Invalid header found.')
 			return redirect('contact_success')
