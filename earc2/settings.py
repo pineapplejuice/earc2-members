@@ -136,3 +136,4 @@ from .gmail_config import *
 
 # django-paypal settings
 PAYPAL_TEST = True
+PAYPAL_BUY_BUTTON_IMAGE = 'https://www.paypalobjects.com/webstatic/en_US/i/buttons/cc-badges-ppmcvdam.png'

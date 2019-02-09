@@ -14,6 +14,7 @@ from manage_members.models import Member
 
 @login_required
 def pay_dues_paypal(request, id):
+	treasurer = Member.objects.get(position='TR')
 	
 	# Retrieve matching member and deny access if not member logged in
 	member = get_object_or_404(Member, pk=id)
@@ -43,6 +44,7 @@ def pay_dues_paypal(request, id):
 	context = {
 		"member": member,
 		"form": form,
+		"treasurer": treasurer,
 	}
 
 	return render(request, "payments/pay_dues_paypal.html", context)
