@@ -20,5 +20,7 @@ urlpatterns = [
 	url(r'^nh6wi/$', views.nh6wi, name="nh6wi"),
 	url(r'^officers/$', views.officers, name="officers"),
 	url(r'^repeaters/$', views.repeaters, name="repeaters"),
+	url(r'^repeaters/allmon/$', views.allmon, name="allmon"),
+	url(r'^repeaters/brandmeister/$', views.brandmeister, name="brandmeister"),
 	url(r'^swap-shop/$', views.swap_and_shop, name="swap_and_shop"),
 ]

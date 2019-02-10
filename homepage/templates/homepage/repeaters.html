@@ -3,9 +3,134 @@
 {% block browsertitle %}EARC - Repeaters{% endblock %}
 
 {% block content %}
-<h2 class="title">EARC Repeater Network</h2>
-<p>One of the chartered purposes of the EARC is to operate repeaters for the use of the greater amateur radio community in Hawaii. To that end, our dues revenue and fundraising efforts go in part to investing in our repeater network.</p>
-<p>Thanks to a linking project in 2016, two of our repeater sites (Mauka Kapu and Olomana) are now Internet linked, so that keying up any of the repeaters sends the audio to both repeaters. We hope to bring the Laie repeater into the network soon.</p>
+
+<div class="card mb-4">
+	<div class="card-header">
+		<span class="h2 title">Repeater Info</span>
+	</div>
+	<div class="card-body">
+		<p>One of the chartered purposes of the EARC is to operate repeaters for the use of the greater amateur radio community in Hawaii. To that end, our dues revenue and fundraising efforts go in part to investing in our repeater network.</p>
+		<p>Thanks to a linking project in 2016, two of our repeater sites (Mauka Kapu and Olomana) are now Internet linked, so that keying up any of the repeaters sends the audio to both repeaters. We hope to bring the Laie repeater into the network soon.</p>
+	</div>
+</div>
+
+<div class="card mb-2">
+	<div class="card-header">
+		<div class="row">
+			<div class="col h4 title">EARC Repeater Network</div>
+			<div class="col text-right">
+				<a class="btn btn-md btn-primary" href="{% url 'allmon' %}" target="_blank" data-toggle="tooltip" title="Click to open the EARC Allmon page (works with any browser except Internet Explorer)">AllStar Monitor</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row mb-2">
+	<div class="col-6">
+		<div class="card">
+			<div class="card-header">
+				<span class="h4 title">Mauna Kapu</span>
+			</div>
+			<div class="card-body">
+				<p><b>VHF Analog:</b> 146.800 (-), PL 88.5 <br />
+					<b>DMR Brandmeister:</b> 444.100 (+) CC 4 (311549) <br /><a href="https://brandmeister.network/?page=repeater&id=311549" class="btn btn-primary btn-sm mr-2">Check DMR status</a><a href="https://brandmeister.network/?page=lh&ContextID=^311549$" class="btn btn-sm btn-primary mr-2">Last heard</a></p>
+				<p>This WH6CZB repeater site is located at 1,800 feet elevation on the slopes of Mauna Kapu (translated into English from Hawaiian: "Forbidden Mountain"). While this repeater serves the entire Ewa, Kapolei, and Waipahu areas, it covers an area all the way east to Kaimuki. When propagation on 2 meters is booming, amateur stations along the Kona Coast of the Big Island can reach the repeater. This site is off the electric grid and run entirely on solar power; the site has Internet linking and Allstar capability as private nodes 1061 VHF. There is also an Echolink Node at this location connected daily to the VHF 1061 node, WH6CZB-R.</p>
+			</div>
+		</div>
+	</div>
+	<div class="col-6">
+		<div class="card">
+			<div class="card-header">
+				<span class="h4 title">Olomana</span>
+			</div>
+			<div class="card-body">
+				<p><b>VHF Analog:</b> 146.660 (-), PL 88.5 <br />
+					<b>UHF Analog:</b> 444.150 (+) PL 88.5</p>
+				<p>These WH6CZB repeaters are the primary two-meter and 70-centimeter repeaters serving the Waimanalo, Kailua, and Kaneohe areas of Oahu. The site has Internet linking and Allstar capability as private nodes 1065 VHF, 1066 UHF.</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row mb-4">
+	<div class="col-6">
+		<div class="card">
+			<div class="card-header">
+				<span class="h4 title">Laie</span>
+			</div>
+			<div class="card-body">
+				<p><b>VHF Analog:</b> 146.640 (-), PL 103.5</p>
+				<p>This WH6CZB repeater is the primary two-meter repeater serving the Laie and Kahuku area of Oahu. This repeater provides excellent coverage from Turtle Bay, Kahuku to Kahana Valley, along Oahu's northeast shore. This is the next site that will receive Internet linking in the near future.</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-6">
+		<div class="card">
+			<div class="card-header">
+				<span class="h4 title">Kakaako DMR</span>
+			</div>
+			<div class="card-body">
+				<p><b>DMR Brandmeister:</b> 444.500 (+), CC 5 (311550) <br /><a href="https://brandmeister.network/?page=repeater&id=311550" class="btn btn-sm btn-primary mr-2">Check DMR status</a><a href="https://brandmeister.network/?page=lh&ContextID=^311550$" class="btn btn-sm btn-primary mr-2">Last heard</a></p>
+				<p>This WH6CZB DMR Brandmeister repeater is located in Kakaako at about 500 ft.</p>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="card mb-2">
+	<div class="card-header">
+		<div class="row">
+			<div class="col h4 title">Honolulu DEM Repeaters</div>
+			<div class="col text-right">
+				<a class="btn btn-md btn-primary" href="{% url 'allmon' %}" target="_blank" data-toggle="tooltip" title="Click to open the EARC Allmon page (works with any browser except Internet Explorer)">AllStar Monitor</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row mb-2">
+	<div class="col-12">
+		<div class="card">
+			<div class="card-header">
+				<span class="h4 title">Diamond Head</span>
+			</div>
+			<div class="card-body">
+				<p><b>VHF Analog:</b> 146.880 (-), PL 88.5</p>
+				<p>The WH6CZB repeater operating on 146.280/146.880 MHz is located at about the 550-foot elevation of the northeast flank atop Diamond Head Crater. Formerly operated and maintained by the EARC, the repeater is now owned and operatored by the Department of Emergency Management. It serves all of Honolulu, including parts of Leeward, Central, Windward Oahu and the western half of Molokai. Many transient and local hams use this repeater for general communications. Also, this is the primary public service event repeater for most events in Waikiki and the Honolulu Marathon. This repeater, when linked, simulcasts on 146.980 Downtown, 146.760 Peacock Flats, 444.325 Windward, and 147.060 State DH. </p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-6">
+		<div class="card">
+			<div class="card-header">
+				<span class="h4 title">Fasi Municipal Building</span>
+			</div>
+			<div class="card-body">
+				<p><b>VHF Analog:</b> 146.980 (-), PL 88.5<br />
+					<b>UHF Analog:</b> 448.700 (-), PL 88.5</p>
+				<p>The KH6OCD repeater operating on 146.380/146.980 MHz is a local area repeater serving down town Honolulu and surrounding communities. It is located on the rooftop of the Honolulu Municipal Building at 650 S. King St.</p>
+			</div>
+		</div>
+	</div>
+	<div class="col-6">
+		<div class="card">
+			<div class="card-header">
+				<span class="h4 title">Peacock Flats</span>
+			</div>
+			<div class="card-body">
+				<p><b>VHF Analog:</b> 146.760 (-)</p>
+				<p>The KH6OCD repeater operating on 146.160/146.760 MHz is the primary two meter repeater serving Oahu's North Shore from Sunset Beach to Kaena Point. Located on a mountaintop called Peacock Flats, this repeater provides excellent coverage all along Oahu's North West Shore.</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+
 
 
 {% endblock %}

@@ -201,3 +201,9 @@ def contact(request):
 
 def contact_success(request):
 	return render(request, "homepage/contact_success.html")
+	
+def allmon(request):
+	return render(request, "homepage/allmon.html")
+	
+def brandmeister(request):
+	return render(request, "homepage/brandmeister.html")
