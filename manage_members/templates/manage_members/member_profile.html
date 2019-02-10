@@ -40,6 +40,7 @@
 		<p class="card-text">Membership expires: {{member.membership_expires}}</p>
 		{% endif %}
 		
+		{% if member.duespayment_set.all %}
 		<table class="table table-sm table-striped">
 			<thead class="thead-light">
 				<tr>
@@ -60,6 +61,7 @@
 				{% endfor %}
 			</tbody>
 		</table>
+		{% endif %}
 		
 	</div>
 </div>
