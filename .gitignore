@@ -4,5 +4,6 @@ geckodriver.log
 __pycache__
 *.pyc
 earc2/gmail_config.py
+earc2/recaptcha.py
 ngrok.exe
 

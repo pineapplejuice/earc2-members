@@ -1,7 +1,7 @@
 import re
 from datetime import date
 from django.forms import (
-	ModelForm, Select, SelectDateWidget, 
+	ModelForm, RadioSelect, SelectDateWidget, 
 	PasswordInput, HiddenInput, CharField, ValidationError
 )
 from django.contrib.auth.models import User
@@ -23,10 +23,10 @@ class MemberForm(ModelForm):
 		exclude = ['position',]
 		widgets = {
 			'expiration_date': HiddenInput(),
-			'mailing_list': Select(choices=YES_NO_DROPDOWN),
-			'wd_online': Select(choices=YES_NO_DROPDOWN),
-			'arrl_member': Select(choices=YES_NO_DROPDOWN),
-			'need_new_badge': Select(choices=YES_NO_DROPDOWN),
+			'mailing_list': RadioSelect(choices=YES_NO_DROPDOWN),
+			'wd_online': RadioSelect(choices=YES_NO_DROPDOWN),
+			'arrl_member': RadioSelect(choices=YES_NO_DROPDOWN),
+			'need_new_badge': RadioSelect(choices=YES_NO_DROPDOWN),
 			'user': HiddenInput(),
 		}
 	

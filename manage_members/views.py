@@ -1,9 +1,11 @@
 import json
 import requests
+import urllib
 
 from datetime import date, datetime
 from urllib.parse import urlencode
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
@@ -32,6 +34,26 @@ def redirect_params(url, params=None):
 		query_string = urlencode(params)
 		response['Location'] += '?' + query_string
 	return response
+
+def get_expiration_date_from_uls(callsign):
+	"""
+	Retrieves license expiration date from FCC ULS API.
+	
+	"""
+	uls_url = "http://data.fcc.gov/api/license-view/basicSearch/getLicenses?format=json&searchValue="
+
+	try:
+		res = requests.get(uls_url + callsign)
+		res_unicode = res.content.decode('utf-8')
+		res_json = json.loads(res_unicode)
+		
+		#  Iterate through the returned licenses and return exact match.
+		for license in res_json['Licenses']['License']:
+			if license['callsign'] == callsign:
+				return license['expiredDate']
+	
+	except ConnectionError:
+		return None
 
 
 # Views
@@ -85,64 +107,85 @@ def new_member(request):
 		user_form = UserForm(request.POST)
 		if member_form.is_valid() and user_form.is_valid():
 
-			# Save both forms without commiting yet
-			member = member_form.save(commit=False)
-			user = user_form.save(commit=False)
-			
-			# Retrieve member's expiration date if available
-			if member.callsign:
-				uls_url = "http://data.fcc.gov/api/license-view/basicSearch/getLicenses?format=json&searchValue="
-				try:
-					res = requests.get(uls_url + member.callsign)
-					res_unicode = res.content.decode('utf-8')
-					res_json = json.loads(res_unicode)
-					member.expiration_date = datetime.strptime(res_json['Licenses']['License'][0]['expiredDate'], '%m/%d/%Y').date()
-				except ConnectionError:
-					pass
-
-			
-			# Create the name, email, and username fields from the member information
-			user.username = member.callsign.lower()
-			user.email = member.email_address
-			user.first_name = member.first_name
-			user.last_name = member.last_name
-			user.set_password(user.password)	# sets the password in hash
-			user.is_active = False		# user needs to activate first
-			user.save()					# save the user
-
-			# Link user to member record and save member record
-			member.user = User.objects.get(username = user.username)
-			member.save()				
-			
-			# send confirmation email
-			current_site = get_current_site(request) 
-			send_email_from_template(
-				subject_template='manage_members/acc_active_subject.txt',
-				message_template = 'manage_members/acc_active_email.txt',
-				context = {
-					'user': user,
-					'member': member,
-					'domain': current_site.domain,
-					'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
-					'token': account_activation_token.make_token(user),
-				},
-				recipients = [member.email_address],
-			)			
-			
-			params = {
-				'name': member_form.cleaned_data['first_name'],
+			# Begin recaptcha validation
+			recaptcha_response = request.POST.get('g-recaptcha-response')
+			url = 'https://www.google.com/recaptcha/api/siteverify'
+			values = {
+				'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
+				'response': recaptcha_response,
 			}
+			data = urllib.parse.urlencode(values).encode()
+			req = urllib.request.Request(url, data=data)
+			response = urllib.request.urlopen(req)
+			result = json.loads(response.read().decode())
+			# End recaptcha validation
 			
-			return redirect_params('member_thanks', params)
+			if result['success']:
+				# Recaptcha valid, finalize all setup
+				
+				# Save both forms without commiting yet
+				member = member_form.save(commit=False)
+				user = user_form.save(commit=False)
+				
+				# Retrieve member's expiration date if available
+				if member.callsign:
+					member.expiration_date = datetime.strptime(
+						get_expiration_date_from_uls(member.callsign), '%m/%d/%Y').date()
+				
+				# Create the name, email, and username fields from the member information
+				user.username = member.callsign.lower()
+				user.email = member.email_address
+				user.first_name = member.first_name
+				user.last_name = member.last_name
+				user.set_password(user.password)	# sets the password in hash
+				user.is_active = False		# user needs to activate first
+				user.save()					# save the user
+
+				# Link user to member record and save member record
+				member.user = User.objects.get(username = user.username)
+				member.save()				
+				
+				# send confirmation email requesting activation to user
+				current_site = get_current_site(request) 
+				send_email_from_template(
+					subject_template='manage_members/acc_active_subject.txt',
+					message_template = 'manage_members/acc_active_email.txt',
+					context = {
+						'user': user,
+						'member': member,
+						'domain': current_site.domain,
+						'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
+						'token': account_activation_token.make_token(user),
+					},
+					recipients = [member.email_address],
+				)			
+				
+				params = {
+					'name': member_form.cleaned_data['first_name'],
+				}
+				
+				return redirect_params('member_thanks', params)
+			
+			else: # Recaptcha failed
+				messages.error(request, "Invalid reCAPTCHA. Please try again.")
+
 	else:
+		# Prepopulate member form and user form with default values
 		member_form = MemberForm(initial = {
 			'expiration_date': date.today(), 
 			'state': 'HI',
+			'mailing_list': True,
+			'wd_online': True,
+			'arrl_member': True,
+			'need_new_badge': True,
 		})
 		user_form = UserForm()
 	
-	return render(request, "manage_members/member_new_form.html", 
-		{'member_form': member_form, 'user_form': user_form})
+	return render(request, "manage_members/member_new_form.html", {
+		'member_form': member_form, 
+		'user_form': user_form, 
+		'site_key': settings.GOOGLE_RECAPTCHA_SITE_KEY,
+	})
 
 
 def member_thanks(request):

@@ -20,13 +20,23 @@
 			<table class="table">
 				{{ member_form.as_table }}
 				{{ user_form.as_table }}
-				<th>
-				</th>
-				<td>
-					<input class="btn-lg btn-primary" type="submit" value="Submit" />
-					<input class="btn-lg btn-secondary" type="reset" value="Reset" />				
-					
-				</td>
+				<tr>
+					<th>
+					</th>
+					<td>
+						<script src='https://www.google.com/recaptcha/api.js'></script>
+						<div class="g-recaptcha" data-sitekey="{{ site_key }}"></div>
+					</td>
+				</tr>
+				<tr>
+					<th>
+					</th>
+					<td>
+						<input class="btn-lg btn-primary" type="submit" value="Submit" />
+						<input class="btn-lg btn-secondary" type="reset" value="Reset" />
+					</td>
+				</tr>
+
 
 			</table>
 		</form>
