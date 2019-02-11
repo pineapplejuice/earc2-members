@@ -207,3 +207,7 @@ def allmon(request):
 	
 def brandmeister(request):
 	return render(request, "homepage/brandmeister.html")
+
+def repeater_rules(request):
+	return render(request, "homepage/repeater_rules.html")
+

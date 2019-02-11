@@ -22,5 +22,6 @@ urlpatterns = [
 	url(r'^repeaters/$', views.repeaters, name="repeaters"),
 	url(r'^repeaters/allmon/$', views.allmon, name="allmon"),
 	url(r'^repeaters/brandmeister/$', views.brandmeister, name="brandmeister"),
+	url(r'^repeaters/rules/$', views.repeater_rules, name="repeater_rules"),
 	url(r'^swap-shop/$', views.swap_and_shop, name="swap_and_shop"),
 ]

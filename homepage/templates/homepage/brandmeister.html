@@ -1,19 +1,83 @@
 {% extends "base.html" %}
 
-{% block browsertitle %}EARC - Brandmeister DMR Info{% endblock %}
+{% block browsertitle %}EARC - Brandmeister DMR FAQ{% endblock %}
 
 {% block content %}
 
-<div class="card">
+<div class="card mb-2">
 	<div class="card-header">
-		<span class="title">Brandmeister DMR Info</span>
+		<span class="h2 title">Brandmeister DMR FAQ</span>
 	</div>
+</div>
+
+<div class="card">
+	<div class="card-header panel-heading">
+		<span class="h4 title panel-title"><a data-toggle="collapse" href="#ans1">What is DMR?</a></span>
+	</div>
+	<div id="ans1" class="panel-collapse collapse card-body">
+		<div class="panel-body">
+			<p><b>Digital Mobile Radio (DMR)</b> is a radio protocol developed by the European Telecommunication Standards Institute (ETSI) and is used worldwide in many professional radio telecommunication systems, and has now become increasingly popular among amateur radio users. Not unlike technologies like D-STAR, DMR is a way to send transmissions digitally, allowing for better sound quality and the ability to use the Internet to propagate the data over a larger area.</p>
+			<p>DMR comes in several flavors or tiers, but the type of DMR that hams are using is <b>DMR Tier II,</b> which allows for a bandwidth of 12.5 kHz (half the normal 25 kHz bandwidth of an analog FM signal), and dividing that signal into two channels (or <b>timeslots</b>) using time division multiple access or TDMA (a multi-channel technology used in some digital cell phone platforms).</p>
+			<p>There are two competing networks for ham radio use of DMR, <b>DMR-MARC</b> and <b>BrandMeister</b>. The EARC has opted to put their DMR repeaters on the BrandMeister network. On the BrandMeister network, one can access a variety of different <b>talkgroups</b> by programming their radio to access a talkgroup through the repeater and keying up. (Individual repeater operators can allow all or some of the talkgroups.)</p>
+			<p>DMR-MARC also has their own collection on talkgroups. The two networks have different identification schemes for their talkgroups, but the basic process of programming is the same.</p>
+		</div>
+	</div>
+	
+	<div class="card-header panel-heading">
+		<span class="h4 title panel-title"><a data-toggle="collapse" href="#ans2">What do I need to get started on DMR?</a></span>
+	</div>
+	<div id="ans2" class="panel-collapse collapse card-body">
+		<div class="panel-body">
+			<p>To get started on DMR, you will need the following:</p>
+			<ul>
+				<li><b>A DMR radio compatible with Tier II.</b> Motorola is the gold standard for the use of DMR Tier II, and many of the early adopters of DMR used Motorola equipment. They still provide the best quality and the most features. However, there are more inexpensive alternatives that also provide a high level of quality&mdash;TYT and Anytone make DMR radios that are popular among DMR users. Check ham radio sites or other DMR users for their recommendations.</li>
+				<li><b>Programming software.</b> Unfortunately, DMR radios are not designed to be programmed from the front panel due to higher complexity; you will need to use programming software. The radio you get should have software available for programming the radio and instructions on how to do so.</li>
+				<li><b>A DMR radio ID.</b> When you transmit on any DMR network, your radio sends a unique ID so that it can be recognized on the system; this ID needs to be programmed into your radio. To get the DMR ID, go to <a href="http://ham-digital.org/">hamdigital.org</a> and click the "register" link at the top to apply for a DMR ID.</li>
+			</ul>
+		</div>
+	</div>
+	
+	<div class="card-header panel-heading">
+		<span class="h4 title panel-title"><a data-toggle="collapse" href="#ans3">How do I program my DMR radio?</a></span>
+	</div>
+	<div id="ans3" class="panel-collapse collapse card-body">
+		<div class="panel-body">
+			<p>The details will depend largely on your radio, but in general, here are some key concepts:</p>
+			<ul>
+				<li><b>Contacts:</b> In your contacts list you program the talkgroup IDs for the talkgroups you wish to participate in. At minimum for the EARC repeaters you will want to program in the following talkgroups: #3115 for Hawaii statewide, #31150 for Hawaii 2, and #2 for the local EARC cluster. You can also program individual user radio IDs so that their name and callsign show up on your radio's screen.</li>
+				<li><b>Frequencies:</b> Like analog repeaters you will need the receive and transmit frequencies of the repeater.</li>
+				<li><b>Color Code:</b> Many DMR repeaters will require a "color code" to be programmed into the channel information, similar to a PL/CTCSS code on analog.</li>
+				<li><b>Channels:</b> A channel accesses a particular talkgroup on a particular repeater. When programming a channel into your radio, you will need the following information: repeater frequencies, color code, timeslot (1 or 2), and talkgroup ID. That means that you will need to program channels separately for each talkgroup/repeater combination...which may require some patience.</li>
+				<li><b>Codeplug:</b> Your programming software creates a software file with all the channel information that is uploaded to your radio; this file is called a "codeplug." To get started, you may want to start with a codeplug from an experienced DMR user who uses your radio and has been able to get their radio to work with the repeaters you want; examining it will give you an idea of how programming works (and save you a lot of time.)</li>
+			</ul>
+		</div>
+	</div>
+		<div class="card-header panel-heading">
+		<span class="h4 title panel-title"><a data-toggle="collapse" href="#ans4">What information do I need for the EARC DMR repeaters?</a></span>
+	</div>
+	<div id="ans4" class="panel-collapse collapse show card-body">
+		<div class="panel-body">
+			<p>The EARC DMR repeaters have the following talkgroups assigned to them:</p>
+			<ul>
+				<li>Timeslot 1: Statically assigned TG 3115 - State of Hawaii</li>
+				<li>Timeslot 2: Statically assigned TG 2 and TG 31150 (Hawaii 2)</li>
+			</ul>
+			<p>Statically assigned talk groups are permanently assigned to that time slot and any transmission on the talk group will be heard when listening.</p>
+			<p>Dynamic Talk groups are groups that you will need to key up with your radio set to that TG. The repeater will hear it and link to that TG, then you can call out and have a QSO on that TG. It will stay connected until no further signal is heard into the repeater for 15 minutes, then the repeater will automaticalyy disconnect the TG.</p>
+			<p><b>We ask that Slot 1 be used for local and state wide traffic and slot 2 for everything else.</b></p>
+			<p>Thank you and have fun!</p>
+		</div>
+	</div>
+<!--
 	<div class="card-body">
 		<p><b>Slot 1:</b> Statically assigned TG 3115 - State of Hawaii<br />
 			<b>Slot 2:</b> Statically assigned TG 2 and Hawaii 2 (TG 31150)</b></p>
 		
 		
 	</div>
+-->
+</div>
+
 </div>
 
 {% endblock %}

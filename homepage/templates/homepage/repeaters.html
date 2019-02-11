@@ -11,6 +11,8 @@
 	<div class="card-body">
 		<p>One of the chartered purposes of the EARC is to operate repeaters for the use of the greater amateur radio community in Hawaii. To that end, our dues revenue and fundraising efforts go in part to investing in our repeater network.</p>
 		<p>Thanks to a linking project in 2016, two of our repeater sites (Mauka Kapu and Olomana) are now Internet linked, so that keying up any of the repeaters sends the audio to both repeaters. We hope to bring the Laie repeater into the network soon.</p>
+		<p>We have also are in the process of acquiring DMR repeaters to allow our users to use DMR using the <a href="{% url 'brandmeister' %}">BrandMeister network</a>.</p>
+		<p>Use of our repeater system is subject to our <a href="{% url 'repeater_rules' %}">rules and regulations</a>.</p>
 	</div>
 </div>
 
@@ -33,7 +35,7 @@
 			</div>
 			<div class="card-body">
 				<p><b>VHF Analog:</b> 146.800 (-), PL 88.5 <br />
-					<b>DMR Brandmeister:</b> 444.100 (+) CC 4 (311549) <br /><a href="https://brandmeister.network/?page=repeater&id=311549" class="btn btn-primary btn-sm mr-2">Check DMR status</a><a href="https://brandmeister.network/?page=lh&ContextID=^311549$" class="btn btn-sm btn-primary mr-2">Last heard</a></p>
+					<b><a href="{% url 'brandmeister' %}#ans4">DMR Brandmeister</a>:</b> 444.100 (+) CC 4 (311549) <br /><a href="https://brandmeister.network/?page=repeater&id=311549" class="btn btn-primary btn-sm mr-2">Check DMR status</a><a href="https://brandmeister.network/?page=lh&ContextID=^311549$" class="btn btn-sm btn-primary mr-2">Last heard</a></p>
 				<p>This WH6CZB repeater site is located at 1,800 feet elevation on the slopes of Mauna Kapu (translated into English from Hawaiian: "Forbidden Mountain"). While this repeater serves the entire Ewa, Kapolei, and Waipahu areas, it covers an area all the way east to Kaimuki. When propagation on 2 meters is booming, amateur stations along the Kona Coast of the Big Island can reach the repeater. This site is off the electric grid and run entirely on solar power; the site has Internet linking and Allstar capability as private nodes 1061 VHF. There is also an Echolink Node at this location connected daily to the VHF 1061 node, WH6CZB-R.</p>
 			</div>
 		</div>
@@ -71,7 +73,7 @@
 				<span class="h4 title">Kakaako DMR</span>
 			</div>
 			<div class="card-body">
-				<p><b>DMR Brandmeister:</b> 444.500 (+), CC 5 (311550) <br /><a href="https://brandmeister.network/?page=repeater&id=311550" class="btn btn-sm btn-primary mr-2">Check DMR status</a><a href="https://brandmeister.network/?page=lh&ContextID=^311550$" class="btn btn-sm btn-primary mr-2">Last heard</a></p>
+				<p><b><a href="{% url 'brandmeister' %}#ans4">DMR Brandmeister</a>:</b> 444.500 (+), CC 5 (311550) <br /><a href="https://brandmeister.network/?page=repeater&id=311550" class="btn btn-sm btn-primary mr-2">Check DMR status</a><a href="https://brandmeister.network/?page=lh&ContextID=^311550$" class="btn btn-sm btn-primary mr-2">Last heard</a></p>
 				<p>This WH6CZB DMR Brandmeister repeater is located in Kakaako at about 500 ft.</p>
 			</div>
 		</div>

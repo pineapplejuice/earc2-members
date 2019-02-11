@@ -64,14 +64,10 @@
 							Repeaters
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-							<a class="dropdown-item" {% if request.resolver_match.url_name == 'repeaters' %}active{% endif %}"
-								href="{% url 'repeaters' %}">
-								Repeaters
-								{% if request.resolver_match.url_name == 'repeaters' %}<span class="sr-only">(current)</span>{% endif %}</a>							
-							<a class="dropdown-item" {% if request.resolver_match.url_name == 'nets' %}active{% endif %}"
-								href="{% url 'nets' %}">
-								Nets
-								{% if request.resolver_match.url_name == 'nets' %}<span class="sr-only">(current)</span>{% endif %}</a>
+							<a class="dropdown-item {% if request.resolver_match.url_name == 'repeaters' %}active{% endif %}" href="{% url 'repeaters' %}">Repeaters {% if request.resolver_match.url_name == 'repeaters' %}<span class="sr-only">(current)</span>{% endif %}</a>
+							<a class="dropdown-item {% if request.resolver_match.url_name == 'brandmeister' %}active{% endif %}" href="{% url 'brandmeister' %}">BrandMeister DMR FAQ {% if request.resolver_match.url_name == 'brandmeister' %}<span class="sr-only">(current)</span>{% endif %}</a>
+							<a class="dropdown-item {% if request.resolver_match.url_name == 'repeater_rules' %}active{% endif %}" href="{% url 'repeater_rules' %}">Repeater Rules{% if request.resolver_match.url_name == 'repeater_rules' %}<span class="sr-only">(current)</span>{% endif %}</a>
+							<a class="dropdown-item {% if request.resolver_match.url_name == 'nets' %}active{% endif %}" href="{% url 'nets' %}">Nets{% if request.resolver_match.url_name == 'nets' %}<span class="sr-only">(current)</span>{% endif %}</a>
 							<a class="dropdown-item" href="#">Logbook</a>
 						</div>
 					</li>
