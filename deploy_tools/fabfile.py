@@ -54,6 +54,11 @@ def _update_settings(source_folder, site_name):
 	email_config_file = source_folder + '/earc2/gmail_config.py'
 	put(local_path = '../earc2/gmail_config.py',
 		remote_path = email_config_file)
+		
+	# Copy recaptcha config file
+	recaptcha_config_file = source_folder + '/earc2/recaptcha.py'
+	put(local_path = '../earc2/recaptcha.py',
+		remote_path = recaptcha_config_file)
 	
 
 def _update_virtualenv(source_folder):
