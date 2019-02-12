@@ -61,3 +61,10 @@ blockquote.earc {
 }
 .alert-error .alert-link {
   color: #843534;
+}
+
+#id_mailing_list, #id_wd_online, #id_arrl_member, #id_need_new_badge {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
