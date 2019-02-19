@@ -52,7 +52,7 @@ class Member(models.Model):
 	city = models.CharField(max_length=35)
 	state = models.CharField(max_length=2)
 	zip_code = models.CharField(max_length=10)
-	phone = models.CharField(max_length=10)
+	phone = models.CharField(max_length=15)
 	email_address = models.EmailField()
 	mailing_list = models.BooleanField(
 		verbose_name = "Add me to the club mailing list"
