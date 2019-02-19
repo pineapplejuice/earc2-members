@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load member_filters %}
 
 {% block browsertitle %}EARC - Profile for {{member.callsign}}{% endblock %}
 
@@ -87,7 +88,7 @@
 			<div class="card-body">
 				<p class="card-text">{{member.address}}<br />
 					{{member.city}}, {{member.state}} {{member.zip_code}}</p>
-				<p class="card-text">{{member.phone}}</p>
+				<p class="card-text">{{member.phone|phone_number}}</p>
 				<p class="card-text"><a href="mailto:{{member.email_address}}">{{member.email_address}}</a></p>
 			</div>
 		</div>
