@@ -1,0 +1,1 @@
+Member account created: {{member.first_name}} {{member.last_name}}, {{member.callsign}}

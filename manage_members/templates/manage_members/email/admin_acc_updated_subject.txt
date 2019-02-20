@@ -1,0 +1,1 @@
+Member account updated: {{member.first_name}} {{member.last_name}}, {{member.callsign}}

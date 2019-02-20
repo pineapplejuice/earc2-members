@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.exceptions import ValidationError
 
 from paypal.standard.models import ST_PP_COMPLETED
@@ -55,6 +56,7 @@ def show_me_the_money(sender, **kwargs):
 			)
 			new_payment.save()
 			
+			# Send email to user
 			send_email_from_template(
 				subject_template = (
 					'payments/subject_new_member.txt' if ipn_obj.item_number[:3] == 'NEW'
@@ -68,7 +70,7 @@ def show_me_the_money(sender, **kwargs):
 					'payment_date': payment_date,
 				},
 				recipients = [member.email_address],
-				cc = ['treasurer@earchi.org']
+				cc = settings.MEMBERSHIP_ADMINS
 			)
 				
 			

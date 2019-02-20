@@ -94,6 +94,17 @@ def member_update(request, id):
 	member_form = MemberForm(request.POST or None, instance = member)
 	if member_form.is_valid():
 		member_form.save()
+		
+		# Email admins when information updated
+		send_email_from_template(
+			subject_template='manage_members/email/admin_acc_updated_subject.txt',
+			message_template = 'manage_members/email/admin_acc_updated_body.txt',
+			context = {
+				'member': member_form,
+			},
+			recipients = settings.MEMBERSHIP_ADMINS,
+		)
+		
 		messages.success(request, 'Profile details updated.')
 		return redirect('member_profile', id=id)
 	return render(request, "manage_members/member_update_form.html", 
@@ -146,10 +157,10 @@ def new_member(request):
 				member.save()				
 				
 				# send confirmation email requesting activation to user
-				current_site = get_current_site(request) 
+				current_site = get_current_site(request)
 				send_email_from_template(
-					subject_template='manage_members/acc_active_subject.txt',
-					message_template = 'manage_members/acc_active_email.txt',
+					subject_template='manage_members/email/user_acc_active_subject.txt',
+					message_template = 'manage_members/email/user_acc_active_body.txt',
 					context = {
 						'user': user,
 						'member': member,
@@ -158,7 +169,17 @@ def new_member(request):
 						'token': account_activation_token.make_token(user),
 					},
 					recipients = [member.email_address],
-				)			
+				)
+				
+				# send information to membership admins
+				send_email_from_template(
+					subject_template='manage_members/email/admin_acc_created_subject.txt',
+					message_template = 'manage_members/email/admin_acc_created_body.txt',
+					context = {
+						'member': member,
+					},
+					recipients = settings.MEMBERSHIP_ADMINS,
+				)
 				
 				params = {
 					'name': member_form.cleaned_data['first_name'],

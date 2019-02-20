@@ -1,0 +1,20 @@
+{% load member_filters %}
+To Membership Committee:
+
+A new member account has been created on the EARC website.
+
+Callsign: {{member.callsign}}
+License class: {{member.get_license_type_display}}
+Expires: {{member.expiration_date}}
+Name: {{member.first_name}} {{member.last_name}}
+Address: {{member.address}}
+City: {{member.city}}
+State: {{member.state}}
+Zip Code: {{member.zip_code}}
+Phone: {{member.phone|phone_number}}
+Email Address: {{member.email_address}}
+
+Add to member list: {% if member.mailing_list %}Yes{% else %}No{% endif %}
+WD Online: {% if member.wd_online %}Yes{% else %}No{% endif %}
+ARRL Member: {% if member.arrl_member %}Yes{% else %}No{% endif %}
+Needs new member badge: {% if member.needs_new_badge %}Yes{% else %}No{% endif %}

@@ -141,3 +141,8 @@ PAYPAL_BUY_BUTTON_IMAGE = 'https://www.paypalobjects.com/webstatic/en_US/i/butto
 
 # Google recaptcha settings
 from .recaptcha import GOOGLE_RECAPTCHA_SITE_KEY, GOOGLE_RECAPTCHA_SECRET_KEY
+
+# Membership admins
+MEMBERSHIP_ADMINS = [
+	'treasurer@earchi.org',
+]
