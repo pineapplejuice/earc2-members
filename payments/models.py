@@ -1,7 +1,8 @@
+import datetime
+
 from django.db import models
 from django.db.models import signals, Max
 from django.utils.timezone import now
-import datetime
 
 from manage_members.models import Member
 
