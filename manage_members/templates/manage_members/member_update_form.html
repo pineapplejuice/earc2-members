@@ -6,26 +6,31 @@
 {% block content %}
 
 <div class="card">
-	<div class="card-header">
-		<span class="h2 title">Update Member Information</span>
-	</div>
-	<div class="card-body">
-		<form action="{% url 'member_update' member.id %}" method="post" id="member_form">
-			{% csrf_token %}
-			<table class="table">
-				{{ member_form.as_table }}
-				<th>
-				</th>
-				<td>
-					<input class="btn-lg btn-primary" type="submit" value="Submit" />
-					<input class="btn-lg btn-secondary" type="reset" value="Reset" />
+    <div class="card-header">
+        <div class="row">
+            <div class="col h2 title">Update Member Information</div>
+            <div class="col text-right">
+                <a class="btn btn-md btn-primary" href="{% url 'member_profile' member.id %}">Return to profile</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <form action="{% url 'member_update' member.id %}" method="post" id="member_form">
+            {% csrf_token %}
+            <table class="table">
+                {{ member_form.as_table }}
+                <th>
+                </th>
+                <td>
+                    <input class="btn-lg btn-primary" type="submit" value="Submit" />
+                    <input class="btn-lg btn-secondary" type="reset" value="Reset" />
 
-				</td>
+                </td>
 
-			</table>
+            </table>
 
-		</form>
-	</div>
+        </form>
+    </div>
 </div>
 
 
