@@ -55,7 +55,7 @@
 	<div class="card-body">
 		<ul>
 			{% for meeting in upcoming_meetings %}
-			<li>{{meeting.date_time|date:"l, F d, Y"}}, {{meeting.date_time|date:"f a"}} at {{next_meeting.meeting_place.venue_name}}
+			<li>{{meeting.date_time|date:"l, F d, Y"}}, {{meeting.date_time|date:"f a"}} at {{meeting.meeting_place.venue_name}}
 				{% if meeting.topic %}
 					(Topic: {{meeting.topic}})
 				{% endif %}
