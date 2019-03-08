@@ -4,7 +4,7 @@ from datetime import date
 from django.forms import (
     ModelForm, RadioSelect, SelectDateWidget, 
     PasswordInput, HiddenInput, CharField, ValidationError,
-    NumberInput, EmailInput,
+    NumberInput, EmailInput, TextInput,
 )
 from django.contrib.auth.models import User
 
@@ -43,7 +43,10 @@ class MemberForm(ModelForm):
         model = Member
         exclude = ['position',]
         widgets = {
+            'callsign': TextInput(attrs={'size': 10}),
             'expiration_date': HiddenInput(),
+            'address': TextInput(attrs={'size': 40}),
+            'state': TextInput(attrs={'size': 3}),
             'email_address': EmailInput(),
             'mailing_list': RadioSelect(choices=YES_NO_DROPDOWN),
             'wd_online': RadioSelect(choices=YES_NO_DROPDOWN),
