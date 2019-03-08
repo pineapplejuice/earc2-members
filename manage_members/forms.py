@@ -47,7 +47,7 @@ class MemberForm(ModelForm):
             'expiration_date': HiddenInput(),
             'address': TextInput(attrs={'size': 40}),
             'state': TextInput(attrs={'size': 3}),
-            'email_address': EmailInput(),
+            'email_address': EmailInput(attrs={'size': 40}),
             'mailing_list': RadioSelect(choices=YES_NO_DROPDOWN),
             'wd_online': RadioSelect(choices=YES_NO_DROPDOWN),
             'arrl_member': RadioSelect(choices=YES_NO_DROPDOWN),
