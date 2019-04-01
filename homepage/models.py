@@ -1,6 +1,16 @@
 from datetime import timedelta
 
 from django.db import models
+from django.urls import reverse
+
+# Constant lists
+
+EVENT_CATEGORIES = [
+    ('MEETING', 'Meeting'),
+    ('TESTING', 'Testing Session'),
+    ('SOCIAL', 'Social Event'),
+    ('OTHER', 'Other Event'),
+]
 
 
 # Create your models here.
@@ -25,7 +35,6 @@ class MeetingPlace(models.Model):
     def __str__(self):
         return self.venue_name
 
-    
 
 class Meeting(models.Model):
     date_time = models.DateTimeField()
@@ -37,6 +46,10 @@ class Meeting(models.Model):
 
 
 class Event(models.Model):
+    event_category = models.CharField(
+        max_length=10,
+        choices=EVENT_CATEGORIES,
+        blank=True)
     start_date_time = models.DateTimeField()
     end_date_time = models.DateTimeField()
     event_name = models.CharField(max_length=100)
@@ -45,6 +58,9 @@ class Event(models.Model):
     
     def __str__(self):
         return str(self.start_date_time) + ', ' + self.event_name
+    
+    def get_absolute_url(self):
+        return reverse('view_event', args=[str(self.id)])
 
 class LinkGroup(models.Model):
     name = models.CharField(max_length=100)

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block browsertitle %}EARC - {{event.event_name}}{% endblock %}
+
+{% block content %}
+
+<div class="card">
+	<div class="card-header">
+		<b>{{event.event_name}}</b>
+	</div>
+	<div class="card-body">
+		<p class="card-text">{{event.start_date_time | date:"l, F d, Y"}}, {{event.start_date_time | time:"f a"}} to {{event.end_date_time | time:"f a"}}</p>
+		<address class="card-text">
+			<strong>{{event.event_venue.venue_name }}</strong><br />
+			{{event.event_venue.address}}<br />
+			{{event.event_venue.city}}, {{event.event_venue.state}} {{event.event_venue.zip_code}}
+		</address>
+		<p class="card-text">{{event.description|linebreaks|urlize}}</p>
+	</div>
+</div>
+
+{% endblock %}

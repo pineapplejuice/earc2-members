@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load event_tags %}
+
+{% block browsertitle %}EARC - Event Calendar{% endblock %}
+
+{% block content %}
+
+<div class="card">
+	<div class="card-header">
+		<span class="title h2">Upcoming Events</span>
+	</div>
+	<div class="card-body">
+		<div class="row mb-2">
+			<div class="col text-left">
+				<a href="{% url 'event_calendar' previous_year previous_month %}" class="btn btn-md btn-primary">{{previous_month_name}} {{previous_year}}</a>
+			</div>
+			<div class="col text-right">
+				<a href="{% url 'event_calendar' next_year next_month %}" class="btn btn-md btn-primary">{{next_month_name}} {{next_year}}</a>
+			</div>
+		</div>
+		<div id="calendar">
+    		{% event_calendar year month events_list %}
+		</div>
+	</div>
+</div>
+
+{% endblock %}

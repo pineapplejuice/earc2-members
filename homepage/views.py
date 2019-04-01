@@ -1,9 +1,14 @@
 from urllib.parse import urlencode
 
+from datetime import datetime, date, timedelta
+from datetime import timezone as dt_timezone
+from calendar import monthrange
+
 from django.contrib import messages
 from django.core.mail import send_mail, BadHeaderError
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404, render_to_response
 from django.http import HttpResponse
+from django.template import RequestContext
 from django.urls import reverse
 from django.utils import timezone
 from paypal.standard.forms import PayPalPaymentsForm
@@ -18,6 +23,7 @@ from manage_members.models import Member
 # Create your views here.
 
 GOOGLE_MAPS_API_KEY = 'AIzaSyB5U5s-pijWcGEi9TPqNk1AZyBr0BCcOZY'
+HST = dt_timezone(-timedelta(hours=10))
 
 
 def home_page(request):
@@ -90,6 +96,8 @@ def meetings(request):
     
     return render(request, 'homepage/meetings.html', context)
 
+### Deprecated in favor of event calendar ###
+
 def events(request):
     """
     Render upcoming event list.
@@ -104,13 +112,22 @@ def events(request):
     return render(request, 'homepage/events.html', context)
 
 
+def view_event(request, id):
+    
+    context = {
+        'event': get_object_or_404(Event, pk=id),
+    }
+    
+    return render(request, 'homepage/view_event.html', context)
+
+
 def nets(request):
     """
     Render net list.
     """
     
     return render(request, 'homepage/nets.html')
-    
+
 
 def links(request):
     """
@@ -218,4 +235,69 @@ def brandmeister(request):
 
 def repeater_rules(request):
     return render(request, "homepage/repeater_rules.html")
+    
+
+## Event Calendar Code
+
+##### Here's code for the view to look up the event objects for to put in 
+# the context for the template. It goes in your app's views.py file (or 
+# wherever you put your views).
+#####
+
+def named_month(month_number):
+    """
+    Return the name of the month, given the number.
+    """
+    return date(1900, month_number, 1).strftime("%B")
+
+def this_month(request):
+    """
+    Show calendar of events this month.
+    """
+    today = datetime.now()
+    return calendar(request, today.year, today.month)
+
+
+def calendar(request, year, month):
+    """
+    Show calendar of events for a given month of a given year.
+
+    """
+
+    my_year = int(year)
+    my_month = int(month)
+    my_calendar_from_month = datetime(my_year, my_month, 1, tzinfo=HST)
+    my_calendar_to_month = datetime(my_year, my_month, monthrange(my_year, my_month)[1], tzinfo=HST)
+
+    my_events = Event.objects.filter(start_date_time__gte=my_calendar_from_month).filter(start_date_time__lte=my_calendar_to_month)
+
+    # Calculate values for the calendar controls. 1-indexed (Jan = 1)
+    my_previous_year = my_year
+    my_previous_month = my_month - 1
+    if my_previous_month == 0:
+        my_previous_year = my_year - 1
+        my_previous_month = 12
+    my_next_year = my_year
+    my_next_month = my_month + 1
+    if my_next_month == 13:
+        my_next_year = my_year + 1
+        my_next_month = 1
+    my_year_after_this = my_year + 1
+    my_year_before_this = my_year - 1
+    
+    context = {'events_list': my_events,
+               'month': my_month,
+               'month_name': named_month(my_month),
+               'year': my_year,
+               'previous_month': my_previous_month,
+               'previous_month_name': named_month(my_previous_month),
+               'previous_year': my_previous_year,
+               'next_month': my_next_month,
+               'next_month_name': named_month(my_next_month),
+               'next_year': my_next_year,
+               'year_before_this': my_year_before_this,
+               'year_after_this': my_year_after_this,
+    }
+    
+    return render(request, "homepage/event_calendar.html", context)
 

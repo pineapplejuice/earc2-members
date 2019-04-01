@@ -75,3 +75,37 @@ blockquote.earc {
 .disabled {
 	font-style: italic;
 }
+
+#calendar table, #calendar table th, #calendar table td {
+	border: 1px solid black;
+}
+
+#calendar table {
+	width: 100%;
+}
+
+th.month {
+	text-align: center;
+	background-color: #9F9;
+	font-size: 1.5em;
+}
+
+.sun, .mon, .tue, .wed, .thu, .fri, .sat {
+	width: 13.6%;
+}
+
+th.sun, th.mon, th.tue, th.wed, th.thu, th.fri, th.sat {
+	text-align: center;
+}
+
+td.sun, td.mon, td.tue, td.wed, td.thu, td.fri, td.sat {
+	vertical-align: top;
+	height: 5em;
+	padding: 5px;
+}
+
+td.filled ul {
+	list-style-type: none;
+	font-size: 0.8em;
+	padding: 0;
+}
