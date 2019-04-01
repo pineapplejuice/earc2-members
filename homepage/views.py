@@ -16,7 +16,7 @@ from payments.paypal_helpers import paypal_email_test_or_prod
 
 from helpers.utils import send_email_from_template
 from homepage.forms import ContactForm
-from homepage.models import Meeting, MeetingPlace, Event, LinkGroup, QuestionGroup
+from homepage.models import MeetingPlace, Event, LinkGroup, QuestionGroup
 from manage_members.models import Member
 
 
@@ -61,8 +61,9 @@ def meetings(request):
     """ 
     
     # future_meetings: pulls all meetings today or after
-    future_meetings = Meeting.objects.filter(
-        date_time__gte=timezone.now()).order_by('date_time')
+    future_meetings = Event.objects.filter(
+        start_date_time__gte=timezone.now()).filter(
+        event_category='MEETING').order_by('start_date_time')
     
     # next meeting is the first future meeting
     next_meeting = future_meetings[0] if future_meetings.count() > 0 else None
@@ -73,8 +74,7 @@ def meetings(request):
     
     
     if next_meeting:
-        meeting_place = next_meeting.meeting_place
-        print(meeting_place)
+        meeting_place = next_meeting.event_venue
         query = {
             'key': GOOGLE_MAPS_API_KEY,
             'q': '{}, {}, {} {}'.format(meeting_place.address, 

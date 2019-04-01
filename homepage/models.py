@@ -36,15 +36,6 @@ class MeetingPlace(models.Model):
         return self.venue_name
 
 
-class Meeting(models.Model):
-    date_time = models.DateTimeField()
-    meeting_place = models.ForeignKey(MeetingPlace, on_delete=models.CASCADE)
-    topic = models.CharField(max_length=200, blank=True)
-    
-    def __str__(self):
-        return str(self.date_time) + ', ' + self.meeting_place.venue_name
-
-
 class Event(models.Model):
     event_category = models.CharField(
         max_length=10,

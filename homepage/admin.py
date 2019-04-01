@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import (
-	Announcement, Meeting, MeetingPlace, Event, LinkGroup, Link,
+	Announcement, MeetingPlace, Event, LinkGroup, Link,
 	QuestionGroup, Question,
 )
 
@@ -21,9 +21,6 @@ class AnnouncementAdmin(admin.ModelAdmin):
 class MeetingPlaceAdmin(admin.ModelAdmin):
 	list_display = ('venue_name', 'address', 'city', 'state', 'zip_code')
 	
-class MeetingAdmin(admin.ModelAdmin):
-	list_display = ('date_time', 'meeting_place', 'topic')
-
 class EventAdmin(admin.ModelAdmin):
 	pass
 
@@ -41,7 +38,6 @@ class QuestionAdmin(admin.ModelAdmin):
 
 admin.site.register(Announcement, AnnouncementAdmin)
 admin.site.register(MeetingPlace, MeetingPlaceAdmin)
-admin.site.register(Meeting, MeetingAdmin)
 admin.site.register(Event, EventAdmin)
 admin.site.register(LinkGroup, LinkGroupAdmin)
 admin.site.register(Link, LinkAdmin)

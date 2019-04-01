@@ -24,20 +24,20 @@
 	</div>
 	<div class="card-body">
 		{% if next_meeting %}
-		<p>Our next General Membership Meeting will be <b>{{next_meeting.date_time | date:"l, F d, Y"}}</b> at <b>{{next_meeting.date_time | time:"f a"}}</b> at <b>{{next_meeting.meeting_place.venue_name }}</b>.</p>
+		<p>Our next General Membership Meeting will be <b>{{next_meeting.start_date_time | date:"l, F d, Y"}}</b> at <b>{{next_meeting.start_date_time | time:"f a"}}</b> at <b>{{next_meeting.event_venue.venue_name }}</b>.</p>
 		<p>The topic for the meeting will be:
-			{% if not next_meeting.topic %}
+			{% if not next_meeting.description %}
 				To be determined.
 			{% else %}
-				{{next_meeting.topic}}
+				{{next_meeting.description}}
 			{% endif %}	
 		</p>
 		<p>Talk-in frequencies are <b>146.880(-)</b> primary, and <b>146.520</b> backup.</p>
 
 		<address>
-			<strong>{{next_meeting.meeting_place.venue_name }}</strong><br />
-			{{next_meeting.meeting_place.address}}<br />
-			{{next_meeting.meeting_place.city}}, {{next_meeting.meeting_place.state}} {{next_meeting.meeting_place.zip_code}}
+			<strong>{{next_meeting.event_venue.venue_name }}</strong><br />
+			{{next_meeting.event_venue.address}}<br />
+			{{next_meeting.event_venue.city}}, {{next_meeting.event_venue.state}} {{next_meeting.event_venue.zip_code}}
 		</address>
 		{% else %}
 		<p>Our next General Membership Meeting has yet to be determined. Please check back later.</p>
@@ -55,9 +55,9 @@
 	<div class="card-body">
 		<ul>
 			{% for meeting in upcoming_meetings %}
-			<li>{{meeting.date_time|date:"l, F d, Y"}}, {{meeting.date_time|date:"f a"}} at {{meeting.meeting_place.venue_name}}
+			<li>{{meeting.start_date_time|date:"l, F d, Y"}}, {{meeting.start_date_time|date:"f a"}} at {{meeting.event_venue.venue_name}}
 				{% if meeting.topic %}
-					(Topic: {{meeting.topic}})
+					(Topic: {{meeting.description}})
 				{% endif %}
 				</li>
 			{% empty %}
