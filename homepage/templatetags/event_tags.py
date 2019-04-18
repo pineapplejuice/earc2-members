@@ -77,6 +77,7 @@ class EventCalendar(calendar.HTMLCalendar):
                 for event in self.events[day]:
                     body.append('<li>')
                     body.append('<a href="%s">' % event.get_absolute_url())
+                    body.append('%s ' % event.get_event_time())
                     body.append(esc(event.event_name))
                     body.append('</a></li>')
                 body.append('</ul>')

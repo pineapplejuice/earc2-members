@@ -1,7 +1,9 @@
 from datetime import timedelta
+from time import strftime
 
 from django.db import models
 from django.urls import reverse
+from django.utils import timezone
 
 # Constant lists
 
@@ -46,12 +48,19 @@ class Event(models.Model):
     event_name = models.CharField(max_length=100)
     event_venue = models.ForeignKey(MeetingPlace, on_delete=models.CASCADE)
     description = models.TextField(blank=True)
-    
+
+    def get_event_date(self):
+        return timezone.localtime(self.start_date_time).strftime('%B %d, %Y, %I:%M %p')
+        
+    def get_event_time(self):
+        return timezone.localtime(self.start_date_time).time().strftime('%I:%M %p')
+
     def __str__(self):
-        return str(self.start_date_time) + ', ' + self.event_name
+        return str(self.get_event_date()) + ', ' + self.event_name
     
     def get_absolute_url(self):
         return reverse('view_event', args=[str(self.id)])
+    
 
 class LinkGroup(models.Model):
     name = models.CharField(max_length=100)
