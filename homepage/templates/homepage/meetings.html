@@ -36,7 +36,7 @@
 
 		<address>
 			<strong>{{next_meeting.event_venue.venue_name }}</strong><br />
-			{{next_meeting.event_venue.address}}<br />
+			{% if next_meeting.event_venue.address %}{{next_meeting.event_venue.address}}<br />{% endif %}
 			{{next_meeting.event_venue.city}}, {{next_meeting.event_venue.state}} {{next_meeting.event_venue.zip_code}}
 		</address>
 		{% else %}

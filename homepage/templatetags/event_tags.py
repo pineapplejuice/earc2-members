@@ -1,9 +1,8 @@
 # Event calendar tag code adapted from
 # https://djangosnippets.org/snippets/2464/
 
-##### Here is the template tag code. It goes in a file named 
+# Here is the template tag code. It goes in a file named
 # "event_tags.py" in a subdirectory of your app called "templatetags".
-#####
 
 import calendar
 from django import template
@@ -15,6 +14,7 @@ from django.utils.timezone import localtime
 
 register = template.Library()
 
+
 def do_event_calendar(parser, token):
     """
     The template tag's syntax is {% event_calendar year month event_list %}
@@ -23,8 +23,8 @@ def do_event_calendar(parser, token):
     try:
         tag_name, year, month, event_list = token.split_contents()
     except ValueError:
-        raise template.TemplateSyntaxError("%r tag requires three arguments" 
-            % token.contents.split()[0])
+        raise template.TemplateSyntaxError("%r tag requires three arguments"
+                                           % token.contents.split()[0])
     return EventCalendarNode(year, month, event_list)
 
 
@@ -50,7 +50,7 @@ class EventCalendarNode(template.Node):
             cal = EventCalendar(my_event_list)
             return cal.formatmonth(int(my_year), int(my_month))
         except ValueError:
-            return          
+            return
         except template.VariableDoesNotExist:
             return
 
@@ -81,8 +81,12 @@ class EventCalendar(calendar.HTMLCalendar):
                     body.append(esc(event.event_name))
                     body.append('</a></li>')
                 body.append('</ul>')
-                return self.day_cell(cssclass, '<span class="dayNumber">%d</span> %s' % (day, ''.join(body)))
-            return self.day_cell(cssclass, '<span class="dayNumberNoEvents">%d</span>' % (day))
+                return self.day_cell(cssclass,
+                                     '<span class="dayNumber">%d</span> %s'
+                                     % (day, ''.join(body)))
+            return self.day_cell(cssclass,
+                                 '<span class="dayNumberNoEvents">%d</span>'
+                                 % (day))
         return self.day_cell('noday', '&nbsp;')
 
     def formatmonth(self, year, month):
@@ -90,13 +94,17 @@ class EventCalendar(calendar.HTMLCalendar):
         return super(EventCalendar, self).formatmonth(year, month)
 
     def group_by_day(self, events):
-        field = lambda event: localtime(event.start_date_time).day
+
+        def field(event):
+            return localtime(event.start_date_time).day
+
         return dict(
             [(day, list(items)) for day, items in groupby(events, field)]
         )
 
     def day_cell(self, cssclass, body):
         return '<td class="%s">%s</td>' % (cssclass, body)
+
 
 # Register the template tag so it is available to templates
 register.tag("event_calendar", do_event_calendar)

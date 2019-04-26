@@ -1,5 +1,6 @@
 from django import forms
 
+
 class ContactForm(forms.Form):
     contact_name = forms.CharField(
         required=True, label="Contact name", max_length=255)
@@ -9,4 +10,3 @@ class ContactForm(forms.Form):
         required=True,
         widget=forms.Textarea,
     )
-    

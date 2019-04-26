@@ -21,18 +21,17 @@ class Announcement(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=50, blank=False)
     text = models.TextField(blank=False)
-    
+
     def expiration_date(self):
         return self.date_created + timedelta(days=30)
-    
 
 
 class MeetingPlace(models.Model):
-    venue_name = models.CharField(max_length = 50)
-    address = models.CharField(max_length = 95)
-    city = models.CharField(max_length=35)
-    state = models.CharField(max_length=2)
-    zip_code = models.CharField(max_length=10)
+    venue_name = models.CharField(max_length=50)
+    address = models.CharField(max_length=95, blank=True)
+    city = models.CharField(max_length=35, blank=True)
+    state = models.CharField(max_length=2, blank=True)
+    zip_code = models.CharField(max_length=10, blank=True)
 
     def __str__(self):
         return self.venue_name
@@ -50,23 +49,26 @@ class Event(models.Model):
     description = models.TextField(blank=True)
 
     def get_event_date(self):
-        return timezone.localtime(self.start_date_time).strftime('%B %d, %Y, %I:%M %p')
-        
+        return (timezone.localtime(self.start_date_time)
+                .strftime('%B %d, %Y, %I:%M %p'))
+
     def get_event_time(self):
-        return timezone.localtime(self.start_date_time).time().strftime('%I:%M %p')
+        return (timezone.localtime(self.start_date_time).time()
+                .strftime('%I:%M %p'))
 
     def __str__(self):
         return str(self.get_event_date()) + ', ' + self.event_name
-    
+
     def get_absolute_url(self):
         return reverse('view_event', args=[str(self.id)])
-    
+
 
 class LinkGroup(models.Model):
     name = models.CharField(max_length=100)
-    
+
     def __str__(self):
         return str(self.name)
+
 
 class Link(models.Model):
     name = models.CharField(max_length=100)
@@ -80,7 +82,7 @@ class Link(models.Model):
 
 class QuestionGroup(models.Model):
     name = models.CharField(max_length=100)
-    
+
     def __str__(self):
         return str(self.name)
 
@@ -89,9 +91,6 @@ class Question(models.Model):
     question_text = models.CharField(max_length=200)
     answer_text = models.TextField()
     group = models.ForeignKey(QuestionGroup, on_delete=models.CASCADE)
-    
+
     def __str__(self):
         return str(self.question_text)
-
-
-

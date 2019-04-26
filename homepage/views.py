@@ -73,7 +73,7 @@ def meetings(request):
         else future_meetings[1:4])
     
     
-    if next_meeting:
+    if next_meeting and next_meeting.event_venue.address:
         meeting_place = next_meeting.event_venue
         query = {
             'key': GOOGLE_MAPS_API_KEY,
@@ -96,8 +96,8 @@ def meetings(request):
     
     return render(request, 'homepage/meetings.html', context)
 
-### Deprecated in favor of event calendar ###
 
+### Deprecated in favor of event calendar ###
 def events(request):
     """
     Render upcoming event list.
