@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'payments',
     'homepage',
     'helpers',
+    'markdownx',
+    'django_markdown2',
 ]
 
 MIDDLEWARE = [

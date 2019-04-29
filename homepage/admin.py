@@ -3,10 +3,10 @@ from .models import (
     Announcement, MeetingPlace, Event, LinkGroup, Link,
     QuestionGroup, Question,
 )
-
+from markdownx.admin import MarkdownxModelAdmin
 
 # Register your models here.
-class AnnouncementAdmin(admin.ModelAdmin):
+class AnnouncementAdmin(MarkdownxModelAdmin):
     def title(obj):
         return obj.title
 
@@ -19,27 +19,27 @@ class AnnouncementAdmin(admin.ModelAdmin):
     list_display = ('title', 'text', 'date_created')
 
 
-class MeetingPlaceAdmin(admin.ModelAdmin):
+class MeetingPlaceAdmin(MarkdownxModelAdmin):
     list_display = ('venue_name', 'address', 'city', 'state', 'zip_code')
 
 
-class EventAdmin(admin.ModelAdmin):
+class EventAdmin(MarkdownxModelAdmin):
     pass
 
 
-class LinkGroupAdmin(admin.ModelAdmin):
+class LinkGroupAdmin(MarkdownxModelAdmin):
     list_display = ('name',)
 
 
-class LinkAdmin(admin.ModelAdmin):
+class LinkAdmin(MarkdownxModelAdmin):
     list_display = ('name', 'url', 'description', 'group')
 
 
-class QuestionGroupAdmin(admin.ModelAdmin):
+class QuestionGroupAdmin(MarkdownxModelAdmin):
     list_display = ('name',)
 
 
-class QuestionAdmin(admin.ModelAdmin):
+class QuestionAdmin(MarkdownxModelAdmin):
     list_display = ('question_text', 'group')
 
 

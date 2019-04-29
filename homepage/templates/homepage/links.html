@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load md2 %}
 
 {% block browsertitle %}EARC - Links{% endblock %}
 
@@ -19,8 +20,8 @@
 			{% for link in group.link_set.all %}
 			<dt><a href="{{link.url}}"><b>{{link.name}}</b></a></dt>
 			<dd>
-				{{link.description}} 
-				<span class="text-muted"><i>{{link.url}}</i></span>
+			    <span class="text-muted"><i>{{link.url}}</i></span>
+				{{link.description|markdown}} 
 			</dd>
 			{% endfor %}
 		</dl>

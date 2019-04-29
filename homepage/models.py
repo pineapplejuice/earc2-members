@@ -4,6 +4,7 @@ from time import strftime
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
+from markdownx.models import MarkdownxField
 
 # Constant lists
 
@@ -20,7 +21,7 @@ EVENT_CATEGORIES = [
 class Announcement(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=50, blank=False)
-    text = models.TextField(blank=False)
+    text = MarkdownxField(blank=False)
 
     def expiration_date(self):
         return self.date_created + timedelta(days=30)
@@ -46,7 +47,7 @@ class Event(models.Model):
     end_date_time = models.DateTimeField()
     event_name = models.CharField(max_length=100)
     event_venue = models.ForeignKey(MeetingPlace, on_delete=models.CASCADE)
-    description = models.TextField(blank=True)
+    description = MarkdownxField(blank=True)
 
     def get_event_date(self):
         return (timezone.localtime(self.start_date_time)
@@ -73,7 +74,7 @@ class LinkGroup(models.Model):
 class Link(models.Model):
     name = models.CharField(max_length=100)
     url = models.URLField()
-    description = models.TextField(blank=True)
+    description = MarkdownxField(blank=True)
     group = models.ForeignKey(LinkGroup, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -89,7 +90,7 @@ class QuestionGroup(models.Model):
 
 class Question(models.Model):
     question_text = models.CharField(max_length=200)
-    answer_text = models.TextField()
+    answer_text = MarkdownxField()
     group = models.ForeignKey(QuestionGroup, on_delete=models.CASCADE)
 
     def __str__(self):

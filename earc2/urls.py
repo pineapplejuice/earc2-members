@@ -33,6 +33,7 @@ urlpatterns = [
     url(r'^homepage/', include('homepage.urls')),
     url(r'^member/', include('manage_members.urls')),
     url(r'^payment/', include('payments.urls')),
+    url(r'^markdownx/', include('markdownx.urls')),
     
     # Paypal listener (in django-paypal package)
     url(r'^paypal/', include('paypal.standard.ipn.urls')),
