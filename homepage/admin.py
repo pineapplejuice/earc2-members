@@ -16,7 +16,7 @@ class AnnouncementAdmin(MarkdownxModelAdmin):
     def date_created(obj):
         return obj.date_created
 
-    list_display = ('title', 'text', 'date_created')
+    list_display = ('title', 'text', 'date_created', 'expiration_date')
 
 
 class MeetingPlaceAdmin(MarkdownxModelAdmin):

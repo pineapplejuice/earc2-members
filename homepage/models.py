@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import timedelta, date
 from time import strftime
 
 from django.db import models
@@ -22,9 +22,8 @@ class Announcement(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=50, blank=False)
     text = MarkdownxField(blank=False)
+    expiration_date = models.DateTimeField()
 
-    def expiration_date(self):
-        return self.date_created + timedelta(days=30)
 
 
 class MeetingPlace(models.Model):

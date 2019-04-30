@@ -4,6 +4,7 @@ from datetime import datetime, date, timedelta
 from datetime import timezone as dt_timezone
 from calendar import monthrange
 
+from django.db.models import Q
 from django.contrib import messages
 from django.core.mail import send_mail, BadHeaderError
 from django.shortcuts import render, redirect, get_object_or_404, render_to_response
@@ -16,7 +17,7 @@ from payments.paypal_helpers import paypal_email_test_or_prod
 
 from helpers.utils import send_email_from_template
 from homepage.forms import ContactForm
-from homepage.models import MeetingPlace, Event, LinkGroup, QuestionGroup
+from homepage.models import Announcement, MeetingPlace, Event, LinkGroup, QuestionGroup
 from manage_members.models import Member
 
 
@@ -28,7 +29,17 @@ HST = dt_timezone(-timedelta(hours=10))
 
 def home_page(request):
     """Render home page."""
-    return render(request, 'homepage/home.html')
+    
+    announcements = Announcement.objects.filter(
+        Q(expiration_date__isnull=True) |
+        Q(expiration_date__gte=timezone.now())
+    ).order_by('-date_created')
+    
+    context = {
+        'announcements': announcements,
+    }
+    
+    return render(request, 'homepage/home.html', context)
 
 def about(request):
     """Render about static page."""
