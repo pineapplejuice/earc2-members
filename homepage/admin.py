@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import (
-    Announcement, MeetingPlace, Event, LinkGroup, Link,
+    Announcement, MeetingPlace, Event, LinkGroup, Link, LogbookEntry,
     QuestionGroup, Question,
 )
 from markdownx.admin import MarkdownxModelAdmin
@@ -34,6 +34,8 @@ class LinkGroupAdmin(MarkdownxModelAdmin):
 class LinkAdmin(MarkdownxModelAdmin):
     list_display = ('name', 'url', 'description', 'group')
 
+class LogbookAdmin(MarkdownxModelAdmin):
+    list_display = ('entry_date', 'entry')
 
 class QuestionGroupAdmin(MarkdownxModelAdmin):
     list_display = ('name',)
@@ -48,5 +50,6 @@ admin.site.register(MeetingPlace, MeetingPlaceAdmin)
 admin.site.register(Event, EventAdmin)
 admin.site.register(LinkGroup, LinkGroupAdmin)
 admin.site.register(Link, LinkAdmin)
+admin.site.register(LogbookEntry, LogbookAdmin)
 admin.site.register(QuestionGroup, QuestionGroupAdmin)
 admin.site.register(Question, QuestionAdmin)

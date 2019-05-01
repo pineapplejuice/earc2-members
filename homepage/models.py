@@ -80,6 +80,17 @@ class Link(models.Model):
         return str(self.name)
 
 
+class LogbookEntry(models.Model):
+    entry_date = models.DateField(default=date.today)
+    entry = MarkdownxField()
+    
+    def __str__(self):
+        return str(self.entry_date)
+    
+    class Meta:
+        verbose_name_plural = "Logbook entries"
+
+
 class QuestionGroup(models.Model):
     name = models.CharField(max_length=100)
 

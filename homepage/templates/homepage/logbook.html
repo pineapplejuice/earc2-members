@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load md2 %}
+
+{% block browsertitle %}EARC - Repeater Logbook{% endblock %}
+
+{% block content %}
+
+<div class="card">
+	<div class="card-header">
+		<span class="h2 title">Repeater Logbook</span>
+	</div>
+	<div class="card-body">
+		<table class="table table-sm table-striped">
+		    <thead class="thead-light">
+    		    <tr>
+    		        <th scope="col" style="width: 20%;">Date</th>
+    		        <th scope="col" style="width: 80%;">Entry</th>
+    		    </tr>
+		    </thead>
+		    <tbody>
+		        {% for entry in logbook %}
+		        <tr>
+		            <td>{{entry.entry_date}}</td>
+		            <td>{{entry.entry|markdown}}</td>
+		        </tr>
+		        {% endfor %}
+		    </tbody>
+		</table>
+		
+	</div>
+</div>
+
+{% endblock %}

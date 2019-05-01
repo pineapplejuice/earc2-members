@@ -17,7 +17,7 @@ from payments.paypal_helpers import paypal_email_test_or_prod
 
 from helpers.utils import send_email_from_template
 from homepage.forms import ContactForm
-from homepage.models import Announcement, MeetingPlace, Event, LinkGroup, QuestionGroup
+from homepage.models import Announcement, MeetingPlace, Event, LinkGroup, LogbookEntry, QuestionGroup
 from manage_members.models import Member
 
 
@@ -246,7 +246,14 @@ def brandmeister(request):
 
 def repeater_rules(request):
     return render(request, "homepage/repeater_rules.html")
-    
+
+def logbook(request):
+    logbook = LogbookEntry.objects.all()
+    context = {
+        'logbook': logbook,
+    }
+    return render(request, "homepage/logbook.html", context)
+
 
 ## Event Calendar Code
 
