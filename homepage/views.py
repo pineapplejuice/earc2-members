@@ -19,6 +19,7 @@ from django.urls import reverse
 from django.utils import timezone
 from paypal.standard.forms import PayPalPaymentsForm
 from payments.paypal_helpers import paypal_email_test_or_prod
+import pytz
 
 from helpers.utils import send_email_from_template
 from homepage.forms import ContactForm
@@ -34,6 +35,7 @@ from manage_members.models import Member
 GOOGLE_MAPS_API_KEY = 'AIzaSyB5U5s-pijWcGEi9TPqNk1AZyBr0BCcOZY'
 HST = dt_timezone(-timedelta(hours=10))
 
+timezone.activate(pytz.timezone("Pacific/Honolulu"))
 
 def home_page(request):
     """Render home page."""
@@ -73,26 +75,21 @@ def officers(request):
     return render(request, 'homepage/officers.html', context)
 
 
-def meetings(request):
-    """
-    Render meeting page with dates of next four upcoming meetings and
-    map of meeting place.
-    """
-
-    # future_meetings: pulls all meetings today or after
+def get_future_meetings():
     future_meetings = Event.objects.filter(
         start_date_time__gte=timezone.now()).filter(
             event_category='MEETING').order_by('start_date_time')
 
-    # next meeting is the first future meeting
     next_meeting = future_meetings[0] if future_meetings.count() > 0 else None
-
-    # pull up to 3 more upcoming meetings
+    
     upcoming_meetings = (future_meetings[1:] if future_meetings.count() < 4
                          else future_meetings[1:4])
 
+    return next_meeting, upcoming_meetings
 
-    if next_meeting and next_meeting.event_venue.address:
+
+def get_google_maps_url(next_meeting):
+    if next_meeting.event_venue.address:
         meeting_place = next_meeting.event_venue
         query = {
             'key': GOOGLE_MAPS_API_KEY,
@@ -104,32 +101,27 @@ def meetings(request):
 
         map_url = ("https://www.google.com/maps/embed/v1/place?"
                    + urlencode(query))
-        print(map_url)
     else:
         map_url = None
+
+    return map_url
+
+
+def meetings(request):
+    """
+    Render meeting page with dates of next four upcoming meetings and
+    map of meeting place.
+    """
+    next_meeting, upcoming_meetings = get_future_meetings()
 
     context = {
         'next_meeting': next_meeting,
         'upcoming_meetings': upcoming_meetings,
-        'next_meeting_map_url': map_url
+        'next_meeting_map_url': get_google_maps_url(next_meeting)
+                                if next_meeting else None
     }
 
     return render(request, 'homepage/meetings.html', context)
-
-
-### Deprecated in favor of event calendar ###
-def events(request):
-    """
-    Render upcoming event list.
-    """
-
-    future_events = Event.objects.filter(start_date_time__gt=timezone.now())
-
-    context = {
-        'future_events': future_events,
-    }
-
-    return render(request, 'homepage/events.html', context)
 
 
 def view_event(request, id):
@@ -178,7 +170,8 @@ def repeaters(request):
 
 def antennas(request):
     """
-    Initialize paypal information and render antenna information page. Page includes link to PayPal.
+    Initialize paypal information and render antenna information page. 
+    Page includes link to PayPal.
     """
     paypal_dict = {
         'business': paypal_email_test_or_prod(),
@@ -191,9 +184,8 @@ def antennas(request):
             reverse('antenna_purchase_cancelled')),
     }
 
-    form = PayPalPaymentsForm(initial=paypal_dict)
     context = {
-        "form": form,
+        "form": PayPalPaymentsForm(initial=paypal_dict),
     }
 
     return render(request, 'homepage/antennas.html', context)
@@ -227,9 +219,8 @@ def faq_list(request):
     """
     Render membership FAQ list.
     """
-    groups = QuestionGroup.objects.all()
     context = {
-        'groups': groups,
+        'groups': QuestionGroup.objects.all(),
     }
 
     return render(request, 'homepage/faq.html', context)
@@ -347,14 +338,17 @@ def calendar(request, year, month):
             start_date_time__lte=my_calendar_to_month)
 
     # Calculate values for the calendar controls. 1-indexed (Jan = 1)
+    BEFORE_YEAR_BEGINNING = 0
+    AFTER_YEAR_END = 13
+    
     my_previous_year = my_year
     my_previous_month = my_month - 1
-    if my_previous_month == 0:
+    if my_previous_month == BEFORE_YEAR_BEGINNING:
         my_previous_year = my_year - 1
         my_previous_month = 12
     my_next_year = my_year
     my_next_month = my_month + 1
-    if my_next_month == 13:
+    if my_next_month == AFTER_YEAR_END:
         my_next_year = my_year + 1
         my_next_month = 1
     my_year_after_this = my_year + 1

@@ -47,7 +47,7 @@ class Member(models.Model):
         blank=True)
     expiration_date = models.DateField(
         verbose_name = "My license expires",
-        blank=True)
+        null=True, blank=True)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     address = models.CharField(max_length=95)
@@ -57,16 +57,20 @@ class Member(models.Model):
     phone = models.CharField(max_length=15)
     email_address = models.EmailField()
     mailing_list = models.BooleanField(
-        verbose_name = "Add me to the club mailing list"
+        verbose_name = "Add me to the club mailing list",
+        default=True,
     )
     wd_online = models.BooleanField(
-        verbose_name = "I would like to read the Wireless Dispatch online"
+        verbose_name = "I would like to read the Wireless Dispatch online",
+        default=True,
     )
     arrl_member = models.BooleanField(
-        verbose_name = "I am an ARRL member"
+        verbose_name = "I am an ARRL member",
+        default=False,
     )
     need_new_badge = models.BooleanField(
-        verbose_name = "I need a new membership badge"
+        verbose_name = "I need a new membership badge",
+        default=False,
     )
     position = models.CharField(max_length=2, choices=TITLES, blank=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, 

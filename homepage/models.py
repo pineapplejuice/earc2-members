@@ -25,7 +25,6 @@ class Announcement(models.Model):
     expiration_date = models.DateTimeField()
 
 
-
 class MeetingPlace(models.Model):
     venue_name = models.CharField(max_length=50)
     address = models.CharField(max_length=95, blank=True)

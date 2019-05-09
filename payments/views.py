@@ -10,17 +10,22 @@ from payments.paypal_helpers import paypal_email_test_or_prod, get_ngrok_url
 from manage_members.models import Member
 
 
-# Create your views here.
+def _get_notify_url(request):
+    """
+    If in dev mode, set to ngrok URL listener so that it redirects to this 
+    machine.  Else, set to domain paypal IPN listener.
+    """
+    if not settings.DEBUG:
+        return request.build_absolute_url(reverse('paypal-ipn'))
+    else:
+        return get_ngrok_url + reverse('paypal-ipn')
 
-@login_required
-def pay_dues_paypal(request, id):
-    treasurer = Member.objects.get(position='TR')
-    
-    # Retrieve matching member and deny access if not member logged in
-    member = get_object_or_404(Member, pk=id)
-    if request.user.pk != member.user.pk:
-        return render(request, "manage_members/member_permission_denied.html")
-    
+
+def _initialize_paypal_button(request, member):
+    """
+    Set up PayPal button, including email address, item, and 
+    other PayPal parameters.
+    """
     # Pass member year and id to Paypal to track payment
     custom_string = str(member.pk) + "-" + str(member.member_dues_year())
     
@@ -31,21 +36,30 @@ def pay_dues_paypal(request, id):
         'item_name': member.member_dues_description(),
         'item_number': member.member_dues_type(),
         'custom': custom_string,
-        "notify_url": (
-            request.build_absolute_uri(reverse('paypal-ipn')) 
-            if not settings.DEBUG
-            else get_ngrok_url() + reverse('paypal-ipn')
-        ),
+        "notify_url": _get_notify_url(request),
         "return": request.build_absolute_uri(reverse('paypal_completed')), 
         "cancel_return": request.build_absolute_uri(
             reverse('paypal_cancelled')),
     }
     
+    return PayPalPaymentsForm(initial = paypal_dict)
+
+
+@login_required
+def pay_dues_paypal(request, id):
+    """
+    Render dues payment page.
+    """
+    treasurer = Member.objects.get(position='TR')
     
-    form = PayPalPaymentsForm(initial = paypal_dict)
+    # Retrieve matching member and deny access if not member logged in
+    member = get_object_or_404(Member, pk=id)
+    if request.user.pk != member.user.pk:
+        return render(request, "manage_members/member_permission_denied.html")
+
     context = {
         "member": member,
-        "form": form,
+        "form": _initialize_paypal_button(request, member),
         "treasurer": treasurer,
     }
 
