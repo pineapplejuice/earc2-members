@@ -22,7 +22,7 @@ from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.urls import reverse
 
-from helpers.utils import send_email_from_template
+from helpers.utils import EmailMessageFromTemplate
 
 from manage_members.forms import MemberForm, UserForm
 from manage_members.models import Member
@@ -50,17 +50,13 @@ def _get_expiration_date_from_uls(callsign):
 
     try:
         response = requests.get(uls_url + callsign)
-        response_json = response.json()
-        
-        if response_json['Errors']:
-            return None
         
         #  Iterate through the returned licenses and return exact match.
-        for license in response_json['Licenses']['License']:
+        for license in response_json()['Licenses']['License']:
             if license['callsign'] == callsign:
                 return license['expiredDate']
     
-    except ConnectionError:
+    except (ConnectionError, KeyError):
         return None
 
 
@@ -132,10 +128,11 @@ def _send_activation_email_to_member(request, member):
     Send email with activation token to member's email address 
     as provided.
     """
+
     current_site = get_current_site(request)
-    send_email_from_template(
+    EmailMessageFromTemplate(
         subject_template='manage_members/email/user_acc_active_subject.txt',
-        message_template = 'manage_members/email/user_acc_active_body.txt',
+        message_template='manage_members/email/user_acc_active_body.txt',
         context = {
             'user': member.user,
             'member': member,
@@ -144,21 +141,22 @@ def _send_activation_email_to_member(request, member):
             'token': account_activation_token.make_token(member.user),
         },
         recipients = [member.email_address],
-    )
+    ).send()
+
 
 
 def _send_new_member_email_to_membership(member):
     """
     Send notification to membership committee with new member info.
     """
-    send_email_from_template(
+    EmailMessageFromTemplate(
         subject_template='manage_members/email/admin_acc_created_subject.txt',
-        message_template = 'manage_members/email/admin_acc_created_body.txt',
+        message_template='manage_members/email/admin_acc_created_body.txt',
         context = {
             'member': member,
         },
         recipients = settings.MEMBERSHIP_ADMINS,
-    )
+    ).send()
 
 
 def _recaptcha_is_valid(request):
@@ -186,7 +184,7 @@ def _initially_setup_user_and_member(member, user):
     """
     # Retrieve member's expiration date if available
     if member.callsign:
-        expiration_date = get_expiration_date_from_uls(member.callsign)
+        expiration_date = _get_expiration_date_from_uls(member.callsign)
         if expiration_date:
             member.expiration_date = datetime.strptime(
                 expiration_date, '%m/%d/%Y').date()

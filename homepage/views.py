@@ -21,7 +21,7 @@ from paypal.standard.forms import PayPalPaymentsForm
 from payments.paypal_helpers import paypal_email_test_or_prod
 import pytz
 
-from helpers.utils import send_email_from_template
+from helpers.utils import EmailMessageFromTemplate
 from homepage.forms import ContactForm
 from homepage.models import (
     Announcement, MeetingPlace, Event, LinkGroup,
@@ -252,13 +252,14 @@ def contact(request):
                     'contact_email': contact_email,
                     'contact_message': contact_message,
                 }
-                send_email_from_template(
+                EmailMessageFromTemplate(
                     subject_template='homepage/email/contact_form_subject.txt',
                     message_template='homepage/email/contact_form_body.txt',
                     context=context,
                     recipients=[webmaster_email],
                     reply_to=[contact_email],
-                )
+                ).send()
+
             except BadHeaderError:
                 return HttpResponse('Invalid header found.')
             return redirect('contact_success')
