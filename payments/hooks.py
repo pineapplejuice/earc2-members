@@ -1,7 +1,7 @@
 from django.conf import settings
 from paypal.standard.models import ST_PP_COMPLETED
 from paypal.standard.ipn.signals import valid_ipn_received
-from helpers.utils import EmailMessageFromTemplate, send_email_from_template
+from helpers.utils import EmailMessageFromTemplate
 from manage_members.models import Member
 from payments.paypal_helpers import paypal_email_test_or_prod
 from payments.models import DuesPayment
