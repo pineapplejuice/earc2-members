@@ -98,7 +98,12 @@ class TestMemberModelValidation(TestCase):
         self.test_member.email_address = ''
         with self.assertRaises(ValidationError):
             self.test_member.full_clean()
-    
+
+    def test_validate_invalid_email_address_fails(self):
+        self.test_member.email_address = 'invalidemailaddress'
+        with self.assertRaises(ValidationError):
+            self.test_member.full_clean()
+
     def test_validate_missing_mailing_list_flag_fails(self):
         self.test_member.mailing_list = None
         with self.assertRaises(ValidationError):

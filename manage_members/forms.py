@@ -39,10 +39,9 @@ def numbers_only_phone(input):
 class MemberForm(ModelForm):
     class Meta:
         model = Member
-        exclude = ['position',]
+        exclude = ['position', 'expiration_date']
         widgets = {
             'callsign': TextInput(attrs={'size': 10}),
-            'expiration_date': HiddenInput(),
             'address': TextInput(attrs={'size': 40}),
             'state': TextInput(attrs={'size': 3}),
             'email_address': EmailInput(attrs={'size': 40}),
@@ -53,12 +52,25 @@ class MemberForm(ModelForm):
             'user': HiddenInput(),
         }
     
-    
     def clean_callsign(self):
         data = self.cleaned_data['callsign'].upper()
+        if not data:
+            raise ValidationError(
+                'Callsign is required. Prospective members with no '
+                'license should contact membership.')
         valid_call_regex = re.compile(settings.CALLSIGN_VALIDATOR)
         if not valid_call_regex.match(data):
             raise ValidationError('Not a valid callsign')
+        return data
+
+    def clean_license_type(self):
+        data = self.cleaned_data['license_type']
+        if not data:
+            raise ValidationError(
+                'License type is required. Prospective members with no '
+                'license should contact membership.')
+        elif data not in ['T', 'G', 'A', 'E']:
+            raise ValidationError('Invalid license type.')
         return data
 
     def clean_first_name(self):
@@ -85,11 +97,6 @@ class MemberForm(ModelForm):
     def clean_email_address(self):
         return self.cleaned_data['email_address'].lower()
 
-    def clean_expiration_date(self):
-        data = self.cleaned_data['expiration_date']
-        if data < date.today():
-            raise ValidationError('Your license has expired')
-        return data
 
 
 class UserForm(ModelForm):

@@ -208,8 +208,7 @@ def _initialize_user_and_member_forms():
     """
     Initialize user and member forms with default values.
     """
-    member_form = MemberForm(initial = {
-            'expiration_date': date.today(), 
+    member_form = MemberForm(initial = { 
             'state': 'HI',
             'mailing_list': True,
             'wd_online': True,
