@@ -24,7 +24,7 @@ SECRET_KEY = 'fw_--st6514vm)^xy0_k04n%x8jpjt1j)*oz(#xhc8445@=9hr'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.ngrok.io',]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.ngrok.io', 'testserver',]
 
 
 # Application definition
@@ -133,7 +133,12 @@ STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, '../public/static'))
 # Known email issue: SMTPAuthenticationError with Gmail
 # Workaround: set "Allow less secure apps" in Gmail settings on account
 
-from .gmail_config import *
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+    EMAIL_FILE_PATH = os.path.join(BASE_DIR, '../emails')
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    from .gmail_config import *
 
 
 # django-paypal settings

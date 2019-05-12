@@ -3,6 +3,9 @@ import pytz
 
 from django.test import TestCase
 from django.utils import timezone
+from django.core import mail
+
+from homepage.forms import ContactForm
 from manage_members.models import Member
 
 home_tz = pytz.timezone("Pacific/Honolulu")
@@ -175,3 +178,35 @@ class TestRenderNonFormPages(TestCase):
     def test_render_swap_and_shop_page(self):
         self._test_page('/homepage/swap-shop/', 
                         template='homepage/swap_shop.html')
+
+
+class TestContactFormPage(TestCase):
+    def setUp(self):
+        self.test_data = {
+            'contact_name': 'Test User',
+            'contact_email': 'test@test.com',
+            'contact_message': 'This is a test message.'
+        }
+    
+    def test_contact_form_initially_renders_unbound(self):
+        response = self.client.get('/homepage/contact/')
+        self.assertIsInstance(response.context['form'], ContactForm)
+        self.assertFalse(response.context['form'].is_bound)
+    
+    def test_contact_form_with_valid_data(self):
+        response = self.client.post('/homepage/contact/', self.test_data)
+        self.assertRedirects(response, '/homepage/contact/success/')
+        self.assertEquals(len(mail.outbox), 1)
+        self.assertEquals(mail.outbox[0].subject, 'Message received from test@test.com')
+
+    def test_contact_form_with_missing_data(self):
+        self.test_data['contact_email'] = ''
+        response = self.client.post('/homepage/contact/', self.test_data)
+        self.assertTemplateUsed(response, 'homepage/contact.html')
+        self.assertIsNotNone(response.context['form'].errors)
+
+    def test_contact_form_with_invalid_data(self):
+        self.test_data['contact_email'] = 'invalidemailaddress'
+        response = self.client.post('/homepage/contact/', self.test_data)
+        self.assertTemplateUsed(response, 'homepage/contact.html')
+        self.assertIsNotNone(response.context['form'].errors)
