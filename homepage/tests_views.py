@@ -8,7 +8,7 @@ from manage_members.models import Member
 home_tz = pytz.timezone("Pacific/Honolulu")
 
 # Create your tests here.
-class TestRender(TestCase):
+class TestRenderNonFormPages(TestCase):
 
     @classmethod
     def setUpTestData(cls):
