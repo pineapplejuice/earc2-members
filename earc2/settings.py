@@ -148,3 +148,6 @@ from .recaptcha import GOOGLE_RECAPTCHA_SITE_KEY, GOOGLE_RECAPTCHA_SECRET_KEY
 MEMBERSHIP_ADMINS = [
 	'treasurer@earchi.org',
 ]
+
+# Regex for callsign validation
+CALLSIGN_VALIDATOR = r'^([A-Z0-9]{1,2})(\d)([A-Z]{1,3})$'

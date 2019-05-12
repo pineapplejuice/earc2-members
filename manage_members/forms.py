@@ -6,14 +6,12 @@ from django.forms import (
     PasswordInput, HiddenInput, CharField, ValidationError,
     NumberInput, EmailInput, TextInput,
 )
+from django.conf import settings
 from django.contrib.auth.models import User
 
 from .models import Member
 
 ## Constants ##
-
-# Looks for (1 or 2 alphanumeric)(one digit)(up to three letters)
-CALLSIGN_VALIDATOR = r'^([A-Z0-9]{1,2})(\d)([A-Z]{1,3})$'
 
 # Default list of choices for Yes or No
 YES_NO_DROPDOWN = [(True, 'Yes'), (False, 'No')]
@@ -58,7 +56,7 @@ class MemberForm(ModelForm):
     
     def clean_callsign(self):
         data = self.cleaned_data['callsign'].upper()
-        valid_call_regex = re.compile(CALLSIGN_VALIDATOR)
+        valid_call_regex = re.compile(settings.CALLSIGN_VALIDATOR)
         if not valid_call_regex.match(data):
             raise ValidationError('Not a valid callsign')
         return data

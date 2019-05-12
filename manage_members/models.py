@@ -2,6 +2,8 @@ from django.db import models
 from django.db.models import signals, Max
 from django.utils.timezone import now
 from django.contrib.auth.models import User
+from django.conf import settings
+from django.core.validators import RegexValidator
 import datetime
 
 
@@ -40,20 +42,30 @@ def update_user(sender, instance, created, **kwargs):
 
 
 class Member(models.Model):
-    callsign = models.CharField(max_length=6)
+    callsign = models.CharField(
+        max_length=6,
+        blank=True,
+        validators=[RegexValidator(regex=settings.CALLSIGN_VALIDATOR)],
+    )
     license_type = models.CharField(
         max_length=1, 
         choices=LICENSE_TYPES, 
-        blank=True)
+        blank=True,
+    )
     expiration_date = models.DateField(
         verbose_name = "My license expires",
-        null=True, blank=True)
+        null=True, 
+        blank=True,
+    )
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     address = models.CharField(max_length=95)
     city = models.CharField(max_length=35)
     state = models.CharField(max_length=2)
-    zip_code = models.CharField(max_length=10)
+    zip_code = models.CharField(
+        max_length=10,
+        validators=[RegexValidator(regex='\d{5}(\-\d{4})?')],
+    )
     phone = models.CharField(max_length=15)
     email_address = models.EmailField()
     mailing_list = models.BooleanField(
@@ -79,7 +91,7 @@ class Member(models.Model):
     
     def __str__(self):
         return self.first_name + ' ' + self.last_name + ', ' + self.callsign
-    
+
     def get_absolute_url(self):
         from django.urls import reverse
         return reverse('member_profile', args=[str(self.id)])
@@ -135,6 +147,7 @@ class Member(models.Model):
             return self.membership_expires().year + 1
         else:
             return datetime.date.today().year
+            
 
 
 signals.post_save.connect(update_user, sender=Member)
