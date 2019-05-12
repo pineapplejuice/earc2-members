@@ -193,19 +193,19 @@ class TestContactFormPage(TestCase):
         self.assertIsInstance(response.context['form'], ContactForm)
         self.assertFalse(response.context['form'].is_bound)
     
-    def test_contact_form_with_valid_data(self):
+    def test_contact_form_posts_successfully_valid_data(self):
         response = self.client.post('/homepage/contact/', self.test_data)
         self.assertRedirects(response, '/homepage/contact/success/')
         self.assertEquals(len(mail.outbox), 1)
         self.assertEquals(mail.outbox[0].subject, 'Message received from test@test.com')
 
-    def test_contact_form_with_missing_data(self):
+    def test_contact_form_fails_with_missing_data(self):
         self.test_data['contact_email'] = ''
         response = self.client.post('/homepage/contact/', self.test_data)
         self.assertTemplateUsed(response, 'homepage/contact.html')
         self.assertIsNotNone(response.context['form'].errors)
 
-    def test_contact_form_with_invalid_data(self):
+    def test_contact_form_fails_with_invalid_data(self):
         self.test_data['contact_email'] = 'invalidemailaddress'
         response = self.client.post('/homepage/contact/', self.test_data)
         self.assertTemplateUsed(response, 'homepage/contact.html')

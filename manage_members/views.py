@@ -56,7 +56,7 @@ def _get_expiration_date_from_uls(callsign):
             if license['callsign'] == callsign:
                 return license['expiredDate']
     
-    except (ConnectionError, KeyError):
+    except (ConnectionError, KeyError, NameError):
         return None
 
 
