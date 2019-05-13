@@ -59,6 +59,11 @@ def _get_expiration_date_from_uls(callsign):
     except (ConnectionError, KeyError, NameError):
         return None
 
+def _logged_in_user_matches_requested_user(request, member):
+    try:
+        return request.user.pk == member.user.pk
+    except AttributeError:
+        return False
 
 # Views
 def member_list(request):
@@ -83,25 +88,26 @@ def redirect_to_profile(request):
 def member_profile(request, id):
     """Render member profile for logged in member."""
     member = get_object_or_404(Member, pk=id)
-    if request.user.pk != member.user.pk:
+    if not _logged_in_user_matches_requested_user(request, member):
         return render(request, "manage_members/member_permission_denied.html")
-    
+
     return render(request, "manage_members/member_profile.html", 
         {'member': member})
 
 
-def _send_member_update_email_to_membership(member_form):
+def _send_member_update_email_to_membership(member):
     """
     Send email to membership with updated membership info.
     """
-    send_email_from_template(
+    EmailMessageFromTemplate(
         subject_template='manage_members/email/admin_acc_updated_subject.txt',
         message_template = 'manage_members/email/admin_acc_updated_body.txt',
         context = {
-            'member': member_form,
+            'member': member,
         },
         recipients = settings.MEMBERSHIP_ADMINS,
-    )
+    ).send()
+    
 
 
 @login_required
@@ -110,13 +116,13 @@ def member_update(request, id):
     Allow member to update information in database.
     """
     member = get_object_or_404(Member, pk=id)
-    if request.user.pk != member.user.pk:
+    if not _logged_in_user_matches_requested_user(request, member):
         return render(request, "manage_members/member_permission_denied.html")
     
     member_form = MemberForm(request.POST or None, instance = member)
     if member_form.is_valid():
         member_form.save()
-        _send_member_update_email_to_membership(member_form)
+        _send_member_update_email_to_membership(member_form.instance)
         messages.success(request, 'Profile details updated.')
         return redirect('member_profile', id=id)
     return render(request, "manage_members/member_update_form.html", 
@@ -275,10 +281,8 @@ def _validate_activation_token(uidb64, token):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
-        print("User found")
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
-        print("User not found")
     if user is not None and account_activation_token.check_token(user, token):
         return user
     else:
@@ -293,6 +297,12 @@ def activate(request, uidb64, token):
     if valid_user:
         valid_user.is_active = True
         valid_user.save()
-        return render(request, "manage_members/member_activation_success.html")
+        return redirect("activation_successful")
     else:
-        return render(request, "manage_members/member_activation_failed.html")
+        return redirect("activation_failed")
+
+def activation_successful(request):
+    return render(request, "manage_members/member_activation_success.html")
+
+def activation_failed(request):
+    return render(request, "manage_members/member_activation_failed.html")

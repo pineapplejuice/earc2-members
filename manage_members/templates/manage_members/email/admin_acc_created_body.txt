@@ -5,7 +5,9 @@ A new member account has been created on the EARC website.
 
 Callsign: {{member.callsign}}
 License class: {{member.get_license_type_display}}
+{% if member.expiration_date %}
 Expires: {{member.expiration_date}}
+{% endif %}
 Name: {{member.first_name}} {{member.last_name}}
 Address: {{member.address}}
 City: {{member.city}}

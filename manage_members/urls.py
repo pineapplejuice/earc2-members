@@ -10,7 +10,9 @@ urlpatterns = [
     path('add/', views.new_member, name="member_new_form"),
     path('list/', views.member_list, name="member_list"),
     path('thanks/', views.member_thanks, name="member_thanks"),
-    re_path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-'
-        '[0-9A-Za-z]{1,20})/$',
-        views.activate, name='activate'),
+    path('activate/<str:uidb64>/<str:token>/', views.activate, name='activate'),
+    path('activate/success/', 
+         views.activation_successful, name="activation_successful"),
+    path('activate/failed/', 
+         views.activation_failed, name="activation_failed"),
 ]
