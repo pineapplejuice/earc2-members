@@ -38,9 +38,10 @@ def setup_member_1():
             email='test@test.com',
             first_name='John',
             last_name='Operator',
-            password='Pa$$word1',
         ),
     )
+    member.user.set_password('Pa$$word1')
+    member.user.save()
     return member
 
 def setup_member_2():
@@ -65,9 +66,10 @@ def setup_member_2():
             email='test1@test1.com',
             first_name='Mary',
             last_name='Operator',
-            password='Pa$$word2',
         ),
     )
+    member.user.set_password('Pa$$word2')
+    member.user.save()
     return member
 
 def setup_member_1_dict():
@@ -242,6 +244,36 @@ class TestUserActivation(TestCase):
         response = self.client.get(self.test_url)
         self.assertRedirects(response, '/member/activate/failed/')
         self.assertTrue(User.objects.get(username='kh6tst').is_active)
+
+
+class TestUserLogin(TestCase):
+    def setUp(self):
+        self.test_member = setup_member_1()
+        self.test_user = User.objects.get(pk=self.test_member.user.pk)
+        self.test_user.is_active = True
+        self.test_user.save()
+        
+    def test_normal_login(self):
+        login = self.client.login(username='kh6tst', password='Pa$$word1')
+        self.assertTrue(login)
+    
+    def test_missing_passwprd(self):
+        login = self.client.login(username='kh6tst', password='')
+        self.assertFalse(login)
+    
+    def test_invalid_passwprd(self):
+        login = self.client.login(username='kh6tst', password='NotMyPassword')
+        self.assertFalse(login)
+
+    def test_user_is_not_active(self):
+        self.test_user.is_active = False
+        self.test_user.save()
+        login = self.client.login(username='kh6tst', password='Pa$$word1')
+        self.assertFalse(login)
+
+    def test_invalid_username(self):
+        login = self.client.login(username='nosuchuser', password='Pa$$word1')
+        self.assertFalse(login)
 
 
 class TestMemberUpdateForm(TestCase):
