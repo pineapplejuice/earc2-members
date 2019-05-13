@@ -72,11 +72,11 @@ def show_me_the_money(sender, **kwargs):
                     else 'payments/email_renewal.txt'),
             context = {
                 'member': member,
-                'amount': amount,
-                'payment_date': payment_date,
+                'amount': ipn_obj.mc_gross,
+                'payment_date': ipn_obj.payment_date,
             },
             recipients = [member.email_address],
-            cc = settings.MEMBERSHIP_ADMINS
+            cc = settings.MEMBERSHIP_ADMINS,
         ).send()
         
     else:

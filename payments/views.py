@@ -8,6 +8,8 @@ from paypal.standard.forms import PayPalPaymentsForm
 
 from payments.paypal_helpers import paypal_email_test_or_prod, get_ngrok_url
 from manage_members.models import Member
+from manage_members.views import logged_in_user_matches_requested_user
+
 
 
 def _get_notify_url(request):
@@ -18,7 +20,7 @@ def _get_notify_url(request):
     if not settings.DEBUG:
         return request.build_absolute_url(reverse('paypal-ipn'))
     else:
-        return get_ngrok_url + reverse('paypal-ipn')
+        return get_ngrok_url() + reverse('paypal-ipn')
 
 
 def _initialize_paypal_button(request, member):
@@ -54,7 +56,7 @@ def pay_dues_paypal(request, id):
     
     # Retrieve matching member and deny access if not member logged in
     member = get_object_or_404(Member, pk=id)
-    if request.user.pk != member.user.pk:
+    if not logged_in_user_matches_requested_user(request, member):
         return render(request, "manage_members/member_permission_denied.html")
 
     context = {

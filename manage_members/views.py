@@ -59,7 +59,7 @@ def _get_expiration_date_from_uls(callsign):
     except (ConnectionError, KeyError, NameError):
         return None
 
-def _logged_in_user_matches_requested_user(request, member):
+def logged_in_user_matches_requested_user(request, member):
     try:
         return request.user.pk == member.user.pk
     except AttributeError:
@@ -88,7 +88,7 @@ def redirect_to_profile(request):
 def member_profile(request, id):
     """Render member profile for logged in member."""
     member = get_object_or_404(Member, pk=id)
-    if not _logged_in_user_matches_requested_user(request, member):
+    if not logged_in_user_matches_requested_user(request, member):
         return render(request, "manage_members/member_permission_denied.html")
 
     return render(request, "manage_members/member_profile.html", 
@@ -116,7 +116,7 @@ def member_update(request, id):
     Allow member to update information in database.
     """
     member = get_object_or_404(Member, pk=id)
-    if not _logged_in_user_matches_requested_user(request, member):
+    if not logged_in_user_matches_requested_user(request, member):
         return render(request, "manage_members/member_permission_denied.html")
     
     member_form = MemberForm(request.POST or None, instance = member)
