@@ -1,6 +1,7 @@
 import datetime
 import pytz
 
+from django.contrib.auth.models import User
 from django.test import TestCase
 from django.utils import timezone
 from django.core.exceptions import ValidationError
@@ -8,27 +9,39 @@ from manage_members.models import Member
 
 home_tz = pytz.timezone("Pacific/Honolulu")
 
-# Create your tests here.
-class TestMemberModelValidation(TestCase):
-    def setUp(self):
-        self.test_member = Member(
-            callsign='KH6TST',
-            license_type='E',
-            expiration_date=home_tz.localize(datetime.datetime(2019,9,22)),
+def setup_member_1():
+    member = Member.objects.create(
+        callsign='KH6TST',
+        license_type='E',
+        expiration_date=home_tz.localize(datetime.datetime(2019,9,22)),
+        first_name='John',
+        last_name='Operator',
+        address='123 Aloha St',
+        city='Honolulu',
+        state='HI',
+        zip_code='96813',
+        phone='8085551212',
+        email_address='test@test.com',
+        mailing_list=True,
+        wd_online=True,
+        arrl_member=True,
+        need_new_badge=True,
+        user=User.objects.create_user(
+            username='kh6tst',
+            email='test@test.com',
             first_name='John',
             last_name='Operator',
-            address='1234 Aloha Way',
-            city='Honolulu',
-            state='HI',
-            zip_code='96813',
-            phone='8085551212',
-            email_address='test@test.com',
-            mailing_list=True,
-            wd_online=True,
-            arrl_member=True,
-            need_new_badge=True,
-        )
-    
+        ),
+    )
+    member.user.set_password('Pa$$word1')
+    member.user.save()
+    return member
+
+
+class TestMemberModelValidation(TestCase):
+    def setUp(self):
+        self.test_member = setup_member_1()
+
     def test_baseline_dataset_valid(self):
         self.test_member.full_clean()
     
@@ -124,3 +137,28 @@ class TestMemberModelValidation(TestCase):
         with self.assertRaises(ValidationError):
             self.test_member.full_clean()
 
+
+class TestMemberUserInteraction(TestCase):
+    def setUp(self):
+        self.test_member = setup_member_1()
+    
+    def test_callsign_update_updates_associated_username(self):
+        self.test_member.callsign = "KH6NEW"
+        self.test_member.save()
+        self.assertEquals(
+            User.objects.get(pk=self.test_member.user.pk).username, 
+            'kh6new')
+    
+    def test_name_update_updates_associated_user(self):
+        self.test_member.first_name = 'Jim'
+        self.test_member.save()
+        self.assertEquals(
+            User.objects.get(pk=self.test_member.user.pk).first_name,
+            'Jim')
+
+    def test_email_update_updates_associated_user(self):
+        self.test_member.email_address = 'newemail@test.com'
+        self.test_member.save()
+        self.assertEquals(
+            User.objects.get(pk=self.test_member.user.pk).email,
+            'newemail@test.com')
