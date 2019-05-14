@@ -11,30 +11,8 @@ from django.contrib.auth.models import User
 
 from .models import Member
 
-## Constants ##
-
 # Default list of choices for Yes or No
 YES_NO_DROPDOWN = [(True, 'Yes'), (False, 'No')]
-
-## Helpers ##
-def capitalize_address(input):
-    words = input.split()
-    output_words = []
-    for word in words:
-        if word.lower() == 'po' or word.lower() == 'p.o.':
-            output_words.append('PO')
-        else:
-            output_words.append(word.capitalize())
-    return ' '.join(output_words)
-
-def numbers_only_phone(input):
-    output = []
-    for char in list(input):
-        if char.isdigit():
-            output.append(char)
-    return ''.join(output)
-
-## Models ##
 
 class MemberForm(ModelForm):
     class Meta:
@@ -98,7 +76,6 @@ class MemberForm(ModelForm):
         return self.cleaned_data['email_address'].lower()
 
 
-
 class UserForm(ModelForm):
     password = CharField(widget=PasswordInput())
     confirm_password = CharField(widget=PasswordInput())
@@ -115,3 +92,21 @@ class UserForm(ModelForm):
         if password != confirm_password:
             raise ValidationError("Password and confirm password do not match")
 
+## Helpers ##
+
+def capitalize_address(input):
+    words = input.split()
+    output_words = []
+    for word in words:
+        if word.lower() == 'po' or word.lower() == 'p.o.':
+            output_words.append('PO')
+        else:
+            output_words.append(word.capitalize())
+    return ' '.join(output_words)
+
+def numbers_only_phone(input):
+    output = []
+    for char in list(input):
+        if char.isdigit():
+            output.append(char)
+    return ''.join(output)

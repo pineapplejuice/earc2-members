@@ -1,25 +1,25 @@
+"""
+manage_members/views.py
+Methods for member-related views.
+"""
 import json
 import requests
 import urllib
 from datetime import date, datetime
 from urllib.parse import urlencode
-"""
-manage_members/views.py
-Methods for member-related views.
-"""
 
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.encoding import force_bytes, force_text
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode 
 from django.urls import reverse
 
 from helpers.utils import EmailMessageFromTemplate
@@ -29,43 +29,6 @@ from manage_members.models import Member
 from manage_members.tokens import account_activation_token
 
 
-# Helper function
-def redirect_params(url, params=None):
-    """
-    Redirect to a given url or alias with query string parameters.
-    """
-    response = redirect(url)
-    if params:
-        query_string = urlencode(params)
-        response['Location'] += '?' + query_string
-    return response
-
-
-def _get_expiration_date_from_uls(callsign):
-    """
-    Retrieves license expiration date from FCC ULS API.
-    """
-    uls_url = ("http://data.fcc.gov/api/license-view/basicSearch/getLicenses?"
-        "format=json&searchValue=")
-
-    try:
-        response = requests.get(uls_url + callsign)
-        
-        #  Iterate through the returned licenses and return exact match.
-        for license in response_json()['Licenses']['License']:
-            if license['callsign'] == callsign:
-                return license['expiredDate']
-    
-    except (ConnectionError, KeyError, NameError):
-        return None
-
-def logged_in_user_matches_requested_user(request, member):
-    try:
-        return request.user.pk == member.user.pk
-    except AttributeError:
-        return False
-
-# Views
 def member_list(request):
     """Render member list in pages."""
     members = Member.objects.order_by('callsign')
@@ -94,20 +57,11 @@ def member_profile(request, id):
     return render(request, "manage_members/member_profile.html", 
         {'member': member})
 
-
-def _send_member_update_email_to_membership(member):
-    """
-    Send email to membership with updated membership info.
-    """
-    EmailMessageFromTemplate(
-        subject_template='manage_members/email/admin_acc_updated_subject.txt',
-        message_template = 'manage_members/email/admin_acc_updated_body.txt',
-        context = {
-            'member': member,
-        },
-        recipients = settings.MEMBERSHIP_ADMINS,
-    ).send()
-    
+def logged_in_user_matches_requested_user(request, member):
+    try:
+        return request.user.pk == member.user.pk
+    except AttributeError:
+        return False
 
 
 @login_required
@@ -128,101 +82,19 @@ def member_update(request, id):
     return render(request, "manage_members/member_update_form.html", 
         {'member': member, 'member_form': member_form})
 
-
-def _send_activation_email_to_member(request, member):
+def _send_member_update_email_to_membership(member):
     """
-    Send email with activation token to member's email address 
-    as provided.
-    """
-
-    current_site = get_current_site(request)
-    EmailMessageFromTemplate(
-        subject_template='manage_members/email/user_acc_active_subject.txt',
-        message_template='manage_members/email/user_acc_active_body.txt',
-        context = {
-            'user': member.user,
-            'member': member,
-            'domain': current_site.domain,
-            'uid': urlsafe_base64_encode(force_bytes(member.user.pk)).decode(),
-            'token': account_activation_token.make_token(member.user),
-        },
-        recipients = [member.email_address],
-    ).send()
-
-
-
-def _send_new_member_email_to_membership(member):
-    """
-    Send notification to membership committee with new member info.
+    Send email to membership with updated membership info.
     """
     EmailMessageFromTemplate(
-        subject_template='manage_members/email/admin_acc_created_subject.txt',
-        message_template='manage_members/email/admin_acc_created_body.txt',
+        subject_template='manage_members/email/admin_acc_updated_subject.txt',
+        message_template = 'manage_members/email/admin_acc_updated_body.txt',
         context = {
             'member': member,
         },
         recipients = settings.MEMBERSHIP_ADMINS,
     ).send()
 
-
-def _recaptcha_is_valid(request):
-    """
-    Validate recaptcha field. Return True if valid, False otherwise.
-    """
-    recaptcha_response = request.POST.get('g-recaptcha-response')
-    url = 'https://www.google.com/recaptcha/api/siteverify'
-    values = {
-        'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
-        'response': recaptcha_response,
-    }
-    data = urllib.parse.urlencode(values).encode()
-    req = urllib.request.Request(url, data=data)
-    response = urllib.request.urlopen(req)
-    result = json.loads(response.read().decode())
-    
-    return result['success']
-
-
-def _initially_setup_user_and_member(member, user):
-    """
-    Takes valid member and user information and sets up user and
-    member relationship.
-    """
-    # Retrieve member's expiration date if available
-    if member.callsign:
-        expiration_date = _get_expiration_date_from_uls(member.callsign)
-        if expiration_date:
-            member.expiration_date = datetime.strptime(
-                expiration_date, '%m/%d/%Y').date()
-    
-    # Create the name, email, and username fields from the member 
-    # information
-    user.username = member.callsign.lower()
-    user.email = member.email_address
-    user.first_name = member.first_name
-    user.last_name = member.last_name
-    user.set_password(user.password)    # sets the password in hash
-    user.is_active = False              # user needs to activate first
-    user.save()                         # save the user
-
-    # Link user to member record and save member record
-    member.user = User.objects.get(username = user.username)
-    member.save()
-
-
-def _initialize_user_and_member_forms():
-    """
-    Initialize user and member forms with default values.
-    """
-    member_form = MemberForm(initial = { 
-            'state': 'HI',
-            'mailing_list': True,
-            'wd_online': True,
-            'arrl_member': True,
-            'need_new_badge': True,
-    })
-    user_form = UserForm()
-    return member_form, user_form
 
 def new_member(request):
     """
@@ -261,6 +133,124 @@ def new_member(request):
         'site_key': settings.GOOGLE_RECAPTCHA_SITE_KEY,
     })
 
+def _recaptcha_is_valid(request):
+    """
+    Validate recaptcha field. Return True if valid, False otherwise.
+    """
+    recaptcha_response = request.POST.get('g-recaptcha-response')
+    url = 'https://www.google.com/recaptcha/api/siteverify'
+    values = {
+        'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
+        'response': recaptcha_response,
+    }
+    data = urllib.parse.urlencode(values).encode()
+    req = urllib.request.Request(url, data=data)
+    response = urllib.request.urlopen(req)
+    result = json.loads(response.read().decode())
+    
+    return result['success']
+
+def _initially_setup_user_and_member(member, user):
+    """
+    Takes valid member and user information and sets up user and
+    member relationship.
+    """
+    # Retrieve member's expiration date if available
+    if member.callsign:
+        expiration_date = _get_expiration_date_from_uls(member.callsign)
+        if expiration_date:
+            member.expiration_date = datetime.strptime(
+                expiration_date, '%m/%d/%Y').date()
+    
+    # Create the name, email, and username fields from the member 
+    # information
+    user.username = member.callsign.lower()
+    user.email = member.email_address
+    user.first_name = member.first_name
+    user.last_name = member.last_name
+    user.set_password(user.password)    # sets the password in hash
+    user.is_active = False              # user needs to activate first
+    user.save()                         # save the user
+
+    # Link user to member record and save member record
+    member.user = User.objects.get(username = user.username)
+    member.save()
+
+def _get_expiration_date_from_uls(callsign):
+    """
+    Retrieves license expiration date from FCC ULS API.
+    """
+    uls_url = ("http://data.fcc.gov/api/license-view/basicSearch/getLicenses?"
+        "format=json&searchValue=")
+
+    try:
+        response = requests.get(uls_url + callsign)
+        
+        #  Iterate through the returned licenses and return exact match.
+        for license in response_json()['Licenses']['License']:
+            if license['callsign'] == callsign:
+                return license['expiredDate']
+    
+    except (ConnectionError, KeyError, NameError):
+        return None
+
+def _send_activation_email_to_member(request, member):
+    """
+    Send email with activation token to member's email address 
+    as provided.
+    """
+
+    current_site = get_current_site(request)
+    EmailMessageFromTemplate(
+        subject_template='manage_members/email/user_acc_active_subject.txt',
+        message_template='manage_members/email/user_acc_active_body.txt',
+        context = {
+            'user': member.user,
+            'member': member,
+            'domain': current_site.domain,
+            'uid': urlsafe_base64_encode(force_bytes(member.user.pk)).decode(),
+            'token': account_activation_token.make_token(member.user),
+        },
+        recipients = [member.email_address],
+    ).send()
+
+def _send_new_member_email_to_membership(member):
+    """
+    Send notification to membership committee with new member info.
+    """
+    EmailMessageFromTemplate(
+        subject_template='manage_members/email/admin_acc_created_subject.txt',
+        message_template='manage_members/email/admin_acc_created_body.txt',
+        context = {
+            'member': member,
+        },
+        recipients = settings.MEMBERSHIP_ADMINS,
+    ).send()
+
+def redirect_params(url, params=None):
+    """
+    Redirect to a given url or alias with query string parameters.
+    """
+    response = redirect(url)
+    if params:
+        query_string = urlencode(params)
+        response['Location'] += '?' + query_string
+    return response
+
+def _initialize_user_and_member_forms():
+    """
+    Initialize user and member forms with default values.
+    """
+    member_form = MemberForm(initial = { 
+            'state': 'HI',
+            'mailing_list': True,
+            'wd_online': True,
+            'arrl_member': True,
+            'need_new_badge': True,
+    })
+    user_form = UserForm()
+    return member_form, user_form
+
 
 def member_thanks(request):
     """
@@ -273,6 +263,18 @@ def member_thanks(request):
     return render(request, "manage_members/member_thanks.html", context)
 
 
+def activate(request, uidb64, token):
+    """
+    Activate member based on URL given on activation email.
+    """
+    valid_user = _validate_activation_token(uidb64, token)
+    if valid_user:
+        valid_user.is_active = True
+        valid_user.save()
+        return redirect("activation_successful")
+    else:
+        return redirect("activation_failed")
+    
 def _validate_activation_token(uidb64, token):
     """
     Validate the activation token. Return the corresponding user
@@ -287,20 +289,7 @@ def _validate_activation_token(uidb64, token):
         return user
     else:
         return None
-
-
-def activate(request, uidb64, token):
-    """
-    Activate member based on URL given on activation email.
-    """
-    valid_user = _validate_activation_token(uidb64, token)
-    if valid_user:
-        valid_user.is_active = True
-        valid_user.save()
-        return redirect("activation_successful")
-    else:
-        return redirect("activation_failed")
-
+        
 def activation_successful(request):
     return render(request, "manage_members/member_activation_success.html")
 

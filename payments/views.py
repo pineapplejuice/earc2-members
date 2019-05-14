@@ -11,17 +11,25 @@ from manage_members.models import Member
 from manage_members.views import logged_in_user_matches_requested_user
 
 
-
-def _get_notify_url(request):
+@login_required
+def pay_dues_paypal(request, id):
     """
-    If in dev mode, set to ngrok URL listener so that it redirects to this 
-    machine.  Else, set to domain paypal IPN listener.
+    Render dues payment page.
     """
-    if not settings.DEBUG:
-        return request.build_absolute_url(reverse('paypal-ipn'))
-    else:
-        return get_ngrok_url() + reverse('paypal-ipn')
+    treasurer = Member.objects.get(position='TR')
+    
+    # Retrieve matching member and deny access if not member logged in
+    member = get_object_or_404(Member, pk=id)
+    if not logged_in_user_matches_requested_user(request, member):
+        return render(request, "manage_members/member_permission_denied.html")
 
+    context = {
+        "member": member,
+        "form": _initialize_paypal_button(request, member),
+        "treasurer": treasurer,
+    }
+
+    return render(request, "payments/pay_dues_paypal.html", context)
 
 def _initialize_paypal_button(request, member):
     """
@@ -46,33 +54,15 @@ def _initialize_paypal_button(request, member):
     
     return PayPalPaymentsForm(initial = paypal_dict)
 
-
-@login_required
-def pay_dues_paypal(request, id):
+def _get_notify_url(request):
     """
-    Render dues payment page.
+    If in dev mode, set to ngrok URL listener so that it redirects to this 
+    machine.  Else, set to domain paypal IPN listener.
     """
-    treasurer = Member.objects.get(position='TR')
-    
-    # Retrieve matching member and deny access if not member logged in
-    member = get_object_or_404(Member, pk=id)
-    if not logged_in_user_matches_requested_user(request, member):
-        return render(request, "manage_members/member_permission_denied.html")
-
-    context = {
-        "member": member,
-        "form": _initialize_paypal_button(request, member),
-        "treasurer": treasurer,
-    }
-
-    return render(request, "payments/pay_dues_paypal.html", context)
-    
-@login_required
-def paypal_cancelled(request):
-        
-    messages.error(
-        request, "Your payment attempt was cancelled. Please try again.")
-    return redirect("member_profile", request.user.member.id)
+    if not settings.DEBUG:
+        return request.build_absolute_url(reverse('paypal-ipn'))
+    else:
+        return get_ngrok_url() + reverse('paypal-ipn')
 
 
 @login_required
@@ -84,3 +74,12 @@ def paypal_completed(request):
          "It may take a few minutes for your membership status to be updated.")
     )
     return redirect("member_profile", request.user.member.id)
+
+@login_required
+def paypal_cancelled(request):
+        
+    messages.error(
+        request, "Your payment attempt was cancelled. Please try again.")
+    return redirect("member_profile", request.user.member.id)
+
+

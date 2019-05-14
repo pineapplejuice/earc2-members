@@ -37,6 +37,7 @@ HST = dt_timezone(-timedelta(hours=10))
 
 timezone.activate(pytz.timezone("Pacific/Honolulu"))
 
+
 def home_page(request):
     """Render home page."""
 
@@ -51,9 +52,11 @@ def home_page(request):
 
     return render(request, 'homepage/home.html', context)
 
+
 def about(request):
     """Render about static page."""
     return render(request, 'homepage/about.html')
+
 
 def officers(request):
     """Render officers page (pulls members with specific titles)."""
@@ -75,6 +78,22 @@ def officers(request):
     return render(request, 'homepage/officers.html', context)
 
 
+def meetings(request):
+    """
+    Render meeting page with dates of next four upcoming meetings and
+    map of meeting place.
+    """
+    next_meeting, upcoming_meetings = get_future_meetings()
+
+    context = {
+        'next_meeting': next_meeting,
+        'upcoming_meetings': upcoming_meetings,
+        'next_meeting_map_url': get_google_maps_url(next_meeting)
+                                if next_meeting else None
+    }
+
+    return render(request, 'homepage/meetings.html', context)
+
 def get_future_meetings():
     future_meetings = Event.objects.filter(
         start_date_time__gte=timezone.now()).filter(
@@ -86,7 +105,6 @@ def get_future_meetings():
                          else future_meetings[1:4])
 
     return next_meeting, upcoming_meetings
-
 
 def get_google_maps_url(next_meeting):
     if next_meeting.event_venue.address:
@@ -105,23 +123,6 @@ def get_google_maps_url(next_meeting):
         map_url = None
 
     return map_url
-
-
-def meetings(request):
-    """
-    Render meeting page with dates of next four upcoming meetings and
-    map of meeting place.
-    """
-    next_meeting, upcoming_meetings = get_future_meetings()
-
-    context = {
-        'next_meeting': next_meeting,
-        'upcoming_meetings': upcoming_meetings,
-        'next_meeting_map_url': get_google_maps_url(next_meeting)
-                                if next_meeting else None
-    }
-
-    return render(request, 'homepage/meetings.html', context)
 
 
 def view_event(request, id):
@@ -301,26 +302,13 @@ def logbook(request):
     return render(request, "homepage/logbook.html", context)
 
 
-## Event Calendar Code
-
-##### Here's code for the view to look up the event objects for to put in
-# the context for the template. It goes in your app's views.py file (or
-# wherever you put your views).
-#####
-
-def named_month(month_number):
-    """
-    Return the name of the month, given the number.
-    """
-    return date(1900, month_number, 1).strftime("%B")
-
 def this_month(request):
     """
     Show calendar of events this month.
     """
     today = datetime.now()
     return calendar(request, today.year, today.month)
-
+    
 
 def calendar(request, year, month):
     """
@@ -370,3 +358,10 @@ def calendar(request, year, month):
               }
 
     return render(request, "homepage/event_calendar.html", context)
+
+def named_month(month_number):
+    """
+    Return the name of the month, given the number.
+    """
+    return date(1900, month_number, 1).strftime("%B")
+
