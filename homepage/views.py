@@ -9,6 +9,7 @@ from datetime import timezone as dt_timezone
 from calendar import monthrange
 
 from django.db.models import Q
+from django.conf import settings
 from django.contrib import messages
 from django.core.mail import send_mail, BadHeaderError
 from django.shortcuts import (
@@ -31,8 +32,6 @@ from manage_members.models import Member
 
 
 # Create your views here.
-
-GOOGLE_MAPS_API_KEY = 'AIzaSyB5U5s-pijWcGEi9TPqNk1AZyBr0BCcOZY'
 HST = dt_timezone(-timedelta(hours=10))
 
 timezone.activate(pytz.timezone("Pacific/Honolulu"))
@@ -110,7 +109,7 @@ def get_google_maps_url(next_meeting):
     if next_meeting.event_venue.address:
         meeting_place = next_meeting.event_venue
         query = {
-            'key': GOOGLE_MAPS_API_KEY,
+            'key': settings.GOOGLE_MAPS_API_KEY,
             'q': '{}, {}, {} {}'.format(meeting_place.address,
                                         meeting_place.city,
                                         meeting_place.state,
