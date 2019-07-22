@@ -1,6 +1,8 @@
 import datetime
 import pytz
 
+from unittest import skip
+
 from django.test import TestCase
 from django.utils import timezone
 from django.core import mail
@@ -115,6 +117,7 @@ class TestRenderNonFormPages(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, template)
 
+    @skip("Home page intentionally set to member portal")
     def test_render_home_page(self):
         self._test_page('/', template='homepage/home.html')
     

@@ -15,9 +15,9 @@ class TestHomePage(FunctionalTest):
 		self.browser.get(self.live_server_url)
 		
 		# He sees the welcome screen to the home page
-		self.assertIn('Emergency Amateur Radio Club', self.browser.title)
-		header_text = self.browser.find_element_by_class_name('title').text
-		self.assertIn('Emergency Amateur Radio Club', header_text)
+		self.assertIn('Member Portal', self.browser.title)
+		header_text = self.browser.find_element_by_class_name('h2').text
+		self.assertIn('Member Portal', header_text)
 	
 	def test_log_in(self):
 		# Keith goes to home page

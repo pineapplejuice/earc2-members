@@ -94,6 +94,13 @@ def setup_member_1_dict():
     return data
 
 
+class TestHomePage(TestCase):
+    def test_home_page_renders(self):
+        response = self.client.get(f'/')
+        self.assertTemplateUsed(response, 'manage_members/home.html')
+
+
+
 class TestMemberViews(TestCase):
     def setUp(self):
         self.test_member1 = setup_member_1()

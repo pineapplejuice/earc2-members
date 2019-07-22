@@ -29,6 +29,10 @@ from manage_members.models import Member
 from manage_members.tokens import account_activation_token
 
 
+def home_page(request):
+    return render(request, "manage_members/home.html")
+    
+
 def member_list(request):
     """Render member list in pages."""
     members = Member.objects.order_by('callsign')

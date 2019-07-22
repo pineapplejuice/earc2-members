@@ -21,7 +21,7 @@ from manage_members import views as member_views
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    path('', homepage_views.home_page, name="home_page"),
+    path('', member_views.home_page, name="home_page"),
     path('robots.txt', TemplateView.as_view(
         template_name='robots.txt', content_type='text/plain')),
     
