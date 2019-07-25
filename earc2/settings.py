@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'paypal.standard.ipn',
     'manage_members',
     'payments',
-    'homepage',
     'helpers',
     'markdownx',
     'django_markdown2',

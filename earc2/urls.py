@@ -16,7 +16,6 @@ Including another URLconf
 from django.urls import path, re_path, include
 from django.contrib import admin
 from django.views.generic import TemplateView
-from homepage import views as homepage_views
 from manage_members import views as member_views
 from django.contrib.auth import views as auth_views
 
@@ -29,7 +28,6 @@ urlpatterns = [
     path('administr8/', admin.site.urls),
     
     # Sub-directories redirect to child urls.py files
-    path('homepage/', include('homepage.urls')),
     path('member/', include('manage_members.urls')),
     path('payment/', include('payments.urls')),
     path('markdownx/', include('markdownx.urls')),

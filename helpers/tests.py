@@ -6,8 +6,8 @@ from helpers.utils import EmailMessageFromTemplate
 class TestEmailTemplate(TestCase):
     def setUp(self):
         self.test_email = EmailMessageFromTemplate(
-            subject_template='homepage/email/contact_form_subject.txt',
-            message_template='homepage/email/contact_form_body.txt',
+            subject_template='manage_members/email/contact_form_subject.txt',
+            message_template='manage_members/email/contact_form_body.txt',
             context={
                 'contact_name': 'Test User',
                 'contact_email': 'test@test.com',
