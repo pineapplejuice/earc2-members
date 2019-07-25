@@ -6,6 +6,8 @@ from selenium.common.exceptions import WebDriverException
 import time
 import os
 
+from selenium.webdriver.support.ui import WebDriverWait
+
 MAX_WAIT = 10
 
 class FunctionalTest(StaticLiveServerTestCase):
@@ -18,6 +20,9 @@ class FunctionalTest(StaticLiveServerTestCase):
     
     def tearDown(self):
         self.browser.quit()
+
+    def wait(self):
+        return WebDriverWait(self.browser, MAX_WAIT)
 
     def wait_for(self, fn):
         start_time = time.time()
