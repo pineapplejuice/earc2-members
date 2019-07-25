@@ -1,0 +1,54 @@
+		<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+			<a class="navbar-brand" href="{% url "home_page" %}">EARC</a>"
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					
+					<li class="nav-item">
+						<a class="nav-link {% if request.resolver_match.url_name == 'home_page' %}active{% endif %}"
+							href="{% url "home_page" %}">
+							Home
+						{% if request.resolver_match.url_name == 'home_page' %}<span class="sr-only">(current)</span>{% endif %}</a>
+					</li>
+
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Membership
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+							<a class="dropdown-item {% if request.resolver_match.url_name == 'member_new_form' %}active{% endif %}
+								{% if user.is_authenticated %}disabled{% endif %}"
+								href="{% if not user.is_authenticated %}{% url 'member_new_form' %}{% else %}#{% endif %}">Application form {% if request.resolver_match.url_name == 'member_new_form' %}<span class="sr-only">(current)</span>{% endif %}</a>
+							<a class="dropdown-item {% if request.resolver_match.url_name == 'member_list' %}active{% endif %}"
+								href="{% url 'member_list' %}">Member list {% if request.resolver_match.url_name == 'member_list' %}<span class="sr-only">(current)</span>{% endif %}</a>
+							<a class="dropdown-item" href-"#">Newsletter</a>
+						</div>
+					</li>
+					
+					
+						{% if user.is_authenticated %}
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								{{ user.member.callsign }}
+							</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item {% if request.resolver_match.url_name == 'member_profile' %}active{% endif %}" href="{% url 'member_profile' user.member.id %}">Member profile {% if request.resolver_match.url_name == 'member_profile' %}<span class="sr-only">(current)</span>{% endif %}</a>
+								{% if user.is_staff %}
+								<a class="dropdown-item" href="{% url 'admin:index' %}">Admin</a>
+								{% endif %}
+								<a class="dropdown-item" href="{% url 'site_logout' %}">Logout</a>
+							</div>
+						</li>
+						{% else %}
+						<li class="nav-item">
+							<a class="nav-link {% if request.resolver_match.url_name == 'site_login' %}active{% endif %}" href="{% url 'site_login' %}">Login {% if request.resolver_match.url_name == 'site_login' %}<span class="sr-only">(current)</span>{% endif %}</a>
+						</li>
+						{% endif %}
+					</li>
+
+				</ul>
+			</div>
+		</nav>
