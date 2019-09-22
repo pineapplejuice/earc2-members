@@ -191,7 +191,7 @@ def _get_expiration_date_from_uls(callsign):
         response = requests.get(uls_url + callsign)
         
         #  Iterate through the returned licenses and return exact match.
-        for license in response_json()['Licenses']['License']:
+        for license in response.json()['Licenses']['License']:
             if license['callsign'] == callsign:
                 return license['expiredDate']
     
